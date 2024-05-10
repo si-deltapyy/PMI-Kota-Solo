@@ -9,7 +9,19 @@
 
 ## About PMI KOTA SOLO
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Palang Merah Indonesia (PMI) Kota Surakarta adalah satu dari lima PMI pelopor di Indonesia selain Surabaya, Yogyakarta, Semarang, dan Bandung.  Disebut pelopor karena kelima PMI cabang itulah yang berdiri tujuh bulan setelah PMI Pusat diresmikan pada 17 September 1945.
+
+### VISI
+
+Mewujudkan PMI yang profesional, berintegritas, dan bergerak bersama masyarakat
+
+### MISI
+
+1. Memelihara reputasi organisasi PMI di tingkat nasional dan internasional
+
+2. Menjadi organisasi kemanusiaan terdepan yang memberikan layanan berkualitas kepada masyarakat sesuai dengan Prinsip-Prinsip Dasar Gerakan Palang Merah dan Bulan Sabit Merah Internasional
+
+3. Meningkatkan integritas dan kemandirian organisasi melalui kerja sama strategis yang berkesinambungan dengan pemerintah, swasta, mitra gerakan, masyarakat, dan pemangku kepentingan lainnya di semua tingkatan PMI dengan mengutamakan keberpihakan kepada masyarakat yang memerlukan bantuan.
 
 <!-- - [Simple, fast routing engine](https://laravel.com/docs/routing).
 - [Powerful dependency injection container](https://laravel.com/docs/container).
