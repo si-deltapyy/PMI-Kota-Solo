@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('relawan', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->string('lokasi_relwan');
+            $table->enum('status_relawan', ['Ditempat', 'Tidak Ditempat']);
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
         });
     }
 

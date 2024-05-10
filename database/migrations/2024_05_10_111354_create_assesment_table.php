@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('assesment', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('relawan_id');
+            $table->unsignedBigInteger('report_id');
+            $table->string('hasil_verivikasi');
             $table->timestamps();
+
+            $table->foreign('relawan_id')->references('id')->on('relawan')->onDelete('CASCADE');
+            $table->foreign('report_id')->references('id')->on('reports')->onDelete('CASCADE');
         });
     }
 
