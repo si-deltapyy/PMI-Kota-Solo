@@ -1,4 +1,4 @@
-<p align="center"><a href="https://pmisurakarta.or.id/" target="_blank"><img src="https://pmisurakarta.or.id/wp-content/uploads/2022/01/logo-PMI-Kota-Surakarta-300x85.jpg" width="400" alt="PMI Logo"></a></p>
+<p align="center"><a href="https://pmisurakarta.or.id/" target="_blank"><img src="https://pmisurakarta.or.id/wp-content/uploads/2022/01/logo-PMI-Kota-Surakarta-300x85.jpg" alt="PMI Logo"></a></p>
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
