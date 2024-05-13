@@ -41,8 +41,8 @@ return new class extends Migration
             $table->foreign('dampak_id')->references('id')->on('dampak')->onDelete('CASCADE');
             $table->foreign('mobilisasi_sd_id')->references('id')->on('mobilisasi_sd')->onDelete('CASCADE');
             $table->foreign('giat_pmi_id')->references('id')->on('giat_pmi')->onDelete('CASCADE');
-            $table->foreign('dokumentasi_id')->references('id')->on('dokumentasi')->onDelete('CASCADE');
-            $table->foreign('narahubung_id')->references('id')->on('narahubung')->onDelete('CASCADE');
+            $table->foreign('dokumentasi_id')->references('id')->on('lampiran_dokumentasi')->onDelete('CASCADE');
+            $table->foreign('narahubung_id')->references('id')->on('personil_narahubung')->onDelete('CASCADE');
             $table->foreign('petugas_posko_id')->references('id')->on('petugas_posko')->onDelete('CASCADE');
         });
     }
