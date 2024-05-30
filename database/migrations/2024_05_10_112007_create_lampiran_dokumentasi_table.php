@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('lampiran_dokumentasi', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_dokumentasi');
+            $table->string('file_dokumentasi');
             $table->timestamps();
         });
     }

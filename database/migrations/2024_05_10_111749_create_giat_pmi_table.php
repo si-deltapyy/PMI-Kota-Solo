@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('giat_pmi', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_giatpmi');
+            $table->unsignedBigInteger('fk_id_evakuasikorban');
+            $table->unsignedBigInteger('fk_id_layanankorban');
             $table->timestamps();
+
+            $table->foreign('fk_id_evakuasikorban')->references('id_evakuasikorban')->on('evakuasi_korban')->onDelete('CASCADE');
+            $table->foreign('fk_id_layanankorban')->references('id_layanankorban')->on('layanan_korban')->onDelete('CASCADE');
         });
     }
 

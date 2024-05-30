@@ -12,38 +12,38 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('kejadian_bencana', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('jenisKejadian_id');
-            $table->unsignedBigInteger('relawan_id');
+            $table->id('id_kejadian');
+            $table->unsignedBigInteger('id_jeniskejadian');
+            $table->unsignedBigInteger('id_relawan');
             $table->date('tanggal_kejadian');
             $table->string('lokasi');
             $table->string('update');
-            $table->string('dukungan_inter');
+            $table->string('dukungan_internasional');
             $table->text('keterangan');
-            $table->string('akses_lokasi');
+            $table->string('akses_ke_lokasi');
             $table->enum('kebutuhan', ['a', 'b']);
             $table->string('giat_pemerintah');
             $table->enum('hambatan', ['a', 'b']);
-            $table->unsignedBigInteger('admin_id');
-            $table->unsignedBigInteger('assesment_id');
-            $table->unsignedBigInteger('dampak_id');
-            $table->unsignedBigInteger('mobilisasi_sd_id');
-            $table->unsignedBigInteger('giat_pmi_id');
-            $table->unsignedBigInteger('dokumentasi_id');
-            $table->unsignedBigInteger('narahubung_id');
-            $table->unsignedBigInteger('petugas_posko_id');
+            $table->unsignedBigInteger('id_admin');
+            $table->unsignedBigInteger('id_assessment');
+            $table->unsignedBigInteger('id_dampak');
+            $table->unsignedBigInteger('id_mobilisasi_sd');
+            $table->unsignedBigInteger('id_giat_pmi');
+            $table->unsignedBigInteger('id_dokumentasi');
+            $table->unsignedBigInteger('id_narahubung');
+            $table->unsignedBigInteger('id_petugas_posko');
             $table->timestamps();
 
-            $table->foreign('jenisKejadian_id')->references('id')->on('jenis_kejadian')->onDelete('CASCADE');
-            $table->foreign('relawan_id')->references('id')->on('relawan')->onDelete('CASCADE');
-            $table->foreign('admin_id')->references('id')->on('petugas_pmi')->onDelete('CASCADE');
-            $table->foreign('assesment_id')->references('id')->on('assesment')->onDelete('CASCADE');
-            $table->foreign('dampak_id')->references('id')->on('dampak')->onDelete('CASCADE');
-            $table->foreign('mobilisasi_sd_id')->references('id')->on('mobilisasi_sd')->onDelete('CASCADE');
-            $table->foreign('giat_pmi_id')->references('id')->on('giat_pmi')->onDelete('CASCADE');
-            $table->foreign('dokumentasi_id')->references('id')->on('lampiran_dokumentasi')->onDelete('CASCADE');
-            $table->foreign('narahubung_id')->references('id')->on('personil_narahubung')->onDelete('CASCADE');
-            $table->foreign('petugas_posko_id')->references('id')->on('petugas_posko')->onDelete('CASCADE');
+            $table->foreign('id_jeniskejadian')->references('id_jeniskejadian')->on('jenis_kejadian')->onDelete('CASCADE');
+            $table->foreign('id_relawan')->references('id_relawan')->on('relawan')->onDelete('CASCADE');
+            $table->foreign('id_admin')->references('id_admin')->on('petugas_pmi')->onDelete('CASCADE');
+            $table->foreign('id_assessment')->references('id_assessment')->on('assesment')->onDelete('CASCADE');
+            $table->foreign('id_dampak')->references('id_dampak')->on('dampak')->onDelete('CASCADE');
+            $table->foreign('id_mobilisasi_sd')->references('id_mobilisasi_sd')->on('mobilisasi_sd')->onDelete('CASCADE');
+            $table->foreign('id_giat_pmi')->references('id_giat_pmi')->on('giat_pmi')->onDelete('CASCADE');
+            $table->foreign('id_dokumentasi')->references('id_dokumentasi')->on('lampiran_dokumentasi')->onDelete('CASCADE');
+            $table->foreign('id_narahubung')->references('id_narahubung')->on('personil_narahubung')->onDelete('CASCADE');
+            $table->foreign('id_petugas_posko')->references('id_petugas_posko')->on('petugas_posko')->onDelete('CASCADE');
         });
     }
 

@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pengelola_profil', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->id('id_pengelolaprofil');
+            $table->unsignedBigInteger('fk_id_user');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
+            $table->foreign('fk_id_user')->references('id')->on('users')->onDelete('CASCADE');
         });
     }
 
