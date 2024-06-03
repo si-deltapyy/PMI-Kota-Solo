@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('pengelola_profil', function (Blueprint $table) {
             $table->id('id_pengelolaprofil');
-            $table->unsignedBigInteger('fk_id_user');
+            $table->unsignedBigInteger('id_user');
             $table->timestamps();
 
-            $table->foreign('fk_id_user')->references('id')->on('users')->onDelete('CASCADE');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('CASCADE');
         });
     }
 

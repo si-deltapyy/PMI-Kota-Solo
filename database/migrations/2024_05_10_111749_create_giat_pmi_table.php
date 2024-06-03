@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('giat_pmi', function (Blueprint $table) {
             $table->id('id_giatpmi');
-            $table->unsignedBigInteger('fk_id_evakuasikorban');
-            $table->unsignedBigInteger('fk_id_layanankorban');
+            $table->unsignedBigInteger('id_evakuasikorban');
+            $table->unsignedBigInteger('id_layanankorban');
             $table->timestamps();
 
-            $table->foreign('fk_id_evakuasikorban')->references('id_evakuasikorban')->on('evakuasi_korban')->onDelete('CASCADE');
-            $table->foreign('fk_id_layanankorban')->references('id_layanankorban')->on('layanan_korban')->onDelete('CASCADE');
+            $table->foreign('id_evakuasikorban')->references('id_evakuasikorban')->on('evakuasi_korban')->onDelete('CASCADE');
+            $table->foreign('id_layanankorban')->references('id_layanankorban')->on('layanan_korban')->onDelete('CASCADE');
         });
     }
 
