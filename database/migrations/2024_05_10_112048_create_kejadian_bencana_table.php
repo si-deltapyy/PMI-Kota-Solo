@@ -37,10 +37,10 @@ return new class extends Migration
             $table->foreign('id_jeniskejadian')->references('id_jeniskejadian')->on('jenis_kejadian')->onDelete('CASCADE');
             $table->foreign('id_relawan')->references('id_relawan')->on('relawan')->onDelete('CASCADE');
             $table->foreign('id_admin')->references('id_admin')->on('petugas_pmi')->onDelete('CASCADE');
-            $table->foreign('id_assessment')->references('id_assessment')->on('assesment')->onDelete('CASCADE');
+            $table->foreign('id_assessment')->references('id_assessment')->on('assessment')->onDelete('CASCADE');
             $table->foreign('id_dampak')->references('id_dampak')->on('dampak')->onDelete('CASCADE');
             $table->foreign('id_mobilisasi_sd')->references('id_mobilisasi_sd')->on('mobilisasi_sd')->onDelete('CASCADE');
-            $table->foreign('id_giat_pmi')->references('id_giat_pmi')->on('giat_pmi')->onDelete('CASCADE');
+            $table->foreign('id_giat_pmi')->references('id_giatpmi')->on('giat_pmi')->onDelete('CASCADE');
             $table->foreign('id_dokumentasi')->references('id_dokumentasi')->on('lampiran_dokumentasi')->onDelete('CASCADE');
             $table->foreign('id_narahubung')->references('id_narahubung')->on('personil_narahubung')->onDelete('CASCADE');
             $table->foreign('id_petugas_posko')->references('id_petugas_posko')->on('petugas_posko')->onDelete('CASCADE');
