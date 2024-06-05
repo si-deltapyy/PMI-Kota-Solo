@@ -32,3 +32,4 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
 });
 
 Route::get('/admin/home', [AdminController::class, 'index_admin'])->name('admin-home');
+Route::get('/admin/exsum', [AdminController::class, 'index_exsum'])->name('admin-exsum');

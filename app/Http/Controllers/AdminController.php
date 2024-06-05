@@ -21,6 +21,11 @@ class AdminController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+
+    public function index_exsum()
+    {
+        return view('admin.executive_summary');
+    }
     public function create()
     {
         //
