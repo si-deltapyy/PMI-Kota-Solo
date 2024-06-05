@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -17,7 +18,8 @@ class UserSeeder extends Seeder
             'password' => bcrypt('12345'),
             'name' => 'Supriyadi',
             'email' => 'test@admin',
-            'email_verified_at' => null
+            'email_verified_at' => null,
+            'remember_token' => Str::random(10),
         ])->assignRole('admin');
 
         User::create([
@@ -25,7 +27,8 @@ class UserSeeder extends Seeder
             'password' => bcrypt('12345'),
             'name' => 'Hartanto',
             'email' => 'test@relawan',
-            'email_verified_at' => null
+            'email_verified_at' => null,
+            'remember_token' => Str::random(10),
         ])->assignRole('relawan');
 
         User::create([
@@ -33,7 +36,8 @@ class UserSeeder extends Seeder
             'password' => bcrypt('12345'),
             'name' => 'Budiyono',
             'email' => 'test@pengelola',
-            'email_verified_at' => null
+            'email_verified_at' => null,
+            'remember_token' => Str::random(10),
         ])->assignRole('pengelola_profil');
     }
 }

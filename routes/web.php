@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PengelolaProfilController;
 
 
 Auth::routes();
@@ -22,6 +23,7 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
 //test middleware pengelola profil role
 Route::group(['middleware' => ['auth', 'role:pengelola_profil']], function () {
     Route::get('/pengelolaProfil', [HomeController::class, 'index']);
+    Route::get('/pengelolaProfil/home', [PengelolaProfilController::class, 'index_admin'])->name('admin-home');
 });
 
 //test middleware admin role

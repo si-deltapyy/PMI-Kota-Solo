@@ -26,7 +26,10 @@ class RoleSeeder extends Seeder
         //Assign Permision To Role
         $role_admin->givePermissionTo($permission_edit);
         $role_admin->givePermissionTo($permission_view_dashboard);
+        $role_pengelola_profil->givePermissionTo($permission_edit);
+        $role_pengelola_profil->givePermissionTo($permission_view_dashboard);
         $role_relawan->givePermissionTo($permission_view_dashboard);
+        $role_relawan->givePermissionTo($permission_edit);
 
     }
 }
