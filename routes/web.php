@@ -38,6 +38,8 @@ Route::group(['middleware' => ['auth', 'role:pengelola_profil']], function () {
     Route::get('/pengelolaProfil/relawan_management', [PengelolaProfilController::class, 'relawan_management'])->name('pengelola-relawan');
     Route::get('/pengelolaProfil/admin_management', [PengelolaProfilController::class, 'admin_management'])->name('pengelola-admin');
     Route::get('/pengelolaProfil/add-volunteer', [PengelolaProfilController::class, 'create_relawan'])->name('pengelola-add');
+    Route::get('/pengelolaProfil/edit-volunteer', [PengelolaProfilController::class, 'edit_relawan'])->name('pengelola-edit');
+    Route::get('/pengelolaProfil/detail-volunteer', [PengelolaProfilController::class, 'detail_relawan'])->name('pengelola-detail');
     Route::get('/pengelolaProfil/add-admin', [PengelolaProfilController::class, 'create_admin'])->name('pengelola-add-admin');
 });
 //test middleware admin role
