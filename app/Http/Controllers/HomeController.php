@@ -28,6 +28,6 @@ class HomeController extends Controller
         $user = Auth::user();
         $userData = User::where('id', $user->id)->first();
 
-        return view('dashboard', compact('userData'));
+        return view('pengelola_Profil.dashboard', compact('userData'));
     }
 }

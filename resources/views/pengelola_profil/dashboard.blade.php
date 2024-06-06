@@ -1,5 +1,5 @@
 
-@extends('layouts-admin.main')
+@extends('layouts-pengelolaProfil.default')
 @section('title','Website Palang Merah Indonesia')
 
     
