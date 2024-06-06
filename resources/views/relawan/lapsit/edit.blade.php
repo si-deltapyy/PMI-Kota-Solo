@@ -14,19 +14,20 @@
                             <form class="forms-sample">
                                 <div class="form-group">
                                     <label for="kejadian_musibah">Kejadian Musibah</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
+                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name" value = "Kebakaran Pemukiman">
                                 </div>
                                 <div class="form-group">
                                     <label for="lokasi">Lokasi</label>
-                                    <input type="email" class="form-control" id="lokasi" placeholder="Email">
+                                    <input type="email" class="form-control" id="lokasi" placeholder="Name" value="Jl. Trans Sebuku Desa Sungai Bali, Kec. Pulau Sebuku
+Kabupaten Kotabaru Propinsi Kalimantan Selatan">
                                 </div>
                                 <div class="form-group">
                                     <label for="waktu_kejadian">waktu Kejadian</label>
-                                    <input type="date" class="form-control" id="waktu_kejadian" placeholder="Password">
+                                    <input type="date" class="form-control" id="waktu_kejadian" placeholder="Password" value="23 November 2019 - 19.30 Wita">
                                 </div>
                                 <div class="form-group">
                                     <label for="update">Update</label>
-                                    <input type="date" class="form-control" id="update" placeholder="Password">
+                                    <input type="date" class="form-control" id="update" placeholder="Password" value="25 November 2019 - 20.00 Wita">
                                 </div>
                                 <div class="form-group">
                                     <label>File upload</label>
@@ -44,18 +45,18 @@
                                     <label>Pemerintah membutuhkan Dukungan Internasional</label>
                                     <select class="js-example-basic-single w-100">
                                         <option value="AL">Ya</option>
-                                        <option value="WY">Tidak</option>
+                                        <option value="WY" selected>Tidak</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Keterangan Akses Menuju Lokasi</label>
                                     <select class="js-example-basic-single w-100">
-                                        <option value="AL">Aman</option>
+                                        <option value="AL" selected>Aman</option>
                                         <option value="WY">Tidak Aman</option>
                                     </select>
                                 </div>
-                                {{-- Inpu Dampak --}}
+                                {{-- Input Dampak --}}
                                 <div class="form-group">
                                     <button type="button" id="dampak" class="btn btn-primary me-2">Input Dampak</button>
                                 </div>
@@ -66,11 +67,11 @@
                                     </p>
                                     <div class="form-group">
                                         <label for="jumlah_kk">Jumlah KK</label>
-                                        <input type="number" class="form-control" id="jumlah_kk">
+                                        <input type="number" class="form-control" id="jumlah_kk" value="155">
                                     </div>
                                     <div class="form-group">
                                         <label for="jumlah_orang">Jumlah Orang</label>
-                                        <input type="number" class="form-control" id="jumlah_orang">
+                                        <input type="number" class="form-control" id="jumlah_orang" value="405">
                                     </div>
                                     <div class="form-group">
                                         <label for="luka_berat">Luka Berat</label>
@@ -94,7 +95,7 @@
                                     </p>
                                     <div class="form-group">
                                         <label for="jumlah_kk">Kerusakan Rumah Berat</label>
-                                        <input type="number" class="form-control" id="jumlah_kk">
+                                        <input type="number" class="form-control" id="jumlah_kk" value="153">
                                     </div>
                                     <div class="form-group">
                                         <label for="jumlah_orang">Kerusakan Rumah Sedang</label>
@@ -106,7 +107,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="meninggal">Kerusakan Tempat Ibadah</label>
-                                        <input type="number" class="form-control" id="meninggal">
+                                        <input type="number" class="form-control" id="meninggal" value="1">
                                     </div>
                                     <div class="form-group">
                                         <label for="hidup">Kerusakan Rumah Sakit</label>
@@ -114,7 +115,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Kerusakan Pasar</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input type="number" class="form-control" id="mengungsi" value="2">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Kerusakan Gedung Pemerintahan</label>
@@ -122,12 +123,12 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Kerusakan Lain Lain</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input type="number" class="form-control" id="mengungsi" value="6">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="mengungsi">Kerusakan Infrastruktur</label>
-                                        <input type="text" class="form-control" id="mengungsi">
+                                        <input type="text" class="form-control" id="mengungsi" value="6 Tiang Listrik">
                                     </div>
                                 </div>
 
@@ -192,11 +193,11 @@
                                     </p>
                                     <div class="form-group">
                                         <label for="jumlah_kk">Pengurus</label>
-                                        <input type="number" class="form-control" id="jumlah_kk">
+                                        <input type="number" class="form-control" id="jumlah_kk" value="2">
                                     </div>
                                     <div class="form-group">
                                         <label for="jumlah_orang">Staf Markas Kab/Kota</label>
-                                        <input type="number" class="form-control" id="jumlah_orang">
+                                        <input type="number" class="form-control" id="jumlah_orang" value="4">
                                     </div>
                                     <div class="form-group">
                                         <label for="luka_berat">Staf Markas Provinsi</label>
@@ -208,7 +209,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="hidup">Relawan PMI Kab/Kota</label>
-                                        <input type="number" class="form-control" id="hidup">
+                                        <input type="number" class="form-control" id="hidup" value="9">
                                     </div>
                                     <div class="form-group">
                                         <label for="hidup">Relawan PMI Provinsi</label>
@@ -466,15 +467,15 @@
                                         <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
                                         <div class="form-group">
                                             <label for="nama_lokasi">Nama Lengkap</label>
-                                            <input type="text" class="form-control" name="nama_lokasi[]">
+                                            <input type="text" class="form-control" name="nama_lokasi[]" value="M. Taher Abdad">
                                         </div>
                                         <div class="form-group">
                                             <label for="jumlah_kk">Posisi</label>
-                                            <input type="text" class="form-control" name="jumlah_kk[]">
+                                            <input type="text" class="form-control" name="jumlah_kk[]" value="Kepala Markas">
                                         </div>
                                         <div class="form-group">
                                             <label for="jumlah_orang">Kontak</label>
-                                            <input type="phone" class="form-control" name="jumlah_orang[]">
+                                            <input type="phone" class="form-control" name="jumlah_orang[]" value="081358121966">
                                         </div>
                                     </div>
                                 </div>

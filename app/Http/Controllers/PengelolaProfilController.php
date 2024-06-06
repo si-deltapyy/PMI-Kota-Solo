@@ -13,11 +13,6 @@ class PengelolaProfilController extends Controller
     {
         return view('pengelola_profil.dashboard');
     }
-    public function index_admin()
-    {
-
-        return view('pengelola_profil.dashboard');
-    }
     public function user_management()
     {
         return view('pengelola_profil.user_management');
