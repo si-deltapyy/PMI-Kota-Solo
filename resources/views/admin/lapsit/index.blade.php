@@ -1,4 +1,4 @@
-@extends('layouts-relawan.default')
+@extends('layouts-admin.default')
 
 @section('content')
 
@@ -13,16 +13,6 @@
                   <p class="card-description">
                     Daftar laporan situasi yang telah diunggah
                   </p>
-                  <div class="home-tab">
-                    <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                        <div class="btn-wrapper ms-auto">
-                            <a href="{{ route('create-lapsit') }}" class="btn btn-primary text-white me-0">
-                                <i class="icon-download"></i> Tambah Data
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                  <div>
                 <div class="table-responsive pt-3">
                     <table class="table table-bordered">
                       <thead>
@@ -55,8 +45,8 @@
                         <td>2024-05-01 14:00</td>
                         <td>2024-05-01 15:00</td>
                         <td>
-                            <a href="{{ route('edit-lapsit') }}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>
+                            <a href="#" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                            <a href="#" class="btn btn-success btn-sm"><i class="menu-icon mdi mdi-share-variant"></i></a>
                         </td>
                     </tr>
                     <tr>
@@ -66,8 +56,8 @@
                         <td>2024-05-02 10:30</td>
                         <td>2024-05-02 11:00</td>
                         <td>
-                            <a href="{{ route('edit-lapsit') }}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>
+                            <a href="#" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                            <a href="#" class="btn btn-success btn-sm"><i class="menu-icon mdi mdi-share-variant"></i></a>
                         </td>
                     </tr>
                     <tr>
@@ -77,8 +67,8 @@
                         <td>2024-05-03 09:15</td>
                         <td>2024-05-03 09:45</td>
                         <td>
-                            <a href="{{ route('edit-lapsit') }}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>
+                            <a href="#" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                            <a href="#" class="btn btn-success btn-sm"><i class="menu-icon mdi mdi-share-variant"></i></a>
                         </td>
                     </tr>
                     <tr>
@@ -88,8 +78,8 @@
                         <td>2024-05-04 18:00</td>
                         <td>2024-05-04 18:30</td>
                         <td>
-                            <a href="{{ route('edit-lapsit') }}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>
+                            <a href="#" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                            <a href="#" class="btn btn-success btn-sm"><i class="menu-icon mdi mdi-share-variant"></i></a>
                         </td>
                     </tr>
                     <tr>
@@ -99,8 +89,8 @@
                         <td>2024-05-05 07:00</td>
                         <td>2024-05-05 08:00</td>
                         <td>
-                            <a href="{{ route('edit-lapsit') }}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>
+                            <a href="#" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                            <a href="#" class="btn btn-success btn-sm"><i class="menu-icon mdi mdi-share-variant"></i></a>
                         </td>
                     </tr>
                       </tbody>
