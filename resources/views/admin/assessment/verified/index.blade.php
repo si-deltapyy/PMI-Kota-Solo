@@ -60,7 +60,7 @@
                         <td>2024-05-02 11:00</td>
                         <td><p class="btn btn-success btn-sm">Terkonfirmasi</p></td>
                         <td>
-                        <a href="#" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                        <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal"><i class="menu-icon mdi mdi-information"></i></a>
                         </td>
                     </tr>
                     <tr>
@@ -71,7 +71,7 @@
                         <td>2024-05-03 09:45</td>
                         <td><p class="btn btn-success btn-sm">Terkonfirmasi</p></td>
                         <td>
-                        <a href="#" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                        <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal"><i class="menu-icon mdi mdi-information"></i></a>
                         </td>
                     </tr>
                     <tr>
@@ -82,7 +82,7 @@
                         <td>2024-05-04 18:30</td>
                         <td><p class="btn btn-success btn-sm">Terkonfirmasi</p></td>
                         <td>
-                            <a href="#" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                            <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal"><i class="menu-icon mdi mdi-information"></i></a>
                         </td>
                     </tr>
                     <tr>
@@ -93,7 +93,7 @@
                         <td>2024-05-05 08:00</td>
                         <td><p class="btn btn-success btn-sm">Terkonfirmasi</p></td>
                         <td>
-                            <a href="#" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                            <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal"><i class="menu-icon mdi mdi-information"></i></a>
                         </td>
                     </tr>
                       </tbody>

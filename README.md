@@ -23,6 +23,68 @@ Mewujudkan PMI yang profesional, berintegritas, dan bergerak bersama masyarakat
 
 3. Meningkatkan integritas dan kemandirian organisasi melalui kerja sama strategis yang berkesinambungan dengan pemerintah, swasta, mitra gerakan, masyarakat, dan pemangku kepentingan lainnya di semua tingkatan PMI dengan mengutamakan keberpihakan kepada masyarakat yang memerlukan bantuan.
 
+## Cara Clone Project Laravel
+
+### Persyaratan
+
+Sebelum memulai, pastikan perangkat lunak berikut telah terinstal di komputer Anda:
+
+- [Git](https://git-scm.com/downloads)
+- [PHP](https://www.php.net/downloads)
+- [Composer](https://getcomposer.org/download/)
+
+### Instalasi
+
+1. **Clone Repositori**: Buka terminal atau command prompt dan jalankan perintah berikut untuk mengkloning repositori:
+
+    ```bash
+    git clone https://github.com/nisarizqi/PMI-Kota-Solo
+    ```
+
+2. **Konfigurasi Proyek**: Navigasikan ke direktori proyek dan salin file `.env.example` menjadi `.env`. Atur konfigurasi database dan pengaturan lainnya di dalam file `.env`.
+
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Instal Dependensi**: Jalankan perintah berikut untuk menginstal dependensi proyek:
+
+    ```bash
+    composer install
+    ```
+
+5. **Generate App Key**: Jalankan perintah berikut untuk menghasilkan kunci aplikasi baru:
+
+    ```bash
+    php artisan key:generate
+    ```
+
+6. **Migrasi Database**: Jika proyek menggunakan database, jalankan perintah berikut untuk menjalankan migrasi:
+
+    ```bash
+    php artisan migrate
+    ```
+
+7. **Membuat Role**: Jalankan perintah ini untuk membuat data role
+
+   ```bash
+   php artisan db:seed RoleSeeder 
+   ```
+
+8. **Membuat User**: Jalankan perintah ini untuk membuat data user
+
+   ```bash
+   php artisan db:seed UserSeeder 
+   ```
+
+9. **Jalankan Server**: Terakhir, jalankan server pengembangan Laravel dengan perintah:
+
+    ```bash
+    php artisan serve
+    ```
+
+    Proyek sekarang dapat diakses di [http://localhost:8000](http://localhost:8000).
+
 <!-- - [Simple, fast routing engine](https://laravel.com/docs/routing).
 - [Powerful dependency injection container](https://laravel.com/docs/container).
 - Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
