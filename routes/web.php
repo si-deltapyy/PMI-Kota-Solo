@@ -22,6 +22,7 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::get('/relawan/lapsit', [RelawanController::class, 'index_lapsit'])->name('relawan-lapsit');
     Route::get('/relawan/lapsit/create', [RelawanController::class, 'create_lapsit'])->name('create-lapsit');
     Route::get('/relawan/lapsit/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit');
+    Route::get('/relawan/lapsit/detail', [RelawanController::class, 'detail_lapsit'])->name('detail-lapsit');
     Route::get('/relawan/assesment', [RelawanController::class, 'index_assessment'])->name('relawan-assessment');
     Route::get('/relawan/assesment/create', [RelawanController::class, 'create_assessment'])->name('create-assessment');
     Route::get('/relawan/assesment/edit', [RelawanController::class, 'edit_assessment'])->name('edit-assessment');
@@ -30,7 +31,6 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
 //test middleware pengelola profil role
 Route::group(['middleware' => ['auth', 'role:pengelola_profil']], function () {
     Route::get('/pengelolaProfil/dashboard', [PengelolaProfilController::class, 'index'])->name('pengelolaProfil-home');
-    Route::get('/pengelolaProfil/home', [PengelolaProfilController::class, 'index_admin'])->name('pengelola-home');
     Route::get('/pengelolaProfil/user_management', [PengelolaProfilController::class, 'user_management'])->name('pengelola-user');
     Route::get('/pengelolaProfil/relawan_management', [PengelolaProfilController::class, 'relawan_management'])->name('pengelola-relawan');
     Route::get('/pengelolaProfil/admin_management', [PengelolaProfilController::class, 'admin_management'])->name('pengelola-admin');

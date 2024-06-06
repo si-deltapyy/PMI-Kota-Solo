@@ -44,6 +44,12 @@ class RelawanController extends Controller
         return view('relawan.lapsit.edit');
     }
 
+    public function detail_lapsit()
+    {
+        //
+        return view('relawan.lapsit.detail');
+    }
+
     /**
      * Store a newly created resource in storage.
      */
