@@ -64,6 +64,14 @@ class PengelolaProfilController extends Controller
     {
         //
     }
+    public function edit_relawan()
+    {
+        return view('pengelola_profil.edit-volunteer');
+    }
+    public function detail_relawan()
+    {
+        return view('pengelola_profil.detail-volunteer');
+    }
 
     /**
      * Update the specified resource in storage.

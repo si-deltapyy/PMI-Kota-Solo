@@ -28,7 +28,7 @@
             <div class="col-20 grid-margin stretch-card">
                 <div class="card card-rounded">
                   <div class="card-body">
-                    <h4 class="card-title">Menambahkan Akun Relawan</h4>
+                    <h4 class="card-title">Edit Akun Relawan</h4>
                     
                     <form class="forms-sample" action="post" >
                       <div class="form-group">
@@ -47,8 +47,26 @@
                         <label for="exampleInputPassword4">Password</label>
                         <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
                       </div>
+
+                      <!-- Edit Modal-->
+                      <div class="modal fade" id="generateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Apakah anda yakin ingin diedit?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">Klik "Ya" dibawah ini jika ingin mengedit akun Relawan</div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-black" data-bs-dismiss="modal">Tidak</button>
+                                        <a class="btn btn-primary text-white me-0" href="{{ route('pengelola-edit') }}">Ya</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         <!-- end of Logout Modal-->
                       
-                      <button type="submit" class="btn btn-primary me-2">Submit</button>
+                      <button type="submit" class="btn btn-primary me-2">Edit Akun</button>
                       <button class="btn btn-light">Cancel</button>
                     </form>
                   </div>
