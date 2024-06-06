@@ -14,6 +14,11 @@ class RelawanController extends Controller
         //
         return view('relawan.dashboard');
     }
+    public function index_laporankejadian()
+    {
+        //
+        return view('relawan.laporankejadian.index');
+    }
     public function index_lapsit()
     {
         //
@@ -27,6 +32,17 @@ class RelawanController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+
+    public function create_laporankejadian()
+    {
+        //
+        return view('relawan.laporankejadian.create');
+    }
+    public function edit_laporankejadian()
+    {
+        //
+        return view('relawan.laporankejadian.edit');
+    }
 
     public function create_assesment()
     {
