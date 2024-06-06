@@ -15,13 +15,13 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="">Unverified</a></li>
-                <li class="nav-item"> <a class="nav-link" href="">Verified</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('admin-assessment-unverif') }}">Unverified</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('admin-assessment-verif') }}">Verified</a></li>
               </ul>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="{{ route('admin-lapsit') }}">
               <i class="menu-icon mdi mdi-file-document"></i>
               <span class="menu-title">Laporan Situasi</span>
             </a>

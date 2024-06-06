@@ -1,4 +1,4 @@
-@extends('layouts-relawan.default')
+@extends('layouts-admin.default')
 
 @section('content')
 
@@ -9,20 +9,10 @@
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Laporan Situasi</h4>
+                  <h4 class="card-title">Laporan Assessment</h4>
                   <p class="card-description">
-                    Daftar laporan situasi yang telah diunggah
+                    Daftar laporan assessment yang telah diunggah
                   </p>
-                  <div class="home-tab">
-                    <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                        <div class="btn-wrapper ms-auto">
-                            <a href="{{ route('create-lapsit') }}" class="btn btn-primary text-white me-0">
-                                <i class="icon-download"></i> Tambah Data
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                  <div>
                 <div class="table-responsive pt-3">
                     <table class="table table-bordered">
                       <thead>
@@ -43,6 +33,9 @@
                             Terakhir Update
                           </th>
                           <th>
+                            Status
+                          </th>
+                          <th>
                             Action
                           </th>
                         </tr>
@@ -54,9 +47,9 @@
                         <td>Jakarta</td>
                         <td>2024-05-01 14:00</td>
                         <td>2024-05-01 15:00</td>
+                        <td><p class="btn btn-success btn-sm">Terkonfirmasi</p></td>
                         <td>
-                            <a href="{{ route('edit-lapsit') }}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>
+                          <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal"><i class="menu-icon mdi mdi-information"></i></a>
                         </td>
                     </tr>
                     <tr>
@@ -65,9 +58,9 @@
                         <td>Bandung</td>
                         <td>2024-05-02 10:30</td>
                         <td>2024-05-02 11:00</td>
+                        <td><p class="btn btn-success btn-sm">Terkonfirmasi</p></td>
                         <td>
-                            <a href="{{ route('edit-lapsit') }}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>
+                        <a href="#" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                         </td>
                     </tr>
                     <tr>
@@ -76,9 +69,9 @@
                         <td>Surabaya</td>
                         <td>2024-05-03 09:15</td>
                         <td>2024-05-03 09:45</td>
+                        <td><p class="btn btn-success btn-sm">Terkonfirmasi</p></td>
                         <td>
-                            <a href="{{ route('edit-lapsit') }}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>
+                        <a href="#" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                         </td>
                     </tr>
                     <tr>
@@ -87,9 +80,9 @@
                         <td>Yogyakarta</td>
                         <td>2024-05-04 18:00</td>
                         <td>2024-05-04 18:30</td>
+                        <td><p class="btn btn-success btn-sm">Terkonfirmasi</p></td>
                         <td>
-                            <a href="{{ route('edit-lapsit') }}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>
+                            <a href="#" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                         </td>
                     </tr>
                     <tr>
@@ -98,9 +91,9 @@
                         <td>Medan</td>
                         <td>2024-05-05 07:00</td>
                         <td>2024-05-05 08:00</td>
+                        <td><p class="btn btn-success btn-sm">Terkonfirmasi</p></td>
                         <td>
-                            <a href="{{ route('edit-lapsit') }}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>
+                            <a href="#" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                         </td>
                     </tr>
                       </tbody>
@@ -112,5 +105,26 @@
               </div>
             </div>
         <!-- content-wrapper ends -->
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detailModalLabel">Detailed Information</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Detailed information content will be populated here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 @endsection

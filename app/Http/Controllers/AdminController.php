@@ -26,6 +26,18 @@ class AdminController extends Controller
     {
         return view('admin.executive_summary');
     }
+    public function assessment_unverif()
+    {
+        return view('admin.assessment.unverified.index');
+    }
+    public function assessment_verif()
+    {
+        return view('admin.assessment.verified.index');
+    }
+    public function index_lapsit()
+    {
+        return view('admin.lapsit.index');
+    }
     public function create()
     {
         //
