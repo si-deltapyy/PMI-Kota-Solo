@@ -43,25 +43,29 @@ Sebelum memulai, pastikan perangkat lunak berikut telah terinstal di komputer An
 
 2. **Konfigurasi Proyek**: Navigasikan ke direktori proyek dan salin file `.env.example` menjadi `.env`. Atur konfigurasi database dan pengaturan lainnya di dalam file `.env`.
 
-3. **Instal Dependensi**: Jalankan perintah berikut untuk menginstal dependensi proyek:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Instal Dependensi**: Jalankan perintah berikut untuk menginstal dependensi proyek:
 
     ```bash
     composer install
     ```
 
-4. **Generate App Key**: Jalankan perintah berikut untuk menghasilkan kunci aplikasi baru:
+5. **Generate App Key**: Jalankan perintah berikut untuk menghasilkan kunci aplikasi baru:
 
     ```bash
     php artisan key:generate
     ```
 
-5. **Migrasi Database (Opsional)**: Jika proyek menggunakan database, jalankan perintah berikut untuk menjalankan migrasi:
+6. **Migrasi Database (Opsional)**: Jika proyek menggunakan database, jalankan perintah berikut untuk menjalankan migrasi:
 
     ```bash
     php artisan migrate
     ```
 
-6. **Jalankan Server**: Terakhir, jalankan server pengembangan Laravel dengan perintah:
+7. **Jalankan Server**: Terakhir, jalankan server pengembangan Laravel dengan perintah:
 
     ```bash
     php artisan serve
