@@ -7,17 +7,18 @@
         </div>
         <div>
           <a class="navbar-brand brand-logo">
-            <img src="{{ asset('assets/images/logo.svg') }}" alt="logo" />
+            <img src="{{ asset('assets/images/logo-pmi.svg') }}" alt="logo" style="width: 200px; height: auto;" />
           </a>
           <a class="navbar-brand brand-logo-mini">
-            <img src="{{ asset('assets/images/logo-mini.svg') }}" alt="logo" />
+            <img src="{{ asset('assets/images/logo-pmi.svg') }}" alt="logo" style="width: 200px; height: auto;" />
           </a>
         </div>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-top"> 
         <ul class="navbar-nav">
           <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
-            <h1 class="welcome-text">Selamat Datang, <span class="text-black fw-bold">{{ auth()->user()->name }}</span></h1>
+            {{--  <h1 class="welcome-text">Selamat Datang, <span class="text-black fw-bold">{{ auth()->user()->name }}</span></h1>  --}}
+            <h1 class="welcome-text">Selamat Datang, <span class="text-black fw-bold">Admin PMI</span></h1>
             <h3 class="welcome-sub-text">PMI Surakarta</h3>
           </li>
         </ul>
@@ -28,8 +29,10 @@
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <div class="dropdown-header text-center">
                 <img class="img-md rounded-circle" src="{{ asset('assets/images/faces/face8.jpg') }}" alt="Profile image">
-                <p class="mb-1 mt-3 font-weight-semibold">{{ auth()->user()->name }}</p>
-                <p class="fw-light text-muted mb-0">{{ auth()->user()->email }}</p>
+                {{--  <p class="mb-1 mt-3 font-weight-semibold">{{ auth()->user()->name }}</p>  --}}
+                <p class="mb-1 mt-3 font-weight-semibold">Admin PMI</p>
+                {{--  <p class="fw-light text-muted mb-0">{{ auth()->user()->email }}</p>  --}}
+                <p class="fw-light text-muted mb-0">adminpmi@gmail.com</p>
               </div>
               <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> My Profile</a>
               <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>

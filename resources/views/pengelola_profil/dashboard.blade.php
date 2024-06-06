@@ -1,6 +1,6 @@
 
 @extends('layouts-admin.main')
-@section('title','Data Buku - Library MCU')
+@section('title','Website Palang Merah Indonesia')
 
     
     @section('container')
