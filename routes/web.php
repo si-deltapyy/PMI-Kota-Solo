@@ -19,6 +19,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //test middleware relawan role
 Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::get('/relawan/dashboard', [RelawanController::class, 'index'])->name('home-relawan');
+    Route::get('/relawan/laporan-kejadian', [RelawanController::class, 'index_laporankejadian'])->name('relawan-laporankejadian');
+    Route::get('/relawan/laporan-kejadian/create', [RelawanController::class, 'create_laporankejadian'])->name('create-laporankejadian');
+    Route::get('/relawan/laporan-kejadian/edit', [RelawanController::class, 'edit_laporankejadian'])->name('edit-laporankejadian');
     Route::get('/relawan/lapsit', [RelawanController::class, 'index_lapsit'])->name('relawan-lapsit');
     Route::get('/relawan/lapsit/create', [RelawanController::class, 'create_lapsit'])->name('create-lapsit');
     Route::get('/relawan/lapsit/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit');
