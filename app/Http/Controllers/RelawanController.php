@@ -4,22 +4,44 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class PengelolaProfilController extends Controller
+class RelawanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
-        return view('pengelola_profil.dashboard');
+        //
+        return view('relawan.dashboard');
+    }
+    public function index_lapsit()
+    {
+        //
+        return view('relawan.lapsit.index');
+    }
+    public function index_assessment()
+    {
+        //
+        return view('relawan.assessment.index');
     }
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+
+    public function create_assesment()
     {
         //
+    }
+    public function create_lapsit()
+    {
+        //
+        return view('relawan.lapsit.create');
+    }
+
+    public function edit_lapsit()
+    {
+        //
+        return view('relawan.lapsit.edit');
     }
 
     /**
