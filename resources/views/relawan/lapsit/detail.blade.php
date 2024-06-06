@@ -14,23 +14,24 @@
                             <form class="forms-sample">
                                 <div class="form-group">
                                     <label for="kejadian_musibah">Kejadian Musibah</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
+                                    <input readonly type="text" class="form-control" id="kejadian_musibah" placeholder="Name" value = "Kebakaran Pemukiman">
                                 </div>
                                 <div class="form-group">
                                     <label for="lokasi">Lokasi</label>
-                                    <input type="email" class="form-control" id="lokasi" placeholder="Email">
+                                    <input readonly type="email" class="form-control" id="lokasi" placeholder="Name" value="Jl. Trans Sebuku Desa Sungai Bali, Kec. Pulau Sebuku
+Kabupaten Kotabaru Propinsi Kalimantan Selatan">
                                 </div>
                                 <div class="form-group">
                                     <label for="waktu_kejadian">waktu Kejadian</label>
-                                    <input type="date" class="form-control" id="waktu_kejadian" placeholder="Password">
+                                    <input readonly type="date" class="form-control" id="waktu_kejadian" placeholder="Password" value="23 November 2019 - 19.30 Wita">
                                 </div>
                                 <div class="form-group">
                                     <label for="update">Update</label>
-                                    <input type="date" class="form-control" id="update" placeholder="Password">
+                                    <input readonly type="date" class="form-control" id="update" placeholder="Password" value="25 November 2019 - 20.00 Wita">
                                 </div>
                                 <div class="form-group">
                                     <label>File upload</label>
-                                    <input type="file" name="img[]" class="file-upload-default">
+                                    <input readonly type="file" name="img[]" class="file-upload-default">
                                     <div class="input-group col-xs-12">
                                         <input type="text" class="form-control file-upload-info" disabled
                                             placeholder="Upload Image">
@@ -42,20 +43,20 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Pemerintah membutuhkan Dukungan Internasional</label>
-                                    <select class="js-example-basic-single w-100">
+                                    <select disabled class="js-example-basic-single w-100">
                                         <option value="AL">Ya</option>
-                                        <option value="WY">Tidak</option>
+                                        <option value="WY" selected>Tidak</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Keterangan Akses Menuju Lokasi</label>
-                                    <select class="js-example-basic-single w-100">
-                                        <option value="AL">Aman</option>
+                                    <select disabled class="js-example-basic-single w-100">
+                                        <option value="AL" selected>Aman</option>
                                         <option value="WY">Tidak Aman</option>
                                     </select>
                                 </div>
-                                {{-- Inpu Dampak --}}
+                                {{-- Input Dampak --}}
                                 <div class="form-group">
                                     <button type="button" id="dampak" class="btn btn-primary me-2">Input Dampak</button>
                                 </div>
@@ -66,27 +67,27 @@
                                     </p>
                                     <div class="form-group">
                                         <label for="jumlah_kk">Jumlah KK</label>
-                                        <input type="number" class="form-control" id="jumlah_kk">
+                                        <input readonly type="number" class="form-control" id="jumlah_kk" value="155">
                                     </div>
                                     <div class="form-group">
                                         <label for="jumlah_orang">Jumlah Orang</label>
-                                        <input type="number" class="form-control" id="jumlah_orang">
+                                        <input readonly type="number" class="form-control" id="jumlah_orang" value="405">
                                     </div>
                                     <div class="form-group">
                                         <label for="luka_berat">Luka Berat</label>
-                                        <input type="number" class="form-control" id="luka_berat">
+                                        <input readonly type="number" class="form-control" id="luka_berat">
                                     </div>
                                     <div class="form-group">
                                         <label for="meninggal">Meninggal</label>
-                                        <input type="number" class="form-control" id="meninggal">
+                                        <input readonly type="number" class="form-control" id="meninggal">
                                     </div>
                                     <div class="form-group">
                                         <label for="hidup">Hidup</label>
-                                        <input type="number" class="form-control" id="hidup">
+                                        <input readonly type="number" class="form-control" id="hidup">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Mengungsi</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi">
                                     </div>
 
                                     <p class="card-description" id="subtitle">
@@ -94,40 +95,40 @@
                                     </p>
                                     <div class="form-group">
                                         <label for="jumlah_kk">Kerusakan Rumah Berat</label>
-                                        <input type="number" class="form-control" id="jumlah_kk">
+                                        <input readonly type="number" class="form-control" id="jumlah_kk" value="153">
                                     </div>
                                     <div class="form-group">
                                         <label for="jumlah_orang">Kerusakan Rumah Sedang</label>
-                                        <input type="number" class="form-control" id="jumlah_orang">
+                                        <input readonly type="number" class="form-control" id="jumlah_orang">
                                     </div>
                                     <div class="form-group">
                                         <label for="luka_berat">Kerusakan Sekolah</label>
-                                        <input type="number" class="form-control" id="luka_berat">
+                                        <input readonly type="number" class="form-control" id="luka_berat">
                                     </div>
                                     <div class="form-group">
                                         <label for="meninggal">Kerusakan Tempat Ibadah</label>
-                                        <input type="number" class="form-control" id="meninggal">
+                                        <input readonly type="number" class="form-control" id="meninggal" value="1">
                                     </div>
                                     <div class="form-group">
                                         <label for="hidup">Kerusakan Rumah Sakit</label>
-                                        <input type="number" class="form-control" id="hidup">
+                                        <input readonly type="number" class="form-control" id="hidup">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Kerusakan Pasar</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi" value="2">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Kerusakan Gedung Pemerintahan</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Kerusakan Lain Lain</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi" value="6">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="mengungsi">Kerusakan Infrastruktur</label>
-                                        <input type="text" class="form-control" id="mengungsi">
+                                        <input readonly type="text" class="form-control" id="mengungsi" value="6 Tiang Listrik">
                                     </div>
                                 </div>
 
@@ -143,39 +144,39 @@
                                         <p class="card-description" id="subtitle">Pengungsian</p>
                                         <div class="form-group">
                                             <label for="nama_lokasi">Nama Lokasi</label>
-                                            <input type="text" class="form-control" name="nama_lokasi[]">
+                                            <input readonly type="text" class="form-control" name="nama_lokasi[]">
                                         </div>
                                         <div class="form-group">
                                             <label for="jumlah_kk">KK</label>
-                                            <input type="number" class="form-control" name="jumlah_kk[]">
+                                            <input readonly type="number" class="form-control" name="jumlah_kk[]">
                                         </div>
                                         <div class="form-group">
                                             <label for="jumlah_orang">Jiwa</label>
-                                            <input type="number" class="form-control" name="jumlah_orang[]">
+                                            <input readonly type="number" class="form-control" name="jumlah_orang[]">
                                         </div>
                                         <div class="form-group">
                                             <label for="laki_laki">Laki-Laki</label>
-                                            <input type="number" class="form-control" name="laki_laki[]">
+                                            <input readonly type="number" class="form-control" name="laki_laki[]">
                                         </div>
                                         <div class="form-group">
                                             <label for="perempuan">Perempuan</label>
-                                            <input type="number" class="form-control" name="perempuan[]">
+                                            <input readonly type="number" class="form-control" name="perempuan[]">
                                         </div>
                                         <div class="form-group">
                                             <label for="kurang_dari_5">Kurang dari 5 Tahun</label>
-                                            <input type="number" class="form-control" name="kurang_dari_5[]">
+                                            <input readonly type="number" class="form-control" name="kurang_dari_5[]">
                                         </div>
                                         <div class="form-group">
                                             <label for="antara_5_18">Antara 5-18 Tahun</label>
-                                            <input type="number" class="form-control" name="antara_5_18[]">
+                                            <input readonly type="number" class="form-control" name="antara_5_18[]">
                                         </div>
                                         <div class="form-group">
                                             <label for="lebih_dari_18">Lebih Dari 18 Tahun</label>
-                                            <input type="number" class="form-control" name="lebih_dari_18[]">
+                                            <input readonly type="number" class="form-control" name="lebih_dari_18[]">
                                         </div>
                                         <div class="form-group">
                                             <label for="jumlah">Jumlah</label>
-                                            <input type="number" class="form-control" name="jumlah[]">
+                                            <input readonly type="number" class="form-control" name="jumlah[]">
                                         </div>
                                     </div>
                                 </div>
@@ -192,31 +193,31 @@
                                     </p>
                                     <div class="form-group">
                                         <label for="jumlah_kk">Pengurus</label>
-                                        <input type="number" class="form-control" id="jumlah_kk">
+                                        <input readonly type="number" class="form-control" id="jumlah_kk" value="2">
                                     </div>
                                     <div class="form-group">
                                         <label for="jumlah_orang">Staf Markas Kab/Kota</label>
-                                        <input type="number" class="form-control" id="jumlah_orang">
+                                        <input readonly type="number" class="form-control" id="jumlah_orang" value="4">
                                     </div>
                                     <div class="form-group">
                                         <label for="luka_berat">Staf Markas Provinsi</label>
-                                        <input type="number" class="form-control" id="luka_berat">
+                                        <input readonly type="number" class="form-control" id="luka_berat">
                                     </div>
                                     <div class="form-group">
                                         <label for="meninggal">Staf Markas Pusat</label>
-                                        <input type="number" class="form-control" id="meninggal">
+                                        <input readonly type="number" class="form-control" id="meninggal">
                                     </div>
                                     <div class="form-group">
                                         <label for="hidup">Relawan PMI Kab/Kota</label>
-                                        <input type="number" class="form-control" id="hidup">
+                                        <input readonly type="number" class="form-control" id="hidup" value="9">
                                     </div>
                                     <div class="form-group">
                                         <label for="hidup">Relawan PMI Provinsi</label>
-                                        <input type="number" class="form-control" id="hidup">
+                                        <input readonly type="number" class="form-control" id="hidup">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Relawan Lintas Provinsi</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi">
                                     </div>
 
                                     <p class="card-description" id="subtitle">
@@ -224,31 +225,31 @@
                                     </p>
                                     <div class="form-group">
                                         <label for="jumlah_kk">Medis</label>
-                                        <input type="number" class="form-control" id="jumlah_kk">
+                                        <input readonly type="number" class="form-control" id="jumlah_kk">
                                     </div>
                                     <div class="form-group">
                                         <label for="jumlah_orang">Paramedis</label>
-                                        <input type="number" class="form-control" id="jumlah_orang">
+                                        <input readonly type="number" class="form-control" id="jumlah_orang">
                                     </div>
                                     <div class="form-group">
                                         <label for="luka_berat">Relief</label>
-                                        <input type="number" class="form-control" id="luka_berat">
+                                        <input readonly type="number" class="form-control" id="luka_berat">
                                     </div>
                                     <div class="form-group">
                                         <label for="meninggal">Logistik</label>
-                                        <input type="number" class="form-control" id="meninggal">
+                                        <input readonly type="number" class="form-control" id="meninggal">
                                     </div>
                                     <div class="form-group">
                                         <label for="hidup">Watsan</label>
-                                        <input type="number" class="form-control" id="hidup">
+                                        <input readonly type="number" class="form-control" id="hidup">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">IT Telkom</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Sheltering</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi">
                                     </div>
 
                                     <p class="card-description" id="subtitle">
@@ -256,51 +257,51 @@
                                     </p>
                                     <div class="form-group">
                                         <label for="jumlah_kk">Kend Ops</label>
-                                        <input type="number" class="form-control" id="jumlah_kk">
+                                        <input readonly type="number" class="form-control" id="jumlah_kk">
                                     </div>
                                     <div class="form-group">
                                         <label for="jumlah_orang">Truk Angkutan</label>
-                                        <input type="number" class="form-control" id="jumlah_orang">
+                                        <input readonly type="number" class="form-control" id="jumlah_orang">
                                     </div>
                                     <div class="form-group">
                                         <label for="luka_berat">Truk Tanki</label>
-                                        <input type="number" class="form-control" id="luka_berat">
+                                        <input readonly type="number" class="form-control" id="luka_berat">
                                     </div>
                                     <div class="form-group">
                                         <label for="meninggal">Double Cabin</label>
-                                        <input type="number" class="form-control" id="meninggal">
+                                        <input readonly type="number" class="form-control" id="meninggal">
                                     </div>
                                     <div class="form-group">
                                         <label for="hidup">Alat DU</label>
-                                        <input type="number" class="form-control" id="hidup">
+                                        <input readonly type="number" class="form-control" id="hidup">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Ambulans</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Alat Watsan</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">RS Lapangan</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Alat PKDD</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Gudang Lapangan</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Posko Aju</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Alat IT/Tel Lapangan</label>
-                                        <input type="number" class="form-control" id="mengungsi">
+                                        <input readonly type="number" class="form-control" id="mengungsi">
                                     </div>
                                 </div>
 
@@ -308,20 +309,20 @@
                                 <h4 class="card-title">Evaluasi Korban Luka</h4>
                                 <div class="form-group">
                                     <label for="kejadian_musibah">Tempat/Lokasi</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
+                                    <input readonly type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
                                 </div>
                                 <div>
                                     <p class="card-description">KK/Orang</p>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
+                                            <input readonly type="radio" class="form-check-input" name="optionsRadios"
                                                 id="optionsRadios1" value="">
                                             KK
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
+                                            <input readonly type="radio" class="form-check-input" name="optionsRadios"
                                                 id="optionsRadios2" value="option2" checked>
                                             Orang
                                         </label>
@@ -329,26 +330,26 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="waktu_kejadian">Jumlah</label>
-                                    <input type="number" class="form-control" id="waktu_kejadian"
+                                    <input readonly type="number" class="form-control" id="waktu_kejadian"
                                         placeholder="Password">
                                 </div>
                                 <h4 class="card-title">Distribusi Non-Food Item</h4>
                                 <div class="form-group">
                                     <label for="kejadian_musibah">Tempat/Lokasi</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
+                                    <input readonly type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
                                 </div>
                                 <div>
                                     <p class="card-description">KK/Orang</p>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
+                                            <input readonly type="radio" class="form-check-input" name="optionsRadios"
                                                 id="optionsRadios1" value="">
                                             KK
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
+                                            <input readonly type="radio" class="form-check-input" name="optionsRadios"
                                                 id="optionsRadios2" value="option2" checked>
                                             Orang
                                         </label>
@@ -356,26 +357,26 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="waktu_kejadian">Jumlah</label>
-                                    <input type="number" class="form-control" id="waktu_kejadian"
+                                    <input readonly type="number" class="form-control" id="waktu_kejadian"
                                         placeholder="Password">
                                 </div>
                                 <h4 class="card-title">Layanan Kesehatan</h4>
                                 <div class="form-group">
                                     <label for="kejadian_musibah">Tempat/Lokasi</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
+                                    <input readonly type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
                                 </div>
                                 <div>
                                     <p class="card-description">KK/Orang</p>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
+                                            <input readonly type="radio" class="form-check-input" name="optionsRadios"
                                                 id="optionsRadios1" value="">
                                             KK
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
+                                            <input readonly type="radio" class="form-check-input" name="optionsRadios"
                                                 id="optionsRadios2" value="option2" checked>
                                             Orang
                                         </label>
@@ -383,26 +384,26 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="waktu_kejadian">Jumlah</label>
-                                    <input type="number" class="form-control" id="waktu_kejadian"
+                                    <input readonly type="number" class="form-control" id="waktu_kejadian"
                                         placeholder="Password">
                                 </div>
                                 <h4 class="card-title">Layanan Air Bersih</h4>
                                 <div class="form-group">
                                     <label for="kejadian_musibah">Tempat/Lokasi</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
+                                    <input readonly type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
                                 </div>
                                 <div>
                                     <p class="card-description">KK/Orang</p>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
+                                            <input readonly type="radio" class="form-check-input" name="optionsRadios"
                                                 id="optionsRadios1" value="">
                                             KK
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
+                                            <input readonly type="radio" class="form-check-input" name="optionsRadios"
                                                 id="optionsRadios2" value="option2" checked>
                                             Orang
                                         </label>
@@ -410,26 +411,26 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="waktu_kejadian">Jumlah</label>
-                                    <input type="number" class="form-control" id="waktu_kejadian"
+                                    <input readonly type="number" class="form-control" id="waktu_kejadian"
                                         placeholder="Password">
                                 </div>
                                 <h4 class="card-title">Lain Lain</h4>
                                 <div class="form-group">
                                     <label for="kejadian_musibah">Tempat/Lokasi</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
+                                    <input readonly type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
                                 </div>
                                 <div>
                                     <p class="card-description">KK/Orang</p>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
+                                            <input readonly type="radio" class="form-check-input" name="optionsRadios"
                                                 id="optionsRadios1" value="">
                                             KK
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
+                                            <input readonly type="radio" class="form-check-input" name="optionsRadios"
                                                 id="optionsRadios2" value="option2" checked>
                                             Orang
                                         </label>
@@ -437,23 +438,23 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="waktu_kejadian">Jumlah</label>
-                                    <input type="number" class="form-control" id="waktu_kejadian"
+                                    <input readonly type="number" class="form-control" id="waktu_kejadian"
                                         placeholder="Password">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="kejadian_musibah">Giat Pemerintahan</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
+                                    <input readonly type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="kejadian_musibah">Kebutuhan</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
+                                    <input readonly type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="kejadian_musibah">Hambatan</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
+                                    <input readonly type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
                                 </div>
 
                                 <div class="form-group">
@@ -466,15 +467,15 @@
                                         <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
                                         <div class="form-group">
                                             <label for="nama_lokasi">Nama Lengkap</label>
-                                            <input type="text" class="form-control" name="nama_lokasi[]">
+                                            <input readonly type="text" class="form-control" name="nama_lokasi[]" value="M. Taher Abdad">
                                         </div>
                                         <div class="form-group">
                                             <label for="jumlah_kk">Posisi</label>
-                                            <input type="text" class="form-control" name="jumlah_kk[]">
+                                            <input readonly type="text" class="form-control" name="jumlah_kk[]" value="Kepala Markas">
                                         </div>
                                         <div class="form-group">
                                             <label for="jumlah_orang">Kontak</label>
-                                            <input type="phone" class="form-control" name="jumlah_orang[]">
+                                            <input readonly type="phone" class="form-control" name="jumlah_orang[]" value="081358121966">
                                         </div>
                                     </div>
                                 </div>
@@ -489,15 +490,15 @@
                                         <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
                                         <div class="form-group">
                                             <label for="nama_lokasi">Nama Lengkap</label>
-                                            <input type="text" class="form-control" name="nama_lokasi[]">
+                                            <input readonly type="text" class="form-control" name="nama_lokasi[]">
                                         </div>
                                         <div class="form-group">
                                             <label for="jumlah_kk">Posisi</label>
-                                            <input type="text" class="form-control" name="jumlah_kk[]">
+                                            <input readonly type="text" class="form-control" name="jumlah_kk[]">
                                         </div>
                                         <div class="form-group">
                                             <label for="jumlah_orang">Kontak</label>
-                                            <input type="phone" class="form-control" name="jumlah_orang[]">
+                                            <input readonly type="phone" class="form-control" name="jumlah_orang[]">
                                         </div>
                                     </div>
                                 </div>

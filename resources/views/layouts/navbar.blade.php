@@ -10,7 +10,7 @@
             <img src="{{ asset('assets/images/logo-pmi.svg') }}" alt="logo" style="width: 200px; height: auto;" />
           </a>
           <a class="navbar-brand brand-logo-mini">
-            <img src="{{ asset('assets/images/logo-pmi.svg') }}" alt="logo" style="width: 200px; height: auto;" />
+            <img src="{{ asset('assets/images/logo-pmi-small.png') }}" alt="logo" style="width: 200px; height: auto; color:red" />
           </a>
         </div>
       </div>
