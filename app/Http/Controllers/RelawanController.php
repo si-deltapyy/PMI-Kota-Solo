@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class RelawanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -12,35 +12,36 @@ class AdminController extends Controller
     public function index()
     {
         //
+        return view('relawan.dashboard');
     }
-    public function index_admin()
+    public function index_lapsit()
     {
-
-        return view('admin.dashboard');
+        //
+        return view('relawan.lapsit.index');
+    }
+    public function index_assessment()
+    {
+        //
+        return view('relawan.assessment.index');
     }
     /**
      * Show the form for creating a new resource.
      */
 
-    public function index_exsum()
-    {
-        return view('admin.executive_summary');
-    }
-    public function assessment_unverif()
-    {
-        return view('admin.assessment.unverified.index');
-    }
-    public function assessment_verif()
-    {
-        return view('admin.assessment.verified.index');
-    }
-    public function index_lapsit()
-    {
-        return view('admin.lapsit.index');
-    }
-    public function create()
+    public function create_assesment()
     {
         //
+    }
+    public function create_lapsit()
+    {
+        //
+        return view('relawan.lapsit.create');
+    }
+
+    public function edit_lapsit()
+    {
+        //
+        return view('relawan.lapsit.edit');
     }
 
     /**
