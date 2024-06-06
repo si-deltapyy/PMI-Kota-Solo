@@ -14,7 +14,7 @@
                   <div class="home-tab">
                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                         <!-- <div class="btn-wrapper ms-auto">
-                            <a href="{{ route('relawan-laporankejadian') }}" class="btn btn-primary text-white me-0">
+                            <a href="{{ route('relawan-laporanassesment') }}" class="btn btn-primary text-white me-0">
                                 <i class="mdi mdi-table-edit"></i> Edit Data
                             </a>
                         </div> -->
