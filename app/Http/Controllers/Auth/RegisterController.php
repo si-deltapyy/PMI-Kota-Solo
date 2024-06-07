@@ -70,9 +70,10 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'name' => $data['name'],
             'email' => $data['email'],
-            'email_verified_at' => null
+            'email_verified_at' => null,
+            // 'role' => $request->role
         ]);
 
-        $user->assignRole('guest');
+        $user->assignRole('$request->role');
     }
 }

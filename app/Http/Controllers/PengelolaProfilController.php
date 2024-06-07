@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class PengelolaProfilController extends Controller
 {
@@ -15,7 +17,16 @@ class PengelolaProfilController extends Controller
     }
     public function user_management()
     {
-        return view('pengelola_profil.user_management');
+        $roles = Role::all();
+        $user = User::all();
+        return view('pengelola_profil.user_management', compact('user', 'roles'));
+    }
+
+    public function user_management_edit($id){
+
+        $user = User::find($id);
+
+        return view('pengelola_profil.user_management_edit', compact('user'));
     }
 
     public function relawan_management()

@@ -16,6 +16,10 @@ Route::get('/', function () {
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+//route to pdf export
+Route::post('users/view-pdf', [HomeController::class, 'viewPDF'])->name('view-pdf');
+Route::post('users/download-pdf', [HomeController::class, 'downloadPDF'])->name('download-pdf');
+
 //test middleware relawan role
 Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::get('/relawan/dashboard', [RelawanController::class, 'index'])->name('home-relawan');
@@ -35,6 +39,7 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
 Route::group(['middleware' => ['auth', 'role:pengelola_profil']], function () {
     Route::get('/pengelolaProfil/dashboard', [PengelolaProfilController::class, 'index'])->name('pengelolaProfil-home');
     Route::get('/pengelolaProfil/user_management', [PengelolaProfilController::class, 'user_management'])->name('pengelola-user');
+    Route::get('/pengelolaProfil/user_management/{id}/edit', [PengelolaProfilController::class, 'user_management_edit'])->name('pengelola-user.edit');
     Route::get('/pengelolaProfil/relawan_management', [PengelolaProfilController::class, 'relawan_management'])->name('pengelola-relawan');
     Route::get('/pengelolaProfil/admin_management', [PengelolaProfilController::class, 'admin_management'])->name('pengelola-admin');
     Route::get('/pengelolaProfil/add-volunteer', [PengelolaProfilController::class, 'create_relawan'])->name('pengelola-add');

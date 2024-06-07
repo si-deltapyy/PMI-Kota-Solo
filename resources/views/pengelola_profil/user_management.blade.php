@@ -78,34 +78,23 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($user as $list)
                                     <tr>
-                                            <td>Jacob</td>
-                                            <td>user@gmail</td>
-                                            <td>jacob12</td>
-                                            <td><label class="badge badge-primary">Guest</label> 
-                                            <td><label class="btn btn-success btn-sm">Admin</label> <label class="btn btn-warning btn-sm">Relawan</label></td>
+                                            <td>{{$list->name}}</td>
+                                            <td>{{$list->email}}</td>
+                                            <td>{{$list->username}}</td>
+                                            <td><label class="badge badge-primary">
+                                                @if ($list->roles)
+                                                    @foreach ($list->roles as $user_role)
+                                                    {{ $user_role->name }}
+                                                    @endforeach
+                                                @endif</label> 
+                                            <td>
+                                                <a href="{{ route('pengelola-user.edit',  $list->id) }}"><label class="btn btn-info btn-sm"><i class="mdi mdi-pencil"></i></label></a> 
+                                                <a href=""><label class="btn btn-danger btn-sm"><i class="mdi mdi-delete-forever"></i></label></a>
+                                            </td>
                                     </tr>
-                                    <tr>
-                                            <td>Jacob</td>
-                                            <td>user@gmail</td>
-                                            <td>jacob12</td>
-                                            <td><label class="badge badge-primary">Guest</label> 
-                                            <td><label class="btn btn-success btn-sm">Admin</label> <label class="btn btn-warning btn-sm">Relawan</label></td>
-                                    </tr>
-                                    <tr>
-                                            <td>Jacob</td>
-                                            <td>user@gmail</td>
-                                            <td>jacob12</td>
-                                            <td><label class="badge badge-primary">Guest</label> 
-                                            <td><label class="btn btn-success btn-sm">Admin</label> <label class="btn btn-warning btn-sm">Relawan</label></td>
-                                    </tr>
-                                    <tr>
-                                            <td>Jacob</td>
-                                            <td>user@gmail</td>
-                                            <td>jacob12</td>
-                                            <td><label class="badge badge-primary">Guest</label> 
-                                            <td><label class="btn btn-success btn-sm">Admin</label> <label class="btn btn-warning btn-sm">Relawan</label></td>
-                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                             </div>
