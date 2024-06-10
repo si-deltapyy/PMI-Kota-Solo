@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -34,10 +35,20 @@ class AdminController extends Controller
     {
         return view('admin.assessment.verified.index');
     }
-    public function index_lapsit()
+
+    public function lapsit()
     {
-        return view('admin.lapsit.index');
+        $user = User::all();
+        return view('admin.lapsit.index', compact('user'));
     }
+
+    public function Sharelapsit($id)
+    {
+        $user = User::find($id);
+        
+        return view('admin.lapsit.share', compact('user'));
+    }
+
     public function create()
     {
         //

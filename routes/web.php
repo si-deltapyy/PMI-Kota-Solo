@@ -5,6 +5,7 @@ use App\Http\Controllers\RelawanController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\pdfController;
 use App\Http\Controllers\PengelolaProfilController;
 
 
@@ -17,8 +18,8 @@ Route::get('/', function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //route to pdf export
-Route::post('users/view-pdf', [HomeController::class, 'viewPDF'])->name('view-pdf');
-Route::post('users/download-pdf', [HomeController::class, 'downloadPDF'])->name('download-pdf');
+Route::post('users/view-pdf/{id}', [pdfController::class, 'viewPDF'])->name('view-pdf');
+Route::post('users/download-pdf', [pdfController::class, 'downloadPDF'])->name('download-pdf');
 
 //test middleware relawan role
 Route::group(['middleware' => ['auth', 'role:relawan']], function () {
@@ -53,6 +54,7 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/admin/assessment', [AdminController::class, 'index_assessment'])->name('admin-assessment');
     Route::get('/admin/assessment/unverified', [AdminController::class, 'assessment_unverif'])->name('admin-assessment-unverif');
     Route::get('/admin/assessment/verified', [AdminController::class, 'assessment_verif'])->name('admin-assessment-verif');
-    Route::get('/admin/lapsit', [AdminController::class, 'index_lapsit'])->name('admin-lapsit');
+    Route::get('/admin/lapsit', [AdminController::class, 'lapsit'])->name('admin-lapsit');
+    Route::post('/admin/lapsit/{id}/share', [AdminController::class, 'Sharelapsit'])->name('share.lapsit');
     Route::get('/admin/exsum', [AdminController::class, 'index_exsum'])->name('admin-exsum');
 });

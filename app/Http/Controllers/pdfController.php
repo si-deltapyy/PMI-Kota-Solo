@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Barryvdh\DomPDF\PDF;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class pdfController extends Controller
 {
-    public function viewPDF()
+    
+    
+    public function viewPDF($id)
     {
-        $users = User::all();
+        // $users = User::find($id);
+        // $roles = Role::all();
 
-        $pdf = PDF::loadView('pdf.usersdetails', array('users' =>  $users))
-        ->setPaper('a4', 'portrait');
+        // $pdf = PDF::loadView('pdf.lapsit', array('user' =>  $users, 'role' => $roles))
+        // ->setPaper('a4', 'portrait');
 
-        return $pdf->stream();
+        // return $pdf->stream(); 
 
     }
 
