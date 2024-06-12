@@ -13,11 +13,6 @@
                   </p> 
                   <div class="home-tab">
                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                        <!-- <div class="btn-wrapper ms-auto">
-                            <a href="{{ route('relawan-assesment') }}" class="btn btn-primary text-white me-0">
-                                <i class="mdi mdi-table-edit"></i> Edit Data
-                            </a>
-                        </div> -->
                     </div>
                   <div class="form-group">
                       <label for="exampleSelectGender">Kategori Bencana</label>
@@ -107,7 +102,6 @@
 
                         <button class="btn btn-light">Cancel</button>
                     </div>
-                    <!-- <a href="{{ route('relawan-assesment') }}" class="btn btn-primary text-white me-2" role="button"></i>Submit</a> -->
                     <!-- Submit Modal -->
                     <!-- -->
                   </form>

@@ -44,15 +44,15 @@ class RelawanController extends Controller
         return view('relawan.laporankejadian.edit');
     }
 
-    public function create_assesment()
+    public function create_assessment()
     {
         //
-        return view('relawan.assesment.create'); //
+        return view('relawan.assessment.create'); //
     }
-    public function edit_assesment()
+    public function edit_assessment()
     {
         //
-        return view('relawan.assesment.edit');
+        return view('relawan.assessment.edit');
     }
 
     public function create_lapsit()
