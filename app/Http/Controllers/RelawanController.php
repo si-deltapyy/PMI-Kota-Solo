@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\KejadianBencana;
+use App\Models\Report;
 
 class RelawanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    // VIEW INDEX RELAWAN
     public function index()
     {
         //
@@ -21,8 +25,8 @@ class RelawanController extends Controller
     }
     public function index_lapsit()
     {
-        //
-        return view('relawan.lapsit.index');
+        $kejadianBencanas = KejadianBencana::with('jenisKejadian', 'admin', 'relawan')->get();
+        return view('relawan.lapsit.index', compact('kejadianBencanas'));
     }
     public function index_assessment()
     {
@@ -32,7 +36,7 @@ class RelawanController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-
+    // CREATE, UPDATE, DELETE LAPORAN KEJADIAN
     public function create_laporankejadian()
     {
         //
@@ -44,27 +48,62 @@ class RelawanController extends Controller
         return view('relawan.laporankejadian.edit');
     }
 
+    public function delete_laporankejadian(string $id)
+    {
+        Report::findOrFail($id)->delete();
+
+        return redirect('relawan.laporankejadian.index')->with('success', 'Data berhasil dihapus');
+    }
+
+    // CREATE, UPDATE, DELETE LAPORAN ASSESSMENT
     public function create_assessment()
     {
         //
         return view('relawan.assessment.create'); //
     }
-    public function edit_assessment()
+    public function edit_assessment($id)
     {
-        //
-        return view('relawan.assessment.edit');
+        $kejadianBencana = KejadianBencana::findOrFail($id);
+
+        // Dapatkan data terkait yang dibutuhkan untuk dikirim ke view
+        $jenisKejadian = $kejadianBencana->jenisKejadian;
+        $assessment = $kejadianBencana->assessment;
+        $mobilisasiSd = $kejadianBencana->mobilisasiSd;
+        $giatPmi = $kejadianBencana->giatPmi;
+        $dokumentasi = $kejadianBencana->dokumentasi;
+        $narahubung = $kejadianBencana->narahubung;
+        $petugasPosko = $kejadianBencana->petugasPosko;
+
+        return view('relawan.assessment.edit', compact('kejadianBencana', 'jenisKejadian', 'assessment', 'mobilisasiSd', 'giatPmi', 'dokumentasi', 'narahubung', 'petugasPosko'));
+    }
+    public function delete_assessment(string $id)
+    {
+        KejadianBencana::findOrFail($id)->delete();
+
+        return redirect('relawan.assessment.index')->with('success', 'Data berhasil dihapus');
     }
 
+    // CREATE, UPDATE, DELETE LAPORAN SITUASI
     public function create_lapsit()
     {
         //
         return view('relawan.lapsit.create');
     }
 
-    public function edit_lapsit()
+    public function edit_lapsit($id)
     {
-        //
-        return view('relawan.lapsit.edit');
+        $kejadianBencana = KejadianBencana::findOrFail($id);
+
+        // Dapatkan data terkait yang dibutuhkan untuk dikirim ke view
+        $jenisKejadian = $kejadianBencana->jenisKejadian;
+        $assessment = $kejadianBencana->assessment;
+        $mobilisasiSd = $kejadianBencana->mobilisasiSd;
+        $giatPmi = $kejadianBencana->giatPmi;
+        $dokumentasi = $kejadianBencana->dokumentasi;
+        $narahubung = $kejadianBencana->narahubung;
+        $petugasPosko = $kejadianBencana->petugasPosko;
+
+        return view('relawan.lapsit.edit', compact('kejadianBencana', 'jenisKejadian', 'assessment', 'mobilisasiSd', 'giatPmi', 'dokumentasi', 'narahubung', 'petugasPosko'));
     }
 
     public function detail_lapsit()
