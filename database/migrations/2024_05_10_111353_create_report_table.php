@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id('id_report');
             $table->unsignedBigInteger('id_user');
-            $table->string('lokasi');
+            $table->string('nama_bencana');
+            $table->date('tanggal_kejadian');
+            $table->text('keterangan');
             $table->timestamp('timestamp_report');
             $table->enum('status', ['On_Proses', 'Selesai', 'Dalam_Penanganan']);
             $table->double('lokasi_longitude')->nullable();
