@@ -25,15 +25,16 @@ Route::post('users/download-pdf', [pdfController::class, 'downloadPDF'])->name('
 Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::get('/relawan/dashboard', [RelawanController::class, 'index'])->name('home-relawan');
     Route::get('/relawan/laporan-kejadian', [RelawanController::class, 'index_laporankejadian'])->name('relawan-laporankejadian');
+    Route::post('relawan/laporankejadian/store', [RelawanController::class, 'store_laporankejadian'])->name('store-laporankejadian');
     Route::get('/relawan/laporan-kejadian/create', [RelawanController::class, 'create_laporankejadian'])->name('create-laporankejadian');
     Route::get('/relawan/laporan-kejadian/edit', [RelawanController::class, 'edit_laporankejadian'])->name('edit-laporankejadian');
     Route::get('/relawan/lapsit', [RelawanController::class, 'index_lapsit'])->name('relawan-lapsit');
     Route::get('/relawan/lapsit/create', [RelawanController::class, 'create_lapsit'])->name('create-lapsit');
     Route::get('/relawan/lapsit/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit');
     Route::get('/relawan/lapsit/detail', [RelawanController::class, 'detail_lapsit'])->name('detail-lapsit');
-    Route::get('/relawan/assesment', [RelawanController::class, 'index_assessment'])->name('relawan-assessment');
-    Route::get('/relawan/assesment/create', [RelawanController::class, 'create_assessment'])->name('create-assessment');
-    Route::get('/relawan/assesment/edit', [RelawanController::class, 'edit_assessment'])->name('edit-assessment');
+    Route::get('/relawan/assessment', [RelawanController::class, 'index_assessment'])->name('relawan-assessment');
+    Route::get('/relawan/assessment/create', [RelawanController::class, 'create_assessment'])->name('create-assessment');
+    Route::get('/relawan/assessment/edit', [RelawanController::class, 'edit_assessment'])->name('edit-assessment');
 });
 
 //test middleware pengelola profil role

@@ -61,10 +61,8 @@
                         <p class="btn btn-success btn-sm">Terkonfirmasi</p>
                       </td>
                       <td>
-                        <a href="{{ route('create-assessment') }}" class="btn btn-info btn-sm"><i
-                            class="menu-icon mdi mdi-information"></i></a>
-                        <a href="{{ route('edit-assessment') }}" class="btn btn-warning btn-sm"><i
-                            class="menu-icon mdi mdi-border-color"></i></a>
+                      <a href="{{ route('create-assessment') }}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                      <a href="{{ route('edit-assessment') }}" class="btn btn-warning btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
                         <a href="#" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>
                       </td>
                     </tr>
