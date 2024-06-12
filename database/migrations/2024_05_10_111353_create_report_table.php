@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('lokasi');
             $table->timestamp('timestamp_report');
             $table->enum('status', ['On_Proses', 'Selesai', 'Dalam_Penanganan']);
+            $table->double('lokasi_longitude')->nullable();
+            $table->double('lokasi_latitude')->nullable();
             $table->timestamps();
 
             $table->foreign('id_user')->references('id')->on('users')->onDelete('CASCADE');
