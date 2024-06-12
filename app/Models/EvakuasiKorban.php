@@ -10,10 +10,11 @@ class EvakuasiKorban extends Model
     use HasFactory;
 
     protected $table = 'evakuasi_korban';
-    protected $primaryKey = 'id_evakuasikankorban';
+
+    protected $primaryKey = 'id_evakuasikorban';
+
     protected $fillable = [
-        'laka_yangdinevakuasi',
-        'laka_ringanberat',
+        'luka_ringanberat',
         'meninggal',
     ];
 }

@@ -10,14 +10,15 @@ class KerusakanFasilSosial extends Model
     use HasFactory;
 
     protected $table = 'kerusakan_fasil_sosial';
+
     protected $primaryKey = 'id_kerusakan_fasil_sosial';
+
     protected $fillable = [
-        'kerusakan_fasil_sosial',
-        'keloalah',
+        'sekolah',
         'tempat_ibadah',
         'rumah_sakit',
-        'senar',
+        'pasar',
         'gedung_pemerintah',
-        'lari_lain',
+        'lain_lain',
     ];
 }

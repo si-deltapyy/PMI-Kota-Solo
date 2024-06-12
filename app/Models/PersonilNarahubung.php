@@ -11,9 +11,16 @@ class PersonilNarahubung extends Model
 
     protected $table = 'personil_narahubung';
     protected $primaryKey = 'id_narahubung';
+    public $timestamps = true;
+
     protected $fillable = [
         'nama_lengkap',
         'posisi',
-        'kontak',
+        'kontak'
     ];
+
+    public function kejadianBencana()
+    {
+        return $this->hasMany(KejadianBencana::class, 'id_narahubung');
+    }
 }

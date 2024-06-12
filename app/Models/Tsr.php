@@ -10,14 +10,16 @@ class Tsr extends Model
     use HasFactory;
 
     protected $table = 'tsr';
+
     protected $primaryKey = 'id_tsr';
+
     protected $fillable = [
-        'randu',
-        'baramode',
-        'reloif',
+        'medis',
+        'paramedis',
+        'relief',
         'logistik',
         'watsan',
-        'shelter',
-        'showering',
+        'it_telekom',
+        'sheltering',
     ];
 }

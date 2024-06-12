@@ -10,19 +10,21 @@ class AlatTdb extends Model
     use HasFactory;
 
     protected $table = 'alat_tdb';
+
     protected $primaryKey = 'id_alat_tdb';
+
     protected $fillable = [
-        'randu_ops',
-        'ruk_depot',
-        'ruk_tanki',
+        'kend_ops',
+        'truk_angkut',
+        'truk_tanki',
         'double_cabin',
         'alat_du',
-        'amk_tpm',
-        'alat_wasan',
+        'ambulans',
+        'alat_watsan',
         'rs_lapangan',
-        'alat_pkod',
-        'gedung_lapangan',
-        'produk_giz',
-        'alat_il_lapangan',
+        'alat_pkdd',
+        'gudang_lapangan',
+        'posko_aju',
+        'alat_it_lapangan',
     ];
 }
