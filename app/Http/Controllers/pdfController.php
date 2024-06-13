@@ -32,4 +32,17 @@ class pdfController extends Controller
 
         return $pdf->download('users-details.pdf');   
     }
+
+    public function exportLaporanKejadian($id)
+    {
+        // Retrieve the report data
+        $report = Report::with('user', 'assessments')->findOrFail($id);
+
+        // Share data to view
+        $data = ['report' => $report];
+
+        $pdf = PDF::loadView('pdf.laporan-kejadian', $data);
+
+        return $pdf->stream('laporan-kejadian.pdf');
+    }
 }
