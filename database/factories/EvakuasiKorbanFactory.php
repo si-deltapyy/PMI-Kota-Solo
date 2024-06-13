@@ -19,10 +19,8 @@ class EvakuasiKorbanFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_evakuasikankorban' => $this->faker->unique()->randomNumber(),
-            'laka_yangdinevakuasi' => $this->faker->sentence(),
-            'laka_ringanberat' => $this->faker->sentence(),
-            'meninggal' => $this->faker->sentence(),
+            'luka_ringanberat' => $this->faker->randomNumber(),
+            'meninggal' => $this->faker->randomNumber(),
         ];
     }
 }

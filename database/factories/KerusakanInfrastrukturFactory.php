@@ -19,8 +19,7 @@ class KerusakanInfrastrukturFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_kerusakan_infrastruktur' => $this->faker->unique()->randomNumber(),
-            'desa_kerusakan' => $this->faker->sentence(),
+            'desa_kerusakan' => $this->faker->randomNumber(),
         ];
     }
 }

@@ -32,10 +32,8 @@ class GiatPMIFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_giatpmi' => $this->faker->unique()->randomNumber(),
-            'fk_id_evakuasikankorban' => EvakuasiKorban::factory()->create()->id_evakuasikankorban,
-            'fk2_id_layanankankorban' => LayananKorban::factory()->create()->id_layanankankorban,
-            'rombong' => $this->faker->sentence(),
+            'id_evakuasikorban' => EvakuasiKorban::factory(),
+            'id_layanankorban' => LayananKorban::factory(),
         ];
     }
 }

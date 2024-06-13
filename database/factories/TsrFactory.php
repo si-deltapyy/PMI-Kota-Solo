@@ -19,14 +19,13 @@ class TsrFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_tsr' => $this->faker->unique()->randomNumber(),
-            'randu' => $this->faker->word(),
-            'baramode' => $this->faker->word(),
-            'reloif' => $this->faker->word(),
-            'logistik' => $this->faker->word(),
-            'watsan' => $this->faker->word(),
-            'shelter' => $this->faker->word(),
-            'showering' => $this->faker->word(),
+            'medis' => $this->faker->randomNumber(),
+            'paramedis' => $this->faker->randomNumber(),
+            'relief' => $this->faker->randomNumber(),
+            'logistik' => $this->faker->randomNumber(),
+            'watsan' => $this->faker->randomNumber(),
+            'it_telekom' => $this->faker->randomNumber(),
+            'sheltering' => $this->faker->randomNumber(),
         ];
     }
 }

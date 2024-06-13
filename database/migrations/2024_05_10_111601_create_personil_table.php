@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('personil', function (Blueprint $table) {
             $table->id('id_personil');
-            $table->string('pengurus');
-            $table->boolean('staf_markas_kabkota');
-            $table->boolean('staf_markas_prov');
-            $table->boolean('staf_markas_pusat');
-            $table->boolean('relawan_pmi_kabkota');
-            $table->boolean('relawan_pmi_prov');
-            $table->boolean('relawan_pmi_linprov');
-            $table->boolean('sukarelawan_sip');
+            $table->integer('pengurus');
+            $table->integer('staf_markas_kabkota');
+            $table->integer('staf_markas_prov');
+            $table->integer('staf_markas_pusat');
+            $table->integer('relawan_pmi_kabkota');
+            $table->integer('relawan_pmi_prov');
+            $table->integer('relawan_pmi_linprov');
+            $table->integer('sukarelawan_sip');
             $table->timestamps();
         });
     }

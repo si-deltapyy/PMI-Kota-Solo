@@ -34,12 +34,11 @@ class AllSeeder extends Seeder
      */
     public function run(): void
     {
-        Relawan::factory(5)->create();
         AlatTdb::factory(5)->create();
         Assessment::factory(5)->create();
         Dampak::factory(5)->create();
         EvakuasiKorban::factory(5)->create();
-        GiatPMI::factory(5)->create();
+        GiatPmi::factory(5)->create();
         KejadianBencana::factory(5)->create();
         KerusakanFasilSosial::factory(5)->create();
         KerusakanInfrastruktur::factory(5)->create();
