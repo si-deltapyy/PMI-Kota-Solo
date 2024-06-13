@@ -12,12 +12,14 @@
     <div class="container-fluid page-body-wrapper">
         @include('layouts-admin.sidebar')
 
-        @yield('content')
+        <div class="main-panel">
+            @yield('content')
+            @include('layouts.footer')
+        </div>
 
-        @include('layouts.footer')
-
-        @include('layouts.foot')
     </div>
+
+    @include('layouts.foot')
 
 </body>
 
