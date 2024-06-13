@@ -13,6 +13,19 @@
             <p class="card-description">
               Daftar laporan assessment yang telah diunggah
             </p>
+            <!-- Delete Alert-->
+            @if(session('success'))
+              <div class="alert alert-success">
+                {{ session('success') }}
+              </div>
+            @endif
+
+            @if(session('error'))
+              <div class="alert alert-danger">
+                {{ session('error') }}
+              </div>
+            @endif
+            <!-- End of Delete Alert-->
             <div class="home-tab">
               <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                 <div class="btn-wrapper ms-auto">
@@ -65,7 +78,13 @@
                             class="menu-icon mdi mdi-information"></i></a>
                         <a href="{{ route('edit-assessment') }}" class="btn btn-warning btn-sm"><i
                             class="menu-icon mdi mdi-border-color"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>
+                        <!-- Delete button settings -->
+                          @if ($report->status === 'Belum Diverifikasi')
+                            <a class="btn btn-danger btn-sm" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $report->id_report }}"><i class="menu-icon mdi mdi-delete"></i></a>
+                          @else
+                            <button class="btn btn-danger btn-sm" disabled><i class="menu-icon mdi mdi-delete"></i></button>
+                          @endif
+                        <!-- End of Delete button settings -->
                       </td>
                     </tr>
                     <tr>
@@ -136,6 +155,29 @@
                         <a href="#" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>
                       </td>
                     </tr>
+                    <!-- Delete Modal-->
+                      <div class="modal fade" id="deleteModal{{ $report->id_report }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $report->id_report }}" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel{{ $report->id_report }}">Yakin untuk hapus data?</h5>
+                              <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">Tekan tombol di bawah ini untuk menghapus data.</div>
+                            <div class="modal-footer">
+                              <form action="{{ route('delete-laporankejadian', ['id' => $report->id_report]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">DELETE</button>
+                              </form>
+                              <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">CANCEL</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- End of Delete Modal-->
                   </tbody>
                 </table>
               </div>

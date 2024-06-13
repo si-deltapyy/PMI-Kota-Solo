@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\KejadianBencana;
 use App\Models\Report;
+use App\Models\Assessment;
 use App\Models\JenisKejadian;
 
 
@@ -34,6 +35,7 @@ class RelawanController extends Controller
         //
         return view('relawan.assessment.index');
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -85,9 +87,24 @@ class RelawanController extends Controller
     }
     public function delete_assessment(string $id)
     {
-        KejadianBencana::findOrFail($id)->delete();
+        // Ambil data assessment berdasarkan id
+        $assessment = Assessment::findOrFail($id);
 
-        return redirect('relawan/assessment')->with('success', 'Data berhasil dihapus');
+        // Cek status verifikasi dari assessment
+        if ($assessment->hasil_verifikasi == 'Belum Diverifikasi') {
+            // Hapus data kejadian_bencana yang terkait dengan assessment
+            $kejadianBencana = KejadianBencana::where('id_kejadian', $assessment->id_kejadian)->first();
+            if ($kejadianBencana) {
+                $kejadianBencana->delete();
+            }
+
+            // Hapus data assessment
+            $assessment->delete();
+
+            return redirect('relawan/assesment')->with('success', 'Data berhasil dihapus');
+        } else {
+            return redirect('relawan/assesment')->with('error', 'Hanya data yang belum diverifikasi yang dapat dihapus');
+        }
     }
 
     // CREATE, UPDATE, DELETE LAPORAN SITUASI
