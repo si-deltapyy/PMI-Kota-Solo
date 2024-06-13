@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RelawanController;
+use App\Http\Controllers\SelectStatusController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
@@ -17,9 +18,14 @@ Route::get('/', function () {
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('relawan/select-laporan-kejadian', [SelectStatusController::class, 'relawan_laporan_kejadian']);
+
+Route::get('reports/{id}/pdf', [App\Http\Controllers\PDFController::class, 'exportLaporanKejadian'])->name('reports.pdf');
+Route::get('reports/{id}/view', [App\Http\Controllers\PDFController::class, 'viewLaporanKejadian']);
+
 //route to pdf export
-Route::post('users/view-pdf/{id}', [pdfController::class, 'viewPDF'])->name('view-pdf');
-Route::post('users/download-pdf', [pdfController::class, 'downloadPDF'])->name('download-pdf');
+Route::post('users/view-pdf/{id}', [PDFController::class, 'viewPDF'])->name('view-pdf');
+Route::post('users/download-pdf', [PDfController::class, 'downloadPDF'])->name('download-pdf');
 
 //test middleware relawan role
 Route::group(['middleware' => ['auth', 'role:relawan']], function () {
