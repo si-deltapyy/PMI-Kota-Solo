@@ -10,18 +10,18 @@ class Report extends Model
     use HasFactory;
 
     protected $table = 'reports';
+
     protected $primaryKey = 'id_report';
-    public $timestamps = true;
 
     protected $fillable = [
         'id_user',
-        'nama_bencana',
+        'id_jeniskejadian',
         'tanggal_kejadian',
         'keterangan',
         'timestamp_report',
         'status',
         'lokasi_longitude',
-        'lokasi_latitude'
+        'lokasi_latitude',
     ];
 
     public function user()
@@ -29,8 +29,8 @@ class Report extends Model
         return $this->belongsTo(User::class, 'id_user');
     }
 
-    public function assessments()
+    public function jenisKejadian()
     {
-        return $this->hasMany(Assessment::class, 'id_report');
+        return $this->belongsTo(JenisKejadian::class, 'id_jeniskejadian', 'id_jeniskejadian');
     }
 }

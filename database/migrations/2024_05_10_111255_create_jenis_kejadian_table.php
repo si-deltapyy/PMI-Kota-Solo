@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('jenis_kejadian', function (Blueprint $table) {
             $table->id('id_jeniskejadian');
-            $table->enum('nama_kejadian', ['a', 'b', 'c']);
+            $table->enum('nama_kejadian', ['Banjir', 'Tanah Longsor', 'Gunung Meletus', 'Pohon Tumbang', 'Gempa Bumi', 'Tsunami']);
             $table->timestamps();
         });
     }
