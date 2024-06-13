@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use Illuminate\Http\Request;
 use App\Models\KejadianBencana;
 use App\Models\Report;
 use App\Models\Assessment;
 use App\Models\JenisKejadian;
+use Illuminate\Support\Facades\Http;
 
 
 class RelawanController extends Controller
@@ -45,12 +47,35 @@ class RelawanController extends Controller
         //
         return view('relawan.laporankejadian.create');
     }
-    public function edit_laporankejadian()
+    public function view_laporankejadian($id)
     {
-        //
-        return view('relawan.laporankejadian.edit');
+        // Mengambil data report berdasarkan ID
+        $report = Report::findOrFail($id); // Menggunakan findOrFail agar melempar 404 jika tidak ditemukan
+
+        $report->locationName = $this->getLocationName($report->lokasi_latitude, $report->lokasi_longitude);
+        $report->googleMapsLink = $this->getGoogleMapsLink($report->lokasi_latitude, $report->lokasi_longitude);
+        $report->waktuKejadian = $this->formatDateTime($report->timestamp_report);
+        $report->updateAt = $this->formatDateTime($report->updated_at);
+
+        // Mengirimkan data ke view relawan.laporankejadian.index
+        return view('relawan.laporankejadian.view', compact('report'));
+    }
+    public function edit_laporankejadian($id)
+    {
+        // Mengambil data report berdasarkan ID
+        $report = Report::findOrFail($id); // Menggunakan findOrFail agar melempar 404 jika tidak ditemukan
+
+        $report->locationName = $this->getLocationName($report->lokasi_latitude, $report->lokasi_longitude);
+        $report->googleMapsLink = $this->getGoogleMapsLink($report->lokasi_latitude, $report->lokasi_longitude);
+        $report->waktuKejadian = $this->formatDateTime($report->timestamp_report);
+        $report->updateAt = $this->formatDateTime($report->updated_at);
+
+        return view('relawan.laporankejadian.edit', compact('report'));
     }
 
+    /**
+     * @Route("/relawan/laporan-kejadian/delete/{id}", name="delete_kejadian", methods={"DELETE"})
+     */
     public function delete_laporankejadian(string $id)
     {
         $report = Report::findOrFail($id);
@@ -196,4 +221,49 @@ class RelawanController extends Controller
     {
         //
     }
+
+    function formatDateTime($isoTimestamp)
+    {
+        // Create a DateTime object from ISO 8601 timestamp
+        $dateObject = new DateTime($isoTimestamp);
+
+        // Extract date components
+        $day = $dateObject->format('d'); // Day of the month (01 to 31)
+        $month = $dateObject->format('m'); // Month (01 to 12)
+        $year = $dateObject->format('Y'); // Year (e.g., 2024)
+
+        // Extract time components
+        $hours = $dateObject->format('H'); // Hours (00 to 23)
+        $minutes = $dateObject->format('i'); // Minutes (00 to 59)
+        $seconds = $dateObject->format('s'); // Seconds (00 to 59)
+
+        // Ensure two-digit formatting with leading zeros
+        $formattedDate = sprintf('%02d/%02d/%04d', $day, $month, $year);
+        $formattedTime = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+
+        return ['date' => $formattedDate, 'time' => $formattedTime];
+    }
+
+
+    public function getLocationName($latitude, $longitude)
+    {
+        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
+            'latlng' => $latitude . ',' . $longitude,
+            'key' => config('services.google_maps.api_key'),
+        ]);
+
+        $data = $response->json();
+
+        if (isset($data['results'][0]['formatted_address'])) {
+            return $data['results'][0]['formatted_address'];
+        } else {
+            return 'Location not found';
+        }
+    }
+
+    public function getGoogleMapsLink($latitude, $longitude)
+    {
+        return 'https://www.google.com/maps/search/?api=1&query=' . $latitude . ',' . $longitude;
+    }
 }
+

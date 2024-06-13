@@ -14,9 +14,12 @@ class JenisKejadianSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            ['nama_kejadian' => 'a'],
-            ['nama_kejadian' => 'b'],
-            ['nama_kejadian' => 'c'],
+            ['nama_kejadian' => 'Banjir'],
+            ['nama_kejadian' => 'Gempa Bumi'],
+            ['nama_kejadian' => 'Kebakaran'],
+            ['nama_kejadian' => 'Longsor'],
+            ['nama_kejadian' => 'Tsunami'],
+            ['nama_kejadian' => 'Bangunan Runtuh'],
         ];
 
         // Insert data into the jenis_kejadian table

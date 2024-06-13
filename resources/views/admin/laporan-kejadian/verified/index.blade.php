@@ -8,7 +8,7 @@
                 :statuses="['Belum Diverifikasi', 'On Process', 'Selesai']"
                 :table-headers="['No', 'Jenis Kejadian', 'Lokasi', 'Tanggal Kejadian', 'Waktu Kejadian', 'Terakhir Update', 'Status', 'Action']"
                 create-route="{{ route('create-assessment') }}" 
-                baseUrl="assessment/unverified" />
+                baseUrl="laporan-kejadian/verified" />
         </div>
     </div>
 </div>

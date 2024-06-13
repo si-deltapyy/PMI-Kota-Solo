@@ -38,9 +38,11 @@ class pdfController extends Controller
 
     public function exportLaporanKejadian($id)
     {
-        $report = Report::with('user', 'assessments')->findOrFail($id);
+        // Find the report by its ID
+        $report = Report::with('user')->findOrFail($id);
+        $report->nama_kejadian = $report->jenisKejadian->nama_kejadian;
 
-        // Fetch location details
+        // Fetch location details (assuming these methods are defined and functional)
         $locationName = $this->getLocationName($report->lokasi_latitude, $report->lokasi_longitude);
         $googleMapsLink = $this->getGoogleMapsLink($report->lokasi_latitude, $report->lokasi_longitude);
 
@@ -51,14 +53,16 @@ class pdfController extends Controller
             'googleMapsLink' => $googleMapsLink,
         ];
 
+        // Load the PDF view with the data
         $pdf = PDF::loadView('pdf.laporan-kejadian', $data);
 
+        // Stream the PDF for download
         return $pdf->stream('laporan-kejadian.pdf');
     }
 
     public function viewLaporanKejadian($id)
     {
-        $report = Report::with('user', 'assessments')->findOrFail($id);
+        $report = Report::with('user')->findOrFail($id);
 
         // Fetch location details
         $locationName = $this->getLocationName($report->lokasi_latitude, $report->lokasi_longitude);
@@ -71,11 +75,11 @@ class pdfController extends Controller
             'googleMapsLink' => $googleMapsLink,
         ];
 
-        return view('pdf.laporan-kejadian', $data);
+        // return view('pdf.laporan-kejadian', $data);
 
-        // $pdf = PDF::loadView('pdf.laporan-kejadian', $data);
+        $pdf = PDF::loadView('pdf.assessment', $data);
 
-        // return $pdf->stream('laporan-kejadian.pdf');
+        return $pdf->stream('laporan-kejadian.pdf');
     }
 
 

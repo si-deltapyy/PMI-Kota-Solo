@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Packing Slip</title>
+    <title>Laporan Kejadian</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
@@ -226,7 +226,7 @@
                             <b>Nama Kejadian</b>
                         </td>
                         <td>
-                            {{ $report->nama_bencana }}
+                            {{ $report->nama_kejadian }}
                         </td>
                     </tr>
                     <tr>

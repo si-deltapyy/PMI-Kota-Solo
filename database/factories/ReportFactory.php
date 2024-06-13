@@ -23,9 +23,8 @@ class ReportFactory extends Factory
     {
         return [
             'id_user' => "2", // Example of creating a new user and using its ID
-            'nama_bencana' => $this->faker->word,
             'tanggal_kejadian' => $this->faker->date,
-            'id_jeniskejadian' => $this->faker->numberBetween(1, 3),
+            'id_jeniskejadian' => $this->faker->numberBetween(1, 6),
             'keterangan' => $this->faker->sentence,
             'timestamp_report' => now(),
             'status' => $this->faker->randomElement(['On Process', 'Selesai', 'Belum Diverifikasi']),
