@@ -33,10 +33,9 @@ class LayananKorbanFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_layanankankorban' => $this->faker->unique()->randomNumber(),
-            'fk_id_assessment' => Assessment::factory()->create()->id_assessment,
-            'distribusi' => $this->faker->sentence(),
-            'dapur_umum' => $this->faker->sentence(),
+            'id_assessment' => Assessment::factory(),
+            'distribusi' => $this->faker->boolean(),
+            'dapur_umum' => $this->faker->boolean(),
         ];
     }
 }

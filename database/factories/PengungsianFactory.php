@@ -19,14 +19,13 @@ class PengungsianFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_pengungsian' => $this->faker->unique()->randomNumber(),
             'nama_lokasi' => $this->faker->address(),
-            'lati_lati' => $this->faker->latitude(),
-            'lonngi_itude' => $this->faker->longitude(),
-            '<5' => $this->faker->numberBetween(1, 100),
-            '>5_<=18' => $this->faker->numberBetween(1, 100),
-            '>18' => $this->faker->numberBetween(1, 100),
-            'jumlah' => $this->faker->numberBetween(1, 1000),
+            'laki_laki' => $this->faker->randomNumber(),
+            'perempuan' => $this->faker->randomNumber(),
+            '<5' => $this->faker->randomNumber(),
+            '>5_<=18' => $this->faker->randomNumber(),
+            '>18' => $this->faker->randomNumber(),
+            'jumlah' => $this->faker->randomNumber(),
         ];
     }
 }

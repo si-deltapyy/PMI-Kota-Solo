@@ -19,8 +19,7 @@ class LampiranDokumentasiFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_dokumentasi' => $this->faker->unique()->randomNumber(),
-            'file_dokumentasi' => $this->faker->fileName(),
+            'file_dokumentasi' => $this->faker->fileExtension(),
         ];
     }
 }

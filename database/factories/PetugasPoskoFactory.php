@@ -19,7 +19,6 @@ class PetugasPoskoFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_petugas_posko' => $this->faker->unique()->randomNumber(),
             'nama_lengkap' => $this->faker->name(),
             'kontak' => $this->faker->phoneNumber(),
         ];

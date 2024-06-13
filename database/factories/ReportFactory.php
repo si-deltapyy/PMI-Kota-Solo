@@ -5,28 +5,30 @@ namespace Database\Factories;
 use App\Models\Report;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Report>
- */
 class ReportFactory extends Factory
 {
     /**
-     * Define the model's default state.
+     * The name of the factory's corresponding model.
      *
-     * @return array<string, mixed>
+     * @var string
      */
-
     protected $model = Report::class;
 
-    public function definition(): array
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
     {
         return [
-            'id_user' => '2',
+            'id_user' => "2", // Example of creating a new user and using its ID
             'nama_bencana' => $this->faker->word,
             'tanggal_kejadian' => $this->faker->date,
+            'id_jeniskejadian' => $this->faker->numberBetween(1, 3),
             'keterangan' => $this->faker->sentence,
             'timestamp_report' => now(),
-            'status' => $this->faker->randomElement(['pending', 'resolved']),
+            'status' => $this->faker->randomElement(['On Process', 'Selesai', 'Belum Diverifikasi']),
             'lokasi_longitude' => $this->faker->longitude,
             'lokasi_latitude' => $this->faker->latitude,
         ];

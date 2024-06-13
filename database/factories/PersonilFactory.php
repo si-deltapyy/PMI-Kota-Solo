@@ -19,15 +19,14 @@ class PersonilFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_personil' => $this->faker->unique()->randomNumber(),
-            'pengurus' => $this->faker->name(),
-            'staf_markas_kahkola' => $this->faker->boolean(),
-            'staf_markas_prov' => $this->faker->boolean(),
-            'staf_markas_pusat' => $this->faker->boolean(),
-            'relawan_pmi_kahkola' => $this->faker->boolean(),
-            'relawan_pmi_prov' => $this->faker->boolean(),
-            'relawan_pmi_limprov' => $this->faker->boolean(),
-            'sukareawan_sip' => $this->faker->boolean(),
+            'pengurus' => $this->faker->randomNumber(),
+            'staf_markas_kabkota' => $this->faker->randomNumber(),
+            'staf_markas_prov' => $this->faker->randomNumber(),
+            'staf_markas_pusat' => $this->faker->randomNumber(),
+            'relawan_pmi_kabkota' => $this->faker->randomNumber(),
+            'relawan_pmi_prov' => $this->faker->randomNumber(),
+            'relawan_pmi_linprov' => $this->faker->randomNumber(),
+            'sukarelawan_sip' => $this->faker->randomNumber(),
         ];
     }
 }
