@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_jeniskejadian');
             $table->date('tanggal_kejadian');
-            $table->unsignedBigInteger('id_jeniskejadian');
             $table->text('keterangan');
             $table->timestamp('timestamp_report');
             $table->enum('status', ['On Process', 'Selesai', 'Belum Diverifikasi']);
