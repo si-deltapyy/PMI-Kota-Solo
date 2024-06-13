@@ -16,7 +16,6 @@ class Report extends Model
     protected $fillable = [
         'id_user',
         'id_jeniskejadian',
-        'nama_bencana',
         'tanggal_kejadian',
         'keterangan',
         'timestamp_report',
