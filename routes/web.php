@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth', 'role:pengelola_profil']], function () {
 //test middleware admin role
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index_admin'])->name('admin-home');
+    Route::get('/admin/kejadian', [AdminController::class, 'kejadian'])->name('admin-kejadian');
     Route::get('/admin/assessment', [AdminController::class, 'index_assessment'])->name('admin-assessment');
     Route::get('/admin/assessment/unverified', [AdminController::class, 'assessment_unverif'])->name('admin-assessment-unverif');
     Route::get('/admin/assessment/verified', [AdminController::class, 'assessment_verif'])->name('admin-assessment-verif');
