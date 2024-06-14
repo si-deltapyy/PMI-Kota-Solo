@@ -28,7 +28,7 @@
             <div class="col-20 grid-margin stretch-card">
                 <div class="card card-rounded">
                   <div class="card-body">
-                    <h4 class="card-title">Menambahkan Akun Admin</h4>
+                    <h4 class="card-title">Edit Akun Admin/h4>
                     @if ($errors->any())
                         <div>
                             <ul>
@@ -38,19 +38,20 @@
                             </ul>
                         </div>
                     @endif
-                    <form class="forms-sample" action="{{ url('/pengelolaProfil/store-admin') }}" method="POST">
+                    <form class="forms-sample" action="{{  route('pengelolaProfilupdate_admin', $user->id) }}" method="POST">
                       @csrf
+                      @method('PUT')
                       <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" name="name" class="form-control"  placeholder="Name" value="{{ old('name') }}" required>
+                        <input type="text" id="name" name="name" class="form-control"  placeholder="Name" value="{{ old('name', $user->name) }}" required>
                       </div>
                       <div class="form-group">
                         <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="{{ old('username') }}" required>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="{{ old('username', $user->username) }}" required>
                       </div>
                       <div class="form-group">
                         <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="{{ old('email') }}" required>
+                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="{{ old('email', $user->email) }}" required>
                       </div>
                       <div class="form-group">
                         <label for="password">Password</label>
@@ -61,7 +62,7 @@
                         <input type="password" class="form-control" id="password_confirmation" placeholder="Password Confirm" name="password_confirmation" required>
                       </div>
                       
-                      <button type="submit" class="btn btn-primary me-2">Submit</button>
+                      <button type="submit" class="btn btn-primary me-2">Update</button>
                       <button class="btn btn-light">Cancel</button>
                     </form>
                   </div>

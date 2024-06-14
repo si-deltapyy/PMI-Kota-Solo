@@ -58,15 +58,28 @@ Route::group(['middleware' => ['auth', 'role:pengelola_profil']], function () {
     Route::get('/pengelolaProfil/user_management/{id}/edit', [PengelolaProfilController::class, 'user_management_edit'])->name('pengelola-user.edit');
     Route::get('/pengelolaProfil/relawan_management', [PengelolaProfilController::class, 'relawan_management'])->name('pengelola-relawan');
     Route::get('/pengelolaProfil/admin_management', [PengelolaProfilController::class, 'admin_management'])->name('pengelola-admin');
-    Route::get('/pengelolaProfil/add-volunteer', [PengelolaProfilController::class, 'create_relawan'])->name('pengelola-add');
-    Route::get('/pengelolaProfil/edit-volunteer', [PengelolaProfilController::class, 'edit_relawan'])->name('pengelola-edit');
-    Route::get('/pengelolaProfil/detail-volunteer', [PengelolaProfilController::class, 'detail_relawan'])->name('pengelola-detail');
-    Route::get('/pengelolaProfil/add-admin', [PengelolaProfilController::class, 'create_admin'])->name('pengelola-add-admin');
+    //crud relawan
+    Route::post('/pengelolaProfil/store-relawan', [PengelolaProfilController::class, 'store_relawan'])->name('pengelola-user-relawan');  
+    Route::get('/pengelolaProfil/add-volunteer', [PengelolaProfilController::class, 'create_relawan'])->name('pengelola-addRelawan');
+    Route::get('/pengelolaProfil/detail-volunteer/{id}/hapus', [PengelolaProfilController::class, 'destroy_relawan'])->name('pengelola-detailRelawan');
+    Route::get('/pengelolaProfil/{id}/editRelawan', [PengelolaProfilController::class, 'edit_relawan'])->name('pengelolaProfiledit_relawan');
+    Route::put('/pengelolaProfil/{id}/editRelawan', [PengelolaProfilController::class, 'update_relawan'])->name('pengelolaProfil.update_relawan');
+    Route::get('/pengelolaProfil/{id}/relawan',  [PengelolaProfilController::class, 'show_relawan'])->name('pengelolaProfil.show_relawan');
+    Route::get('/pengelolaProfil/hapus-admin/{id}/hapusRelawan', [PengelolaProfilController::class, 'destroy_relawan'])->name('pengelola-user-hapusRelawan');
+    //admin CRUD
+    Route::post('/pengelolaProfil/store-admin', [PengelolaProfilController::class, 'store_admin'])->name('pengelola-user-admin');  
+    Route::get('/pengelolaProfil/add-admin', [PengelolaProfilController::class, 'create_admin'])->name('pengelola-add-admin');//nampilin view 
+    Route::get('pengelolaProfil/{id}/edit', [PengelolaProfilController::class, 'edit_admin'])->name('pengelolaProfil.edit_admin');
+    Route::put('pengelolaProfil/{id}/edit', [PengelolaProfilController::class, 'update_admin'])->name('pengelolaProfil.update_admin');
+    Route::resource('pengelolaProfil', PengelolaProfilController::class);
+    Route::get('/pengelolaProfil/hapus-admin/{id}/hapus', [PengelolaProfilController::class, 'destroy_admin'])->name('pengelola-user-hapusAdmin');
+    Route::get('pengelolaProfil/{id}',  [PengelolaProfilController::class, 'show_admin'])->name('pengelolaProfil.show_admin');
 });
 //test middleware admin role
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index_admin'])->name('admin-home');
-    // Route::get('/admin/assessment', [AdminController::class, 'index_assessment'])->name('admin-assessment');
+    Route::get('/admin/kejadian', [AdminController::class, 'kejadian'])->name('admin-kejadian');
+    Route::get('/admin/assessment', [AdminController::class, 'index_assessment'])->name('admin-assessment');
     Route::get('/admin/assessment/unverified', [AdminController::class, 'assessment_unverif'])->name('admin-assessment-unverif');
     Route::get('/admin/assessment/verified', [AdminController::class, 'assessment_verif'])->name('admin-assessment-verif');
     // Route::get('/admin/laporan-kejadian', [AdminController::class, 'index_laporan_kejadian'])->name('admin-assessment');
