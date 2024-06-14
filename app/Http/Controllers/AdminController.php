@@ -39,13 +39,13 @@ class AdminController extends Controller
     public function lapsit()
     {
         $user = User::all();
+        notify()->preset('success', ['message' => 'Berhasil Mengirim Pesan Whatsapp']);
         return view('admin.lapsit.index', compact('user'));
     }
 
     public function Sharelapsit($id)
     {
         $user = User::find($id);
-        
         return view('admin.lapsit.share', compact('user'));
     }
 

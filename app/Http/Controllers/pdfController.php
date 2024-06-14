@@ -23,6 +23,12 @@ class pdfController extends Controller
 
     }
 
+    public function test()
+    {
+        notify()->success('Hi Admin , welcome to codelapan');
+        return view('pdf.flash-report');
+    }
+
     public function downloadPDF()
     {
         $users = User::all();
