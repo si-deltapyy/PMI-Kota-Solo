@@ -65,6 +65,24 @@
                                     <i class="mdi mdi-account-plus"></i> Tambah Akun
                                 </a>
                         </div> -->
+
+                        <!-- Confirmation Modal-->
+                        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirmationModalLabel">Konfirmasi</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" id="confirmationMessage">Apakah Anda yakin?</div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                                        <a class="btn btn-primary text-white" id="confirmationButton">Ya</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                             <div class="table-responsive  ">
                             <table class="table ">
                                 <thead>
@@ -81,20 +99,22 @@
                                     @foreach($user as $list)
                                     <tr>
                                             <td>{{$list->name}}</td>
-                                            <td>{{$list->email}}</td>
+                                            <td>{{$list->email}}l</td>
                                             <td>{{$list->username}}</td>
-                                            <td><label class="badge badge-primary">
-                                                @if ($list->roles)
+                                            <td><label class="badge badge-primary"> @if ($list->roles)
                                                     @foreach ($list->roles as $user_role)
                                                     {{ $user_role->name }}
                                                     @endforeach
-                                                @endif</label> 
+                                                @endif </label> 
+                                            </td>
+
                                             <td>
                                                 <a href="{{ route('pengelola-user.edit',  $list->id) }}"><label class="btn btn-info btn-sm"><i class="mdi mdi-pencil"></i></label></a> 
                                                 <a href=""><label class="btn btn-danger btn-sm"><i class="mdi mdi-delete-forever"></i></label></a>
                                             </td>
-                                    </tr>
-                                    @endforeach
+                                </tr>
+                                @endforeach
+                                            
                                 </tbody>
                             </table>
                             </div>
