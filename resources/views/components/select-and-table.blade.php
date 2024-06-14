@@ -11,24 +11,25 @@
         <div class="home-tab">
             <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                 @if (auth()->user()->getRoleNames()->first() != "admin")
-                @if ($baseUrl != "lapsit")
-                <div class="dropdown">
-                    <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuSizeButton3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Pilih status
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuSizeButton3">
-                        <a class="dropdown-item" href="#" data-status="">All</a>
-                        @foreach ($statuses as $status)
-                            <a class="dropdown-item" href="#" data-status="{{ $status }}">{{ $status }}</a>
-                        @endforeach
+                    @if ($baseUrl != "lapsit")
+                        <div class="dropdown">
+                            <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuSizeButton3"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Pilih status
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuSizeButton3">
+                                <a class="dropdown-item" href="#" data-status="">All</a>
+                                @foreach ($statuses as $status)
+                                    <a class="dropdown-item" href="#" data-status="{{ $status }}">{{ $status }}</a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                    <div class="btn-wrapper ms-auto">
+                        <a href="{{ $createRoute }}" class="btn btn-primary text-white me-0">
+                            <i class="icon-download"></i> Tambah Data
+                        </a>
                     </div>
-                </div>
-                @endif
-                <div class="btn-wrapper ms-auto">
-                    <a href="{{ $createRoute }}" class="btn btn-primary text-white me-0">
-                        <i class="icon-download"></i> Tambah Data
-                    </a>
-                </div>
                 @endif
             </div>
         </div>

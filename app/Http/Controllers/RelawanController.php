@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use DateTime;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\KejadianBencana;
 use App\Models\Report;
@@ -44,9 +46,36 @@ class RelawanController extends Controller
     // CREATE, UPDATE, DELETE LAPORAN KEJADIAN
     public function create_laporankejadian()
     {
-        //
-        return view('relawan.laporankejadian.create');
+        $jeniskejadian = JenisKejadian::all();
+        return view('relawan.laporankejadian.create', compact('jeniskejadian'));
     }
+    public function store_laporankejadian(Request $request)
+    {
+        $validatedData = $request->validate([
+            'id_jeniskejadian' => 'required',
+            'tanggal_kejadian' => 'required|date_format:Y-m-d H:i:s',
+            'keterangan' => 'required|string',
+            'lokasi_longitude' => 'nullable|numeric',
+            'lokasi_latitude' => 'nullable|numeric',
+            'status' => 'required|in:On Process,Selesai,Belum Diverifikasi',
+        ]);
+    
+        $laporanKejadian = new Report();
+        $laporanKejadian->id_user = auth()->id(); // Assuming authenticated user ID
+        $laporanKejadian->id_jeniskejadian = $request->id_jeniskejadian;
+        $laporanKejadian->tanggal_kejadian = $request->tanggal_kejadian;
+        $laporanKejadian->keterangan = $request->keterangan;
+        $laporanKejadian->lokasi_longitude = $request->lokasi_longitude;
+        $laporanKejadian->lokasi_latitude = $request->lokasi_latitude;
+        $laporanKejadian->status = $request->status;
+        $laporanKejadian->timestamp_report = Carbon::now();
+        $laporanKejadian->save();
+    
+        return redirect('/relawan/laporan-kejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
+        // return redirect()->route('relawan-laporankejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
+    }
+    
+
     public function view_laporankejadian($id)
     {
         // Mengambil data report berdasarkan ID
@@ -76,16 +105,38 @@ class RelawanController extends Controller
     /**
      * @Route("/relawan/laporan-kejadian/delete/{id}", name="delete_kejadian", methods={"DELETE"})
      */
-    public function delete_laporankejadian(string $id)
+    public function delete_laporankejadian(Request $request, string $id)
     {
         $report = Report::findOrFail($id);
 
         if ($report->status === 'Belum Diverifikasi') {
             $report->delete();
-            return redirect('relawan/laporan-kejadian')->with('success', 'Data laporan kejadian berhasil dihapus');
+
+            // Check if the request is AJAX
+            if ($request->ajax() || $request->wantsJson()) {
+                // Return JSON response indicating success
+                return new JsonResponse(['message' => 'Data laporan kejadian berhasil dihapus'], 200);
+            } else {
+                // Redirect for non-AJAX requests
+                return redirect('relawan/laporan-kejadian')->with('success', 'Data laporan kejadian berhasil dihapus');
+            }
         } else {
-            return redirect('relawan/laporan-kejadian')->with('error', 'Hanya laporan kejadian dengan status "Belum Diverifikasi" yang dapat dihapus');
+            // Check if the request is AJAX
+            if ($request->ajax() || $request->wantsJson()) {
+                // Return JSON response indicating error
+                return new JsonResponse(['message' => 'Hanya laporan kejadian dengan status "Belum Diverifikasi" yang dapat dihapus'], 400);
+            } else {
+                // Redirect for non-AJAX requests
+                return redirect('relawan/laporan-kejadian')->with('error', 'Hanya laporan kejadian dengan status "Belum Diverifikasi" yang dapat dihapus');
+            }
         }
+
+        // if ($report->status === 'Belum Diverifikasi') {
+        //     $report->delete();
+        //     return redirect('relawan/laporan-kejadian')->with('success', 'Data laporan kejadian berhasil dihapus');
+        // } else {
+        //     return redirect('relawan/laporan-kejadian')->with('error', 'Hanya laporan kejadian dengan status "Belum Diverifikasi" yang dapat dihapus');
+        // }
     }
 
 
