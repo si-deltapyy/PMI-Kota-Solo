@@ -116,7 +116,7 @@ class PengelolaProfilController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('pengelola-relawan.index')->with('success', 'Akun Relawan berhasil dihapus.');
+        return redirect()->route('pengelola-relawan')->with('success', 'Akun Relawan berhasil dihapus.');
     }
 
 
@@ -204,7 +204,7 @@ class PengelolaProfilController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('pengelola-admin.index')->with('success', 'Akun Relawan berhasil dihapus.');
+        return redirect()->route('pengelola-admin')->with('success', 'Akun Relawan berhasil dihapus.');
     }
 
     public function show_admin($id)

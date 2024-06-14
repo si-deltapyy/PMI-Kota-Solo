@@ -38,7 +38,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form class="forms-sample" action="{{  route('pengelolaProfilupdate_admin', $user->id) }}" method="POST">
+                    <form class="forms-sample" action="{{  route('pengelolaProfil.update_admin', $user->id) }}" method="POST">
                       @csrf
                       @method('PUT')
                       <div class="form-group">
