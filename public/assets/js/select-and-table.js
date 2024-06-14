@@ -53,7 +53,7 @@ $(document).ready(function () {
                                         <a href="/${role}/laporan-kejadian/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                                         ${item.status === 'Belum Diverifikasi'
                                     ? `<a href="/${role}/${urlBase}/edit/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                                               <button class="btn btn-danger btn-sm delete-item" data-id="{{ $item->id }}">
+                                               <button class="btn btn-danger btn-sm delete-item" data-id="${item.id}">
                                                     <i class="menu-icon mdi mdi-delete"></i>
                                                 </button>`
                                     : `<a href="/${role}/${urlBase}/edit/${item.id}" class="btn btn-info btn-sm disabled"><i class="menu-icon mdi mdi-border-color"></i></a>
@@ -143,6 +143,63 @@ $(document).ready(function () {
         const status = $(this).data('status');
         fetchData(userRole, status); // Fetch data based on userRole
     });
+
+    // Function to delete data
+    function deleteData(itemId) {
+        // Send DELETE request via AJAX
+        $.ajax({
+            url: `/${userRole}/${urlBase}/delete/${itemId}`, // Use role and urlBase variables
+            type: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response, textStatus, xhr) {
+                console.log('Item deleted successfully:', response);
+                window.location.reload(true);
+
+                // Check if the response is a redirect
+                if (xhr.getResponseHeader('content-type').indexOf('text/html') !== -1) {
+                    // Handle redirect scenario by reloading the page
+                    alert('Item deleted successfully. Page will reload.');
+                    window.location.href = window.location.href; // Reload the page
+                } else {
+                    // Handle JSON response scenario (if applicable)
+                    // Remove the table row or update the UI as needed
+                    $(`#item-${itemId}`).remove(); // Example: assuming each row has an ID like item-1, item-2, etc.
+                }
+            },
+
+            error: function (xhr) {
+                console.error('Error deleting item:', xhr.responseText);
+                if (xhr.status === 404) {
+                    // Handle specific error if item not found
+                    alert('Item not found. It may have already been deleted.');
+                } else {
+                    // Handle other errors
+                    alert('Failed to delete item. Please try again.');
+                }
+            }
+        });
+    }
+
+
+    // Event handler for delete button click
+    $(document).on('click', '.delete-item', function (e) {
+        e.preventDefault();
+
+        let itemId = $(this).data('id');
+        console.log('itemId', itemId)
+
+        // Confirm deletion (optional)
+        if (!confirm('Are you sure you want to delete this item?')) {
+            return false;
+        }
+
+        deleteData(itemId);
+    });
+
+    // Other functions and event handlers as before...
+
 
 
     // Fetch all data on page load with default status ''
