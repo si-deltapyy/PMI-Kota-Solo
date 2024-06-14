@@ -10,43 +10,45 @@ class Dampak extends Model
     use HasFactory;
 
     protected $table = 'dampak';
-    protected $primaryKey = 'id_dampak';
-    protected $fillable = [
-        'fk_id_kejadian_bencana',
-        'fk_id_korban_terdampak',
-        'fk2_id_kerusakan_rumah',
-        'fk3_id_kerusakan_fasil_sosial',
-        'fk4_id_kerusakan_infrastruktur',
-        'fk5_id_pengungsian',
-    ];
 
-    public function kejadianBencana()
-    {
-        return $this->belongsTo(KejadianBencana::class, 'fk_id_kejadian_bencana');
-    }
+    protected $primaryKey = 'id_dampak';
+
+    protected $fillable = [
+        'id_korban_terdampak',
+        'id_kerusakan_rumah',
+        'id_kerusakan_fasil_sosial',
+        'id_kerusakan_infrastruktur',
+        'id_pengungsian',
+        'id_kejadian',
+    ];
 
     public function korbanTerdampak()
     {
-        return $this->belongsTo(KorbanTerdampak::class, 'fk_id_korban_terdampak');
+        return $this->belongsTo(KorbanTerdampak::class, 'id_korban_terdampak');
     }
 
     public function kerusakanRumah()
     {
-        return $this->belongsTo(KerusakanRumah::class, 'fk2_id_kerusakan_rumah');
+        return $this->belongsTo(KerusakanRumah::class, 'id_kerusakan_rumah');
     }
 
-    public function kerusakanFasilSosial()
+    public function kerusakanFasilitasSosial()
     {
-        return $this->belongsTo(KerusakanFasilSosial::class, 'fk3_id_kerusakan_fasil_sosial');
+        return $this->belongsTo(KerusakanFasilSosial::class, 'id_kerusakan_fasil_sosial');
     }
 
     public function kerusakanInfrastruktur()
     {
-        return $this->belongsTo(KerusakanInfrastruktur::class, 'fk4_id_kerusakan_infrastruktur');
+        return $this->belongsTo(KerusakanInfrastruktur::class, 'id_kerusakan_infrastruktur');
     }
 
     public function pengungsian()
     {
-        return $this->belongsTo(Pengungsian::class, 'fk5_id_pengungsian');
+        return $this->belongsTo(Pengungsian::class, 'id_pengungsian');
+    }
+
+    public function kejadianBencana()
+    {
+        return $this->belongsTo(KejadianBencana::class, 'id_kejadian');
     }
 }

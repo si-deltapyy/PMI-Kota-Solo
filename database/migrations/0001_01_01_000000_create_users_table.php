@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('name');
             $table->string('email')->unique();
+            $table->double('lokasi_longitude')->nullable();
+            $table->double('lokasi_latitude')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

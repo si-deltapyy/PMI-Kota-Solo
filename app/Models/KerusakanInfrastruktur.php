@@ -10,7 +10,9 @@ class KerusakanInfrastruktur extends Model
     use HasFactory;
 
     protected $table = 'kerusakan_infrastruktur';
+
     protected $primaryKey = 'id_kerusakan_infrastruktur';
+
     protected $fillable = [
         'desa_kerusakan',
     ];

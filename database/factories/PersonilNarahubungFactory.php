@@ -19,7 +19,6 @@ class PersonilNarahubungFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_narahubung' => $this->faker->unique()->randomNumber(),
             'nama_lengkap' => $this->faker->name(),
             'posisi' => $this->faker->jobTitle(),
             'kontak' => $this->faker->phoneNumber(),

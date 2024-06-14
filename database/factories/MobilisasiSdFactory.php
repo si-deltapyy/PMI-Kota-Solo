@@ -32,10 +32,9 @@ class MobilisasiSdFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_mobilisasi_sd' => $this->faker->unique()->randomNumber(),
-            'fk_id_personil' => Personil::factory()->create()->id_personil,
-            'fk2_id_tsr' => Tsr::factory()->create()->id_tsr,
-            'fk3_id_alat_tdb' => AlatTdb::factory()->create()->id_alat_tdb,
+            'id_personil' => Personil::factory(),
+            'id_tsr' => Tsr::factory(),
+            'id_alat_tdb' => AlatTdb::factory(),
         ];
     }
 }

@@ -8,6 +8,12 @@
           </li>
           <li class="nav-item nav-category">Laporan</li>
           <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin-kejadian') }}">
+              <i class="menu-icon mdi mdi-file-document"></i>
+              <span class="menu-title">Laporan Kejadian</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
               <i class="menu-icon mdi mdi-floor-plan"></i>
               <span class="menu-title">Assessment</span>

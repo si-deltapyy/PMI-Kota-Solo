@@ -32,9 +32,8 @@ class KorbanTerdampakFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_korban_terdampak' => $this->faker->unique()->randomNumber(),
-            'fk2_id_kerusakan_rumah' => KerusakanRumah::factory()->create()->id_kerusakan_rumah,
-            'jiwa' => $this->faker->numberBetween(1, 1000),
+            'kk' => $this->faker->randomNumber(),
+            'jiwa' => $this->faker->randomNumber(),
         ];
     }
 }

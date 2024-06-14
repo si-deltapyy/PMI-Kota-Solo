@@ -11,7 +11,14 @@ class LampiranDokumentasi extends Model
 
     protected $table = 'lampiran_dokumentasi';
     protected $primaryKey = 'id_dokumentasi';
+    public $timestamps = true;
+
     protected $fillable = [
-        'file_dokumentasi',
+        'file_dokumentasi'
     ];
+
+    public function kejadianBencana()
+    {
+        return $this->hasMany(KejadianBencana::class, 'id_dokumentasi');
+    }
 }

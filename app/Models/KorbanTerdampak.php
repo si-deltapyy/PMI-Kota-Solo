@@ -10,14 +10,11 @@ class KorbanTerdampak extends Model
     use HasFactory;
 
     protected $table = 'korban_terdampak';
+
     protected $primaryKey = 'id_korban_terdampak';
+
     protected $fillable = [
-        'fk2_id_kerusakan_rumah',
+        'kk',
         'jiwa',
     ];
-
-    public function kerusakanRumah()
-    {
-        return $this->belongsTo(KerusakanRumah::class, 'fk2_id_kerusakan_rumah');
-    }
 }

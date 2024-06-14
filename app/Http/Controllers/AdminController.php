@@ -27,6 +27,10 @@ class AdminController extends Controller
     {
         return view('admin.executive_summary');
     }
+    public function kejadian()
+    {
+        return view('admin.laporankejadian.index');
+    }
     public function assessment_unverif()
     {
         return view('admin.assessment.unverified.index');

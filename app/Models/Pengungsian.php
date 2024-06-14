@@ -10,11 +10,13 @@ class Pengungsian extends Model
     use HasFactory;
 
     protected $table = 'pengungsian';
+
     protected $primaryKey = 'id_pengungsian';
+
     protected $fillable = [
         'nama_lokasi',
-        'lati_lati',
-        'lonngi_itude',
+        'laki_laki',
+        'perempuan',
         '<5',
         '>5_<=18',
         '>18',

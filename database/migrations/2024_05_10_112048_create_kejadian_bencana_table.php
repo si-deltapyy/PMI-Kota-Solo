@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('kejadian_bencana', function (Blueprint $table) {
             $table->id('id_kejadian');
             $table->unsignedBigInteger('id_jeniskejadian');
-            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_admin');
+            $table->unsignedBigInteger('id_relawan');
             $table->date('tanggal_kejadian');
             $table->string('lokasi');
             $table->string('update');
@@ -30,10 +31,12 @@ return new class extends Migration
             $table->unsignedBigInteger('id_dokumentasi');
             $table->unsignedBigInteger('id_narahubung');
             $table->unsignedBigInteger('id_petugas_posko');
+            $table->enum('status', ['Sudah_Diverifikasi', 'Belum_Diverifikasi']);
             $table->timestamps();
 
             $table->foreign('id_jeniskejadian')->references('id_jeniskejadian')->on('jenis_kejadian')->onDelete('CASCADE');
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('CASCADE');
+            $table->foreign('id_relawan')->references('id')->on('users')->onDelete('CASCADE');
+            $table->foreign('id_admin')->references('id')->on('users')->onDelete('CASCADE');
             $table->foreign('id_assessment')->references('id_assessment')->on('assessment')->onDelete('CASCADE');
             $table->foreign('id_mobilisasi_sd')->references('id_mobilisasi_sd')->on('mobilisasi_sd')->onDelete('CASCADE');
             $table->foreign('id_giat_pmi')->references('id_giatpmi')->on('giat_pmi')->onDelete('CASCADE');

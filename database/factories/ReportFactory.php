@@ -3,9 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Faker\Generator as Faker;
 use App\Models\User;
-use App\Models\Relawan;
+use App\Models\Report;
 use App\Models\KejadianBencana;
 use App\Models\KorbanTerdampak;
 use App\Models\KerusakanFasilSosial;
@@ -19,11 +18,10 @@ use App\Models\Tsr;
 use App\Models\AlatTdb;
 use App\Models\Personil;
 
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\LayananKorban>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Report>
  */
-class LayananKorbanFactory extends Factory
+class ReportFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -33,9 +31,14 @@ class LayananKorbanFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_assessment' => Assessment::factory(),
-            'distribusi' => $this->faker->boolean(),
-            'dapur_umum' => $this->faker->boolean(),
+            'id_user' => User::factory(),
+            'nama_bencana' => $this->faker->sentence(),
+            'tanggal_kejadian' => $this->faker->dateTime(),
+            'keterangan' => $this->faker->paragraph(),
+            'timestamp_report' => $this->faker->dateTime(),
+            'status' => $this->faker->randomElement(['pending', 'verified', 'rejected']),
+            'lokasi_longitude' => $this->faker->longitude(),
+            'lokasi_latitude' => $this->faker->latitude(),
         ];
     }
 }

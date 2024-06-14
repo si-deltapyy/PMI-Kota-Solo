@@ -11,20 +11,27 @@ class Assessment extends Model
 
     protected $table = 'assessment';
     protected $primaryKey = 'id_assessment';
+    public $timestamps = true;
+
     protected $fillable = [
-        'id_relawan',
-        'fk2_id_report',
+        'id_user',
+        'id_report',
         'timestamp_verifikasi',
-        'hasil_verifikasi',
+        'hasil_verifikasi'
     ];
 
-    public function relawan()
+    public function user()
     {
-        return $this->belongsTo(Relawan::class, 'id_relawan');
+        return $this->belongsTo(User::class, 'id_user');
     }
 
     public function report()
     {
-        return $this->belongsTo(Report::class, 'fk2_id_report');
+        return $this->belongsTo(Report::class, 'id_report');
+    }
+
+    public function kejadianBencana()
+    {
+        return $this->hasMany(KejadianBencana::class, 'id_assessment');
     }
 }

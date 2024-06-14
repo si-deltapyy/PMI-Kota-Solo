@@ -33,13 +33,12 @@ class DampakFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_dampak' => $this->faker->unique()->randomNumber(),
-            'fk_id_kejadian_bencana' => KejadianBencana::factory()->create()->id_kejadian,
-            'fk_id_korban_terdampak' => KorbanTerdampak::factory()->create()->id_korban_terdampak,
-            'fk2_id_kerusakan_rumah' => KerusakanRumah::factory()->create()->id_kerusakan_rumah,
-            'fk3_id_kerusakan_fasil_sosial' => KerusakanFasilSosial::factory()->create()->id_kerusakan_fasil_sosial,
-            'fk4_id_kerusakan_infrastruktur' => KerusakanInfrastruktur::factory()->create()->id_kerusakan_infrastruktur,
-            'fk5_id_pengungsian' => Pengungsian::factory()->create()->id_pengungsian,
+            'id_korban_terdampak' => KorbanTerdampak::factory(),
+            'id_kerusakan_rumah' => KerusakanRumah::factory(),
+            'id_kerusakan_fasil_sosial' => KerusakanFasilSosial::factory(),
+            'id_kerusakan_infrastruktur' => KerusakanInfrastruktur::factory(),
+            'id_pengungsian' => Pengungsian::factory(),
+            'id_kejadian' => KejadianBencana::factory(),
         ];
     }
 }

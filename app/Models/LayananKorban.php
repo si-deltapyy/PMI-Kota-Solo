@@ -10,15 +10,17 @@ class LayananKorban extends Model
     use HasFactory;
 
     protected $table = 'layanan_korban';
-    protected $primaryKey = 'id_layanankankorban';
+
+    protected $primaryKey = 'id_layanankorban';
+
     protected $fillable = [
-        'fk_id_assessment',
+        'id_assessment',
         'distribusi',
         'dapur_umum',
     ];
 
     public function assessment()
     {
-        return $this->belongsTo(Assessment::class, 'fk_id_assessment');
+        return $this->belongsTo(Assessment::class, 'id_assessment');
     }
 }

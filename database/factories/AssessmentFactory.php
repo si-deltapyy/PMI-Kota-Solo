@@ -4,8 +4,20 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Generator as Faker;
+use App\Models\User;
 use App\Models\Report;
-use App\Models\Relawan;
+use App\Models\KejadianBencana;
+use App\Models\KorbanTerdampak;
+use App\Models\KerusakanFasilSosial;
+use App\Models\KerusakanRumah;
+use App\Models\KerusakanInfrastruktur;
+use App\Models\Pengungsian;
+use App\Models\EvakuasiKorban;
+use App\Models\LayananKorban;
+use App\Models\Assessment;
+use App\Models\Tsr;
+use App\Models\AlatTdb;
+use App\Models\Personil;
 
 
 /**
@@ -21,11 +33,10 @@ class AssessmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_assessment' => $this->faker->unique()->randomNumber(),
-            'id_relawan' => Relawan::factory()->create()->id_relawan,
-            'fk2_id_report' => Report::factory()->create()->id_report,
+            'id_user' => User::factory(),
+            'id_report' => Report::factory(),
             'timestamp_verifikasi' => $this->faker->dateTime(),
-            'hasil_verifikasi' => $this->faker->sentence(),
+            'hasil_verifikasi' => $this->faker->boolean(),
         ];
     }
 }

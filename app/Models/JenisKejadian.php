@@ -5,21 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PetugasPosko extends Model
+class JenisKejadian extends Model
 {
     use HasFactory;
 
-    protected $table = 'petugas_posko';
-    protected $primaryKey = 'id_petugas_posko';
+    protected $table = 'jenis_kejadian';
+    protected $primaryKey = 'id_jeniskejadian';
     public $timestamps = true;
 
     protected $fillable = [
-        'nama_lengkap',
-        'kontak'
+        'nama_kejadian'
     ];
 
     public function kejadianBencana()
     {
-        return $this->hasMany(KejadianBencana::class, 'id_petugas_posko');
+        return $this->hasMany(KejadianBencana::class, 'id_jeniskejadian');
     }
 }

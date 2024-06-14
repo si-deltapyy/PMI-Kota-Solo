@@ -27,13 +27,17 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::get('/relawan/laporan-kejadian', [RelawanController::class, 'index_laporankejadian'])->name('relawan-laporankejadian');
     Route::get('/relawan/laporan-kejadian/create', [RelawanController::class, 'create_laporankejadian'])->name('create-laporankejadian');
     Route::get('/relawan/laporan-kejadian/edit', [RelawanController::class, 'edit_laporankejadian'])->name('edit-laporankejadian');
+    Route::delete('/relawan/laporan-kejadian/delete/{id}', [RelawanController::class, 'delete_laporankejadian'])->name('delete-laporankejadian'); //edit
     Route::get('/relawan/lapsit', [RelawanController::class, 'index_lapsit'])->name('relawan-lapsit');
     Route::get('/relawan/lapsit/create', [RelawanController::class, 'create_lapsit'])->name('create-lapsit');
-    Route::get('/relawan/lapsit/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit');
+    Route::get('/relawan/lapsit/{id}/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit
+    Route::put('/relawan/lapsit/{id}', [RelawanController::class, 'update_lapsit'])->name('edit-lapsit.update'); //edit
+    // Route::post('/relawan/lapsit/{id}/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit
     Route::get('/relawan/lapsit/detail', [RelawanController::class, 'detail_lapsit'])->name('detail-lapsit');
     Route::get('/relawan/assesment', [RelawanController::class, 'index_assessment'])->name('relawan-assessment');
     Route::get('/relawan/assesment/create', [RelawanController::class, 'create_assessment'])->name('create-assessment');
-    Route::get('/relawan/assesment/edit', [RelawanController::class, 'edit_assessment'])->name('edit-assessment');
+    Route::post('/relawan/assesment/{id}/edit', [RelawanController::class, 'edit_assessment'])->name('edit-assessment'); //edit
+    Route::delete('/relawan/assesment/delete/{id}', [RelawanController::class, 'delete_assessment'])->name('delete-assessment'); //edit
 });
 
 //test middleware pengelola profil role
@@ -51,6 +55,7 @@ Route::group(['middleware' => ['auth', 'role:pengelola_profil']], function () {
 //test middleware admin role
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index_admin'])->name('admin-home');
+    Route::get('/admin/kejadian', [AdminController::class, 'kejadian'])->name('admin-kejadian');
     Route::get('/admin/assessment', [AdminController::class, 'index_assessment'])->name('admin-assessment');
     Route::get('/admin/assessment/unverified', [AdminController::class, 'assessment_unverif'])->name('admin-assessment-unverif');
     Route::get('/admin/assessment/verified', [AdminController::class, 'assessment_verif'])->name('admin-assessment-verif');
