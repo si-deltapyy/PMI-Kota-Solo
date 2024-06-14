@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use DateTime;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\KejadianBencana;
 use App\Models\Report;
 use App\Models\Assessment;
 use App\Models\JenisKejadian;
+use Illuminate\Support\Facades\Http;
 
 
 class RelawanController extends Controller
@@ -42,25 +46,97 @@ class RelawanController extends Controller
     // CREATE, UPDATE, DELETE LAPORAN KEJADIAN
     public function create_laporankejadian()
     {
-        //
-        return view('relawan.laporankejadian.create');
+        $jeniskejadian = JenisKejadian::all();
+        return view('relawan.laporankejadian.create', compact('jeniskejadian'));
     }
-    public function edit_laporankejadian()
+    public function store_laporankejadian(Request $request)
     {
-        //
-        return view('relawan.laporankejadian.edit');
+        $validatedData = $request->validate([
+            'id_jeniskejadian' => 'required',
+            'tanggal_kejadian' => 'required|date_format:Y-m-d H:i:s',
+            'keterangan' => 'required|string',
+            'lokasi_longitude' => 'nullable|numeric',
+            'lokasi_latitude' => 'nullable|numeric',
+            'status' => 'required|in:On Process,Selesai,Belum Diverifikasi',
+        ]);
+    
+        $laporanKejadian = new Report();
+        $laporanKejadian->id_user = auth()->id(); // Assuming authenticated user ID
+        $laporanKejadian->id_jeniskejadian = $request->id_jeniskejadian;
+        $laporanKejadian->tanggal_kejadian = $request->tanggal_kejadian;
+        $laporanKejadian->keterangan = $request->keterangan;
+        $laporanKejadian->lokasi_longitude = $request->lokasi_longitude;
+        $laporanKejadian->lokasi_latitude = $request->lokasi_latitude;
+        $laporanKejadian->status = $request->status;
+        $laporanKejadian->timestamp_report = Carbon::now();
+        $laporanKejadian->save();
+    
+        return redirect('/relawan/laporan-kejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
+        // return redirect()->route('relawan-laporankejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
+    }
+    
+
+    public function view_laporankejadian($id)
+    {
+        // Mengambil data report berdasarkan ID
+        $report = Report::findOrFail($id); // Menggunakan findOrFail agar melempar 404 jika tidak ditemukan
+
+        $report->locationName = $this->getLocationName($report->lokasi_latitude, $report->lokasi_longitude);
+        $report->googleMapsLink = $this->getGoogleMapsLink($report->lokasi_latitude, $report->lokasi_longitude);
+        $report->waktuKejadian = $this->formatDateTime($report->timestamp_report);
+        $report->updateAt = $this->formatDateTime($report->updated_at);
+
+        // Mengirimkan data ke view relawan.laporankejadian.index
+        return view('relawan.laporankejadian.view', compact('report'));
+    }
+    public function edit_laporankejadian($id)
+    {
+        // Mengambil data report berdasarkan ID
+        $report = Report::findOrFail($id); // Menggunakan findOrFail agar melempar 404 jika tidak ditemukan
+
+        $report->locationName = $this->getLocationName($report->lokasi_latitude, $report->lokasi_longitude);
+        $report->googleMapsLink = $this->getGoogleMapsLink($report->lokasi_latitude, $report->lokasi_longitude);
+        $report->waktuKejadian = $this->formatDateTime($report->timestamp_report);
+        $report->updateAt = $this->formatDateTime($report->updated_at);
+
+        return view('relawan.laporankejadian.edit', compact('report'));
     }
 
-    public function delete_laporankejadian(string $id)
+    /**
+     * @Route("/relawan/laporan-kejadian/delete/{id}", name="delete_kejadian", methods={"DELETE"})
+     */
+    public function delete_laporankejadian(Request $request, string $id)
     {
         $report = Report::findOrFail($id);
 
         if ($report->status === 'Belum Diverifikasi') {
             $report->delete();
-            return redirect('relawan/laporan-kejadian')->with('success', 'Data laporan kejadian berhasil dihapus');
+
+            // Check if the request is AJAX
+            if ($request->ajax() || $request->wantsJson()) {
+                // Return JSON response indicating success
+                return new JsonResponse(['message' => 'Data laporan kejadian berhasil dihapus'], 200);
+            } else {
+                // Redirect for non-AJAX requests
+                return redirect('relawan/laporan-kejadian')->with('success', 'Data laporan kejadian berhasil dihapus');
+            }
         } else {
-            return redirect('relawan/laporan-kejadian')->with('error', 'Hanya laporan kejadian dengan status "Belum Diverifikasi" yang dapat dihapus');
+            // Check if the request is AJAX
+            if ($request->ajax() || $request->wantsJson()) {
+                // Return JSON response indicating error
+                return new JsonResponse(['message' => 'Hanya laporan kejadian dengan status "Belum Diverifikasi" yang dapat dihapus'], 400);
+            } else {
+                // Redirect for non-AJAX requests
+                return redirect('relawan/laporan-kejadian')->with('error', 'Hanya laporan kejadian dengan status "Belum Diverifikasi" yang dapat dihapus');
+            }
         }
+
+        // if ($report->status === 'Belum Diverifikasi') {
+        //     $report->delete();
+        //     return redirect('relawan/laporan-kejadian')->with('success', 'Data laporan kejadian berhasil dihapus');
+        // } else {
+        //     return redirect('relawan/laporan-kejadian')->with('error', 'Hanya laporan kejadian dengan status "Belum Diverifikasi" yang dapat dihapus');
+        // }
     }
 
 
@@ -196,4 +272,49 @@ class RelawanController extends Controller
     {
         //
     }
+
+    function formatDateTime($isoTimestamp)
+    {
+        // Create a DateTime object from ISO 8601 timestamp
+        $dateObject = new DateTime($isoTimestamp);
+
+        // Extract date components
+        $day = $dateObject->format('d'); // Day of the month (01 to 31)
+        $month = $dateObject->format('m'); // Month (01 to 12)
+        $year = $dateObject->format('Y'); // Year (e.g., 2024)
+
+        // Extract time components
+        $hours = $dateObject->format('H'); // Hours (00 to 23)
+        $minutes = $dateObject->format('i'); // Minutes (00 to 59)
+        $seconds = $dateObject->format('s'); // Seconds (00 to 59)
+
+        // Ensure two-digit formatting with leading zeros
+        $formattedDate = sprintf('%02d/%02d/%04d', $day, $month, $year);
+        $formattedTime = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+
+        return ['date' => $formattedDate, 'time' => $formattedTime];
+    }
+
+
+    public function getLocationName($latitude, $longitude)
+    {
+        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
+            'latlng' => $latitude . ',' . $longitude,
+            'key' => config('services.google_maps.api_key'),
+        ]);
+
+        $data = $response->json();
+
+        if (isset($data['results'][0]['formatted_address'])) {
+            return $data['results'][0]['formatted_address'];
+        } else {
+            return 'Location not found';
+        }
+    }
+
+    public function getGoogleMapsLink($latitude, $longitude)
+    {
+        return 'https://www.google.com/maps/search/?api=1&query=' . $latitude . ',' . $longitude;
+    }
 }
+
