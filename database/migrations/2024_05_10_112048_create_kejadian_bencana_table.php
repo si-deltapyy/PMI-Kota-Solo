@@ -21,17 +21,18 @@ return new class extends Migration
             $table->string('update');
             $table->string('dukungan_internasional');
             $table->text('keterangan');
-            $table->string('akses_ke_lokasi');
-            $table->enum('kebutuhan', ['a', 'b']);
-            $table->string('giat_pemerintah');
-            $table->enum('hambatan', ['a', 'b']);
+            $table->enum('akses_ke_lokasi', ['Accessible', 'Not Accessible']);
+            $table->string('kebutuhan');
+            $table->enum('giat_pemerintah', ['Ya', 'Tidak']);
+            $table->string('hambatan');
             $table->unsignedBigInteger('id_assessment');
             $table->unsignedBigInteger('id_mobilisasi_sd');
             $table->unsignedBigInteger('id_giat_pmi');
             $table->unsignedBigInteger('id_dokumentasi');
             $table->unsignedBigInteger('id_narahubung');
             $table->unsignedBigInteger('id_petugas_posko');
-            $table->enum('status', ['Sudah_Diverifikasi', 'Belum_Diverifikasi']);
+            $table->timestamp('timestamp_input')->nullable();
+            $table->timestamp('timestamp_update')->nullable();
             $table->timestamps();
 
             $table->foreign('id_jeniskejadian')->references('id_jeniskejadian')->on('jenis_kejadian')->onDelete('CASCADE');

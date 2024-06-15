@@ -32,7 +32,8 @@ class KejadianBencana extends Model
         'id_dokumentasi',
         'id_narahubung',
         'id_petugas_posko',
-        'status'
+        'timestamp_input',
+        'timestamp_update'
     ];
 
     // Define the relationships

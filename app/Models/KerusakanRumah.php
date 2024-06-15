@@ -14,9 +14,8 @@ class KerusakanRumah extends Model
     protected $primaryKey = 'id_kerusakan_rumah';
 
     protected $fillable = [
-        'luka_berat',
-        'luka_ringan',
-        'hilang',
-        'mengungsi',
+        'rusak_berat',
+        'rusak_sedang',
+        'rusak_ringan',
     ];
 }

@@ -14,7 +14,8 @@ class Dampak extends Model
     protected $primaryKey = 'id_dampak';
 
     protected $fillable = [
-        'id_korban_terdampak',
+        'id_korban_terdampak',        
+        'id_korban_jlw',
         'id_kerusakan_rumah',
         'id_kerusakan_fasil_sosial',
         'id_kerusakan_infrastruktur',
@@ -25,6 +26,11 @@ class Dampak extends Model
     public function korbanTerdampak()
     {
         return $this->belongsTo(KorbanTerdampak::class, 'id_korban_terdampak');
+    }
+
+    public function korbanJlw()
+    {
+        return $this->belongsTo(KorbanJlw::class, 'id_korban_jlw');
     }
 
     public function kerusakanRumah()
