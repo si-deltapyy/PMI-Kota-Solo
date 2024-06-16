@@ -16,5 +16,6 @@ class EvakuasiKorban extends Model
     protected $fillable = [
         'luka_ringanberat',
         'meninggal',
+        'keterangan',
     ];
 }

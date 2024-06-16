@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_assessment');
             $table->string('distribusi');
             $table->string('dapur_umum');
+            $table->string('evakuasi');
+            $table->string('layanan_kesehatan');
             $table->timestamps();
 
             $table->foreign('id_assessment')->references('id_assessment')->on('assessment')->onDelete('CASCADE');
