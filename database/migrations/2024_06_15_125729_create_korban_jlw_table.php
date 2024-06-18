@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_korban_jlw');
             $table->integer('luka_berat');
             $table->integer('luka_ringan');
+            $table->integer('meninggal');
             $table->integer('hilang');
             $table->integer('mengungsi');
             $table->timestamps();

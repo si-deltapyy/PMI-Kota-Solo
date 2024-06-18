@@ -16,6 +16,7 @@ class KorbanJlw extends Model
     protected $fillable = [
         'luka_berat',
         'luka_ringan',
+        'meninggal',
         'hilang',
         'mengungsi',
     ];
