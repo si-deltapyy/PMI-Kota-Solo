@@ -12,15 +12,15 @@
 
     <div class="container-fluid page-body-wrapper">
         @include('layouts-admin.sidebar')
-
         @include('notify::components.notify')
+        <div class="main-panel">
+            @yield('content')
+            @include('layouts.footer')
+        </div>
 
-        @yield('content')
-
-        @include('layouts.footer')
-
-        @include('layouts.foot')
     </div>
+
+    @include('layouts.foot')
 
 </body>
 

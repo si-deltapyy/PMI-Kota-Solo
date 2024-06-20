@@ -8,7 +8,7 @@
           </li>
           <li class="nav-item nav-category">Laporan</li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin-kejadian') }}">
+            <a class="nav-link" href="{{ route('admin-laporankejadian') }}" aria-expanded="false" aria-controls="laporan-kejadian">
               <i class="menu-icon mdi mdi-file-document"></i>
               <span class="menu-title">Laporan Kejadian</span>
             </a>
