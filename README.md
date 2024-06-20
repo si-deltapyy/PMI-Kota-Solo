@@ -65,19 +65,13 @@ Sebelum memulai, pastikan perangkat lunak berikut telah terinstal di komputer An
     php artisan migrate
     ```
 
-7. **Membuat Role**: Jalankan perintah ini untuk membuat data role
+7. **Mengisi Database**: Jalankan perintah ini untuk membuat data role
 
    ```bash
-   php artisan db:seed RoleSeeder 
+   php artisan db:seed AllSeeder 
    ```
 
-8. **Membuat User**: Jalankan perintah ini untuk membuat data user
-
-   ```bash
-   php artisan db:seed UserSeeder 
-   ```
-
-9. **Jalankan Server**: Terakhir, jalankan server pengembangan Laravel dengan perintah:
+8. **Jalankan Server**: Terakhir, jalankan server pengembangan Laravel dengan perintah:
 
     ```bash
     php artisan serve
