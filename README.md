@@ -70,6 +70,7 @@ Sebelum memulai, pastikan perangkat lunak berikut telah terinstal di komputer An
    ```bash
    php artisan db:seed AllSeeder 
    ```
+
 8. **Jalankan Server**: Terakhir, jalankan server pengembangan Laravel dengan perintah:
 
     ```bash
