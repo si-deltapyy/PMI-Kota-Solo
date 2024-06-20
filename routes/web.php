@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::delete('/relawan/laporan-kejadian/delete/{id}', [RelawanController::class, 'delete_laporankejadian'])->name('delete-laporankejadian'); //edit
     Route::get('/relawan/lapsit', [RelawanController::class, 'index_lapsit'])->name('relawan-lapsit');
     Route::get('/relawan/lapsit/create', [RelawanController::class, 'create_lapsit'])->name('create-lapsit');
+    Route::post('/relawan/lapsit/store', [RelawanController::class, 'store_lapsit'])->name('store-lapsit'); //store
     Route::get('/relawan/lapsit/{id}/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit
     Route::put('/relawan/lapsit/{id}', [RelawanController::class, 'update_lapsit'])->name('edit-lapsit.update'); //edit
     // Route::post('/relawan/lapsit/{id}/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit
