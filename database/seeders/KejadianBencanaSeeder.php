@@ -18,7 +18,7 @@ class KejadianBencanaSeeder extends Seeder
             [
                 'id_jeniskejadian' => 1,
                 'id_admin' => 1,
-                'id_relawan' => 2,
+                'id_relawan' => 3,
                 'tanggal_kejadian' => '2024-06-10',
                 'lokasi' => 'Jakarta',
                 'update' => 'Update information',
@@ -41,7 +41,7 @@ class KejadianBencanaSeeder extends Seeder
             [
                 'id_jeniskejadian' => 1,
                 'id_admin' => 1,
-                'id_relawan' => 2,
+                'id_relawan' => 3,
                 'tanggal_kejadian' => '2024-05-31',
                 'lokasi' => 'Semarang',
                 'update' => 'Update information',
