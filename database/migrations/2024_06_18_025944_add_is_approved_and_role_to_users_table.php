@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jenis_kejadian', function (Blueprint $table) {
-            $table->id('id_jeniskejadian');
-            $table->string('nama_kejadian');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('is_approved')->default(false);
+            $table->string('role')->default('relawan');
         });
     }
 
@@ -23,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jenis_kejadian');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('is_approved');
+            $table->dropColumn('role');
+        });
     }
 };
