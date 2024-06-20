@@ -76,11 +76,11 @@ class SelectStatusController extends Controller
         if ($status) {
             $reports = Report::with('jenisKejadian') // Nama fungsi relasi dalam model Report
                 ->where('status', $status)
-                ->where('id_user', $id_user)
+                ->where('id_relawan', $id_user)
                 ->get();
         } else {
             $reports = Report::with('jenisKejadian')
-                ->where('id_user', $id_user)
+                ->where('id_relawan', $id_user)
                 ->get();
         }
 

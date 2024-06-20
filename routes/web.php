@@ -26,10 +26,12 @@ Route::get('admin/select-laporan-kejadian/verified', [SelectStatusController::cl
 
 Route::get('reports/{id}/pdf', [App\Http\Controllers\PDFController::class, 'exportLaporanKejadian'])->name('reports.pdf');
 Route::get('reports/{id}/view', [App\Http\Controllers\PDFController::class, 'viewLaporanKejadian']);
+Route::get('pdf/view', [App\Http\Controllers\PDFController::class, 'checkViewPDF']);
+Route::get('pdf/check', [App\Http\Controllers\PDFController::class, 'checkExportPDF']);
 
 //route to pdf export
 Route::post('users/view-pdf/{id}', [PDFController::class, 'viewPDF'])->name('view-pdf');
-Route::post('users/download-pdf', [PDfController::class, 'downloadPDF'])->name('download-pdf');
+Route::post('users/download-pdf', [PDFController::class, 'downloadPDF'])->name('download-pdf');
 
 //test middleware relawan role
 Route::group(['middleware' => ['auth', 'role:relawan']], function () {
@@ -42,6 +44,7 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::delete('/relawan/laporan-kejadian/delete/{id}', [RelawanController::class, 'delete_laporankejadian'])->name('delete-laporankejadian'); //edit
     Route::get('/relawan/lapsit', [RelawanController::class, 'index_lapsit'])->name('relawan-lapsit');
     Route::get('/relawan/lapsit/create', [RelawanController::class, 'create_lapsit'])->name('create-lapsit');
+    Route::post('/relawan/lapsit/store', [RelawanController::class, 'store_lapsit'])->name('store-lapsit'); //store
     Route::get('/relawan/lapsit/{id}/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit
     Route::put('/relawan/lapsit/{id}', [RelawanController::class, 'update_lapsit'])->name('edit-lapsit.update'); //edit
     // Route::post('/relawan/lapsit/{id}/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit

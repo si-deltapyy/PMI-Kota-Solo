@@ -22,14 +22,20 @@ $(document).ready(function () {
 
                     let statusClass = '';
                     switch (item.status) {
-                        case 'Belum Diverifikasi':
+                        case 'Invalid':
                             statusClass = 'btn-danger';
                             break;
                         case 'On Process':
                             statusClass = 'btn-warning';
                             break;
-                        case 'Selesai':
+                        case 'Aktif':
                             statusClass = 'btn-success';
+                            break;
+                        case 'Valid':
+                            statusClass = 'btn-success';
+                            break;
+                        case 'Selesai':
+                            statusClass = 'btn-info';
                             break;
                         default:
                             statusClass = 'btn-secondary'; // Default or fallback class
@@ -42,7 +48,7 @@ $(document).ready(function () {
                         case 'relawan':
                             if (urlBase == "laporan-kejadian") {
                                 tableRow = `
-                                <tr class="${item.status === 'Selesai' ? 'text-muted' : ''}">
+                                <tr class="${item.status === 'Valid' ? 'text-muted' : ''}">
                                     <td>${index + 1}</td>
                                     <td>${item.nama_kejadian}</td>
                                     <td>${item.locationName}</td>
@@ -51,7 +57,7 @@ $(document).ready(function () {
                                     <td>${formattedUpdatedAt.date + " - " + formattedUpdatedAt.time}</td>
                                     <td><p class="btn ${statusClass} btn-sm">${item.status}</p></td>
                                     <td>
-                                    ${item.status === 'Belum Diverifikasi'
+                                    ${item.status === 'On Process'
                                         ?
                                         `<a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                                         <a href="/${role}/${urlBase}/verif/${item.id}" class="btn btn-success btn-sm"><i class="menu-icon mdi mdi-checkbox-multiple-marked-circle"></i></a>`
@@ -73,7 +79,7 @@ $(document).ready(function () {
                                     <td><p class="btn ${statusClass} btn-sm">${item.status}</p></td>
                                     <td>
                                         <a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
-                                        ${item.status === 'Belum Diverifikasi'
+                                        ${item.status === 'On Process'
                                         ? `<a href="/${role}/${urlBase}/edit/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
                                                <button class="btn btn-danger btn-sm delete-item" data-id="${item.id}">
                                                     <i class="menu-icon mdi mdi-delete"></i>
@@ -89,7 +95,7 @@ $(document).ready(function () {
                         case 'admin':
                             if (urlBase == "laporan-kejadian") {
                                 tableRow = `
-                                <tr class="${item.status === 'Selesai' ? 'text-muted' : ''}">
+                                <tr class="${item.status === 'Valid' ? 'text-muted' : ''}">
                                     <td>${index + 1}</td>
                                     <td>${item.nama_kejadian}</td>
                                     <td>${item.locationName}</td>
@@ -99,7 +105,7 @@ $(document).ready(function () {
                                     <td><p class="btn ${statusClass} btn-sm">${item.status}</p></td>
                                     <td>
                                         <a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
-                                        ${item.status === 'Belum Diverifikasi'
+                                        ${item.status === 'On Process'
                                         ? `<a href="/${role}/${urlBase}/edit/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
                                                <button class="btn btn-danger btn-sm delete-item" data-id="${item.id}">
                                                     <i class="menu-icon mdi mdi-delete"></i>
@@ -121,7 +127,7 @@ $(document).ready(function () {
                                     <td>${formattedUpdatedAt.date + " - " + formattedUpdatedAt.time}</td>
                                     <td><p class="btn ${statusClass} btn-sm">${item.status}</p></td>
                                     <td>
-                                    ${item.status === 'Belum Diverifikasi'
+                                    ${item.status === 'On Process'
                                         ?
                                         `<a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                                         <a href="/${role}/${urlBase}/verif/${item.id}" class="btn btn-success btn-sm"><i class="menu-icon mdi mdi-checkbox-multiple-marked-circle"></i></a>`
@@ -144,7 +150,7 @@ $(document).ready(function () {
                                     <td>${formattedUpdatedAt.date + " - " + formattedUpdatedAt.time}</td>
                                     <td><p class="btn ${statusClass} btn-sm">${item.status}</p></td>
                                     <td>
-                                        <a href="/${role}/laporan-kejadian/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                                        <a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                                         ${item.status === 'Belum Diverifikasi'
                                     ? `<a href="/${role}/${urlBase}/edit/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
                                                <a href="/${role}/${urlBase}/delete/${item.id}" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-delete"></i></a>`
