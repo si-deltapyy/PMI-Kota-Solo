@@ -11,9 +11,17 @@ use App\Http\Controllers\PengelolaProfilController;
 
 
 Auth::routes();
+// Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+// Route::post('register', [RegisterController::class, 'register']);
+
+Route::any('/', function()
+{
+    return 'default loads';
+});
 
 Route::get('/', function () {
     return view('welcome');
+    
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -31,7 +39,7 @@ Route::post('users/view-pdf/{id}', [PDFController::class, 'viewPDF'])->name('vie
 Route::post('users/download-pdf', [PDfController::class, 'downloadPDF'])->name('download-pdf');
 
 //test middleware relawan role
-Route::group(['middleware' => ['auth', 'role:relawan']], function () {
+Route::group(['middleware' => ['auth', 'approve', 'role:relawan']], function () {
     Route::get('/relawan/dashboard', [RelawanController::class, 'index'])->name('home-relawan');
     Route::get('/relawan/laporan-kejadian', [RelawanController::class, 'index_laporankejadian'])->name('relawan-laporankejadian');
     Route::get('/relawan/laporan-kejadian/create', [RelawanController::class, 'create_laporankejadian'])->name('create-laporankejadian');
@@ -52,7 +60,7 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
 });
 
 //test middleware pengelola profil role
-Route::group(['middleware' => ['auth', 'role:pengelola_profil']], function () {
+Route::group(['middleware' => ['auth',  'role:pengelola_profil']], function () {
     Route::get('/pengelolaProfil/dashboard', [PengelolaProfilController::class, 'index'])->name('pengelolaProfil-home');
     Route::get('/pengelolaProfil/user_management', [PengelolaProfilController::class, 'user_management'])->name('pengelola-user');
     Route::get('/pengelolaProfil/user_management/{id}/edit', [PengelolaProfilController::class, 'user_management_edit'])->name('pengelola-user.edit');
@@ -65,15 +73,19 @@ Route::group(['middleware' => ['auth', 'role:pengelola_profil']], function () {
     Route::get('/pengelolaProfil/{id}/editRelawan', [PengelolaProfilController::class, 'edit_relawan'])->name('pengelolaProfiledit_relawan');
     Route::put('/pengelolaProfil/{id}/editRelawan', [PengelolaProfilController::class, 'update_relawan'])->name('pengelolaProfil.update_relawan');
     Route::get('/pengelolaProfil/{id}/relawan',  [PengelolaProfilController::class, 'show_relawan'])->name('pengelolaProfil.show_relawan');
-    Route::get('/pengelolaProfil/hapus-relawan/{id}/hapusRelawan', [PengelolaProfilController::class, 'destroy_relawan'])->name('pengelola-user-hapusRelawan');
+    Route::delete('/pengelolaProfil/hapus-relawan/{id}/hapusRelawan', [PengelolaProfilController::class, 'destroy_relawan'])->name('pengelola-user-hapusRelawan');
     //admin CRUD
     Route::post('/pengelolaProfil/store-admin', [PengelolaProfilController::class, 'store_admin'])->name('pengelola-user-admin');  
     Route::get('/pengelolaProfil/add-admin', [PengelolaProfilController::class, 'create_admin'])->name('pengelola-add-admin');//nampilin view 
     Route::get('pengelolaProfil/{id}/edit', [PengelolaProfilController::class, 'edit_admin'])->name('pengelolaProfil.edit_admin');
     Route::put('pengelolaProfil/{id}/edit', [PengelolaProfilController::class, 'update_admin'])->name('pengelolaProfil.update_admin');
     Route::resource('pengelolaProfil', PengelolaProfilController::class);
-    Route::get('/pengelolaProfil/hapus-admin/{id}/hapus', [PengelolaProfilController::class, 'destroy_admin'])->name('pengelola-user-hapusAdmin');
+    Route::delete('/pengelolaProfil/hapus-admin/{id}/hapus', [PengelolaProfilController::class, 'destroy_admin'])->name('pengelola-user-hapusAdmin');
     Route::get('pengelolaProfil/{id}',  [PengelolaProfilController::class, 'show_admin'])->name('pengelolaProfil.show_admin');
+
+    // approval 
+    Route::get('/pengelolaProfil/approve', [PengelolaProfilController::class, 'show_ApprovalPage'])->name('approval.page');
+    Route::post('/pengelolaProfil/approved/{id}', [PengelolaProfilController::class, 'approveUser'])->name('approve.user');
 });
 //test middleware admin role
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
