@@ -113,7 +113,7 @@ class PDFController extends Controller
 
         // return view('pdf.laporan-kejadian', $data);
 
-        $pdf = PDF::loadView('pdf.assessment', $data);
+        $pdf = PDF::loadView('pdf.lapsit', $data);
 
         return $pdf->stream('laporan-kejadian.pdf');
     }
