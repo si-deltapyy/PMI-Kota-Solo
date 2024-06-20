@@ -4,20 +4,33 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
+
+use Spatie\Permission\Traits\HasRoles;
 
 class LoginController extends Controller
 {
-    use AuthenticatesUsers;
-    protected $redirectTo = '/home';
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
+
+    use AuthenticatesUsers, HasRoles;
 
     protected function redirectTo()
     {
         $user = Auth::user();
 
         if ($user->hasRole('admin')) {
+            notify()->preset('success', ['message' => 'Hi '.$user->name.' Selamat Datang']);
             return '/admin/dashboard';
         } elseif ($user->hasRole('relawan')) {
+            notify()->preset('success', ['message' => 'Hi '.$user->name.' Selamat Datang']);
             return '/relawan/dashboard';
         } elseif ($user->hasRole('pengelola_profil')) {
             return '/pengelolaProfil/user_management';

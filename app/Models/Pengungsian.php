@@ -17,9 +17,11 @@ class Pengungsian extends Model
         'nama_lokasi',
         'laki_laki',
         'perempuan',
-        '<5',
-        '>5_<=18',
-        '>18',
+        'kurang_dari_5',
+        'atr_5_sampai_18',
+        'lebih_dari_18',
         'jumlah',
+        'kk',
+        'jiwa',
     ];
 }

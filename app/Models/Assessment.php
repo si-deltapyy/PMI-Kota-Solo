@@ -14,15 +14,14 @@ class Assessment extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'id_user',
+        'id_relawan',
         'id_report',
-        'timestamp_verifikasi',
-        'hasil_verifikasi'
+        'status'
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'id_relawan');
     }
 
     public function report()

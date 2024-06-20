@@ -14,17 +14,22 @@ class Dampak extends Model
     protected $primaryKey = 'id_dampak';
 
     protected $fillable = [
-        'id_korban_terdampak',
+        'id_korban_terdampak',        
+        'id_korban_jlw',
         'id_kerusakan_rumah',
         'id_kerusakan_fasil_sosial',
         'id_kerusakan_infrastruktur',
         'id_pengungsian',
-        'id_kejadian',
     ];
 
     public function korbanTerdampak()
     {
         return $this->belongsTo(KorbanTerdampak::class, 'id_korban_terdampak');
+    }
+
+    public function korbanJlw()
+    {
+        return $this->belongsTo(KorbanJlw::class, 'id_korban_jlw');
     }
 
     public function kerusakanRumah()
@@ -47,8 +52,4 @@ class Dampak extends Model
         return $this->belongsTo(Pengungsian::class, 'id_pengungsian');
     }
 
-    public function kejadianBencana()
-    {
-        return $this->belongsTo(KejadianBencana::class, 'id_kejadian');
-    }
 }

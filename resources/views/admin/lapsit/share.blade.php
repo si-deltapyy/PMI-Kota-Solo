@@ -12,8 +12,9 @@ curl_setopt_array($curl, array(
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => 'POST',
   CURLOPT_POSTFIELDS => array(
-'target' => '08123456789',
-'message' => $user->name, 
+'target' => '081546833337,085812796488',
+'message' => $user->name.
+'Contoh Lapsit share wa', 
 'countryCode' => '62', //optional
 ),
   CURLOPT_HTTPHEADER => array(

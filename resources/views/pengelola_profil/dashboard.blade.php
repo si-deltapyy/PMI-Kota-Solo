@@ -3,6 +3,8 @@
 
 @section('content')
 
+<x-notify::notify />
+@notifyJs
 <!-- partial -->
 <div class="main-panel">
     <div class="content-wrapper">

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_evakuasikorban');
             $table->string('luka_ringanberat');
             $table->string('meninggal');
+            $table->string('keterangan');
             $table->timestamps();
         });
     }

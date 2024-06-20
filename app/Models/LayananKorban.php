@@ -17,6 +17,8 @@ class LayananKorban extends Model
         'id_assessment',
         'distribusi',
         'dapur_umum',
+        'evakuasi',
+        'layanan_kesehatan'
     ];
 
     public function assessment()

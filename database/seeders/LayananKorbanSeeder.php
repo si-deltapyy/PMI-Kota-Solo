@@ -15,18 +15,18 @@ class LayananKorbanSeeder extends Seeder
     {
         DB::table('layanan_korban')->insert([
             [
-                'id_assessment' => 1, // Replace with actual id_assessment from the assessment table
-                'distribusi' => '150', // Number of distributions as a string
-                'dapur_umum' => '20', // Number of public kitchens as a string
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'id_assessment' => 1,
+                'distribusi' => 'Sembako',
+                'dapur_umum' => 'Makanan siap saji',
+                'evakuasi' => 'Tenda darurat',
+                'layanan_kesehatan' => 'Tim medis'
             ],
             [
-                'id_assessment' => 2, // Replace with actual id_assessment from the assessment table
-                'distribusi' => '200',
-                'dapur_umum' => '25',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'id_assessment' => 2,
+                'distribusi' => 'Pakaian',
+                'dapur_umum' => 'Dapur umum berjalan',
+                'evakuasi' => 'Evakuasi air',
+                'layanan_kesehatan' => 'Posko kesehatan'
             ],
             // Add more entries as needed
         ]);

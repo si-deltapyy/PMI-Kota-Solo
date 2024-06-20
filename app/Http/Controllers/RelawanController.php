@@ -8,8 +8,27 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\KejadianBencana;
 use App\Models\Report;
+use App\Models\AlatTdb;
 use App\Models\Assessment;
+use App\Models\Dampak;
+use App\Models\EvakuasiKorban;
 use App\Models\JenisKejadian;
+use App\Models\KerusakanFasilSosial;
+use App\Models\KerusakanInfrastruktur;
+use App\Models\KerusakanRumah;
+use App\Models\KorbanTerdampak;
+use App\Models\KorbanJlw;
+use App\Models\LampiranDokumentasi;
+use App\Models\LayananKorban;
+use App\Models\Pengungsian;
+use App\Models\Personil;
+use App\Models\PersonilNarahubung;
+use App\Models\PetugasPosko;
+use App\Models\Tsr;
+use App\Models\GiatPMI;
+use App\Models\MobilisasiSd;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
 
@@ -59,7 +78,7 @@ class RelawanController extends Controller
             'lokasi_latitude' => 'nullable|numeric',
             'status' => 'required|in:On Process,Selesai,Belum Diverifikasi',
         ]);
-    
+
         $laporanKejadian = new Report();
         $laporanKejadian->id_user = auth()->id(); // Assuming authenticated user ID
         $laporanKejadian->id_jeniskejadian = $request->id_jeniskejadian;
@@ -70,11 +89,11 @@ class RelawanController extends Controller
         $laporanKejadian->status = $request->status;
         $laporanKejadian->timestamp_report = Carbon::now();
         $laporanKejadian->save();
-    
+
         return redirect('/relawan/laporan-kejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
         // return redirect()->route('relawan-laporankejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
     }
-    
+
 
     public function view_laporankejadian($id)
     {
@@ -141,26 +160,267 @@ class RelawanController extends Controller
 
 
     // CREATE, UPDATE, DELETE LAPORAN ASSESSMENT
+
+    public function response_assessment($id)
+    {
+        $assessment = Assessment::where('id_assessment', $id) // Nama fungsi relasi dalam model Report
+            ->with([
+                'report.jenisKejadian',
+                'kejadianBencana.jenisKejadian',
+                'kejadianBencana.admin',
+                'kejadianBencana.relawan',
+                'kejadianBencana.mobilisasiSd.personil',
+                'kejadianBencana.mobilisasiSd.tsr',
+                'kejadianBencana.mobilisasiSd.alatTdb',
+                'kejadianBencana.giatPmi.evakuasiKorban',
+                'kejadianBencana.giatPmi.layananKorban',
+                'kejadianBencana.dokumentasi',
+                'kejadianBencana.narahubung',
+                'kejadianBencana.petugasPosko',
+                'kejadianBencana.dampak.korbanTerdampak',
+                'kejadianBencana.dampak.korbanJlw',
+                'kejadianBencana.dampak.kerusakanRumah',
+                'kejadianBencana.dampak.kerusakanFasilitasSosial',
+                'kejadianBencana.dampak.kerusakanInfrastruktur',
+                'kejadianBencana.dampak.pengungsian'
+            ])
+            ->first();
+        ;
+
+        $assessment->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+        $assessment->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+        $assessment->waktuKejadian = $this->formatDateTime($assessment->report->timestamp_report);
+        $assessment->updateAt = $this->formatDateTime($assessment->report->updated_at);
+
+        return response()->json($assessment);
+        // return view('relawan.assessment.view', compact('assessment'));
+
+    }
+    public function view_assessment($id)
+    {
+        $assessment = Assessment::where('id_assessment', $id) // Nama fungsi relasi dalam model Report
+            ->with([
+                'report.jenisKejadian',
+                'kejadianBencana.jenisKejadian',
+                'kejadianBencana.admin',
+                'kejadianBencana.relawan',
+                'kejadianBencana.mobilisasiSd.personil',
+                'kejadianBencana.mobilisasiSd.tsr',
+                'kejadianBencana.mobilisasiSd.alatTdb',
+                'kejadianBencana.giatPmi.evakuasiKorban',
+                'kejadianBencana.giatPmi.layananKorban',
+                'kejadianBencana.dokumentasi',
+                'kejadianBencana.narahubung',
+                'kejadianBencana.petugasPosko',
+                'kejadianBencana.dampak.korbanTerdampak',
+                'kejadianBencana.dampak.korbanJlw',
+                'kejadianBencana.dampak.kerusakanRumah',
+                'kejadianBencana.dampak.kerusakanFasilitasSosial',
+                'kejadianBencana.dampak.kerusakanInfrastruktur',
+                'kejadianBencana.dampak.pengungsian'
+            ])
+            ->first();
+        ;
+
+        $assessment->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+        $assessment->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+        $assessment->waktuKejadian = $this->formatDateTime($assessment->report->timestamp_report);
+        $assessment->updateAt = $this->formatDateTime($assessment->report->updated_at);
+
+        // Handle only the first kejadianBencana
+        $firstKejadian = $assessment->kejadianBencana->first();
+
+        if ($firstKejadian) {
+            // You can access the nested properties here
+            $firstKejadian->korbanTerdampak = $firstKejadian->dampak->korbanTerdampak;
+            $firstKejadian->korbanJlw = $firstKejadian->dampak->korbanJlw;
+            $firstKejadian->kerusakanRumah = $firstKejadian->dampak->kerusakanRumah;
+            $firstKejadian->kerusakanFasilitasSosial = $firstKejadian->dampak->kerusakanFasilitasSosial;
+            $firstKejadian->kerusakanInfrastruktur = $firstKejadian->dampak->kerusakanInfrastruktur;
+            $firstKejadian->pengungsian = $firstKejadian->dampak->pengungsian;
+            $firstKejadian->evakuasiKorban = $firstKejadian->giatPmi->evakuasiKorban;
+            $firstKejadian->layananKorban = $firstKejadian->giatPmi->layananKorban;
+            $firstKejadian->personil = $firstKejadian->mobilisasiSd->personil;
+            $firstKejadian->tsr = $firstKejadian->mobilisasiSd->tsr;
+            $firstKejadian->alatTdb = $firstKejadian->mobilisasiSd->alatTdb;
+        }
+
+        return view('relawan.assessment.view', compact('assessment', 'firstKejadian'));
+
+        // return response()->json($assessment);
+
+    }
     public function create_assessment()
     {
         //
         return view('relawan.assessment.create'); //
     }
-    public function edit_assessment($id)
+    public function edit_assessment($id_assessment)
     {
-        $kejadianBencana = KejadianBencana::findOrFail($id);
+        Log::info('edit_assessment method called', ['id_assessment' => $id_assessment]);
+        // Mengambil data assessment berdasarkan ID
+        $assessment = Assessment::findOrFail($id_assessment);
+        $id = $assessment->id_kejadian;
+        $kejadian = KejadianBencana::findOrFail($id);
+        $mobilisasi_sd = MobilisasiSd::where('id_kejadian', $id)->first();
+        $giat_pmi = GiatPmi::where('id_kejadian', $id)->first();
+        $lampiran_dokumentasi = LampiranDokumentasi::where('id_kejadian', $id)->first();
+        $personil_narahubung = PersonilNarahubung::where('id_kejadian', $id)->first();
+        $petugas_posko = PetugasPosko::where('id_kejadian', $id)->first();
+        $evakuasi_korban = EvakuasiKorban::where('id_kejadian', $id)->first();
+        $layanan_korban = LayananKorban::where('id_kejadian', $id)->first();
+        $dampak = Dampak::where('id_kejadian', $id)->first();
+        $kerusakan_rumah = KerusakanRumah::where('id_kejadian', $id)->first();
+        $korban_terdampak = KorbanTerdampak::where('id_kejadian', $id)->first();
+        $korban_jlw = KorbanJlw::where('id_kejadian', $id)->first();
+        $pengungsian = Pengungsian::where('id_kejadian', $id)->first();
+        $kerusakan_fasil_sosial = KerusakanFasilSosial::where('id_kejadian', $id)->first();
+        $kerusakan_infrastruktur = KerusakanInfrastruktur::where('id_kejadian', $id)->first();
+        $personil = Personil::where('id_kejadian', $id)->first();
+        $tsr = Tsr::where('id_kejadian', $id)->first();
+        $alat_tdb = AlatTdb::where('id_kejadian', $id)->first();
 
-        // Dapatkan data terkait yang dibutuhkan untuk dikirim ke view
-        $jenisKejadian = $kejadianBencana->jenisKejadian;
-        $assessment = $kejadianBencana->assessment;
-        $mobilisasiSd = $kejadianBencana->mobilisasiSd;
-        $giatPmi = $kejadianBencana->giatPmi;
-        $dokumentasi = $kejadianBencana->dokumentasi;
-        $narahubung = $kejadianBencana->narahubung;
-        $petugasPosko = $kejadianBencana->petugasPosko;
-
-        return view('relawan.assessment.edit', compact('kejadianBencana', 'jenisKejadian', 'assessment', 'mobilisasiSd', 'giatPmi', 'dokumentasi', 'narahubung', 'petugasPosko'));
+        // Mengembalikan view dengan data yang diambil
+        return view('relawan.assessment.edit', compact(
+            'kejadian', 'assessment', 'mobilisasi_sd', 'giat_pmi', 'lampiran_dokumentasi',
+            'personil_narahubung', 'petugas_posko', 'evakuasi_korban', 'layanan_korban', 'dampak',
+            'kerusakan_rumah', 'korban_terdampak', 'korban_jlw', 'pengungsian', 'kerusakan_fasil_sosial',
+            'kerusakan_infrastruktur', 'personil', 'tsr', 'alat_tdb'
+        ));
     }
+
+
+    public function update_assessment(Request $request, $id)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'id_jeniskejadian' => 'required',
+            'id_admin' => 'required',
+            'id_relawan' => 'required',
+            'tanggal_kejadian' => 'required|date',
+            'lokasi' => 'required|string',
+            'update' => 'required|string',
+            'dukungan_internasional' => 'required|string',
+            'keterangan' => 'required|string',
+            'akses_ke_lokasi' => 'required|in:Accessible,Not Accessible',
+            'kebutuhan' => 'required|string',
+            'giat_pemerintah' => 'required|in:Ya,Tidak',
+            'hambatan' => 'required|string',
+            'id_assessment' => 'required',
+            'id_mobilisasi_sd' => 'required',
+            'id_giat_pmi' => 'required',
+            'id_dokumentasi' => 'required',
+            'id_narahubung' => 'required',
+            'id_petugas_posko' => 'required',
+            'id_evakuasikorban' => 'required',
+            'id_layanankorban' => 'required',
+            'luka_ringanberat' => 'required|string',
+            'meninggal' => 'required|string',
+            'distribusi' => 'required|string',
+            'dapur_umum' => 'required|string',
+            'evakuasi' => 'required|string',
+            'layanan_kesehatan' => 'required|string',
+            'id_korban_terdampak' => 'required',
+            'id_kerusakan_rumah' => 'required',
+            'id_kerusakan_fasil_sosial' => 'required',
+            'id_kerusakan_infrastruktur' => 'required',
+            'id_pengungsian' => 'required',
+            'id_korban_jlw' => 'required',
+            'rusak_berat' => 'required|integer',
+            'rusak_sedang' => 'required|integer',
+            'rusak_ringan' => 'required|integer',
+            'kk' => 'required|integer',
+            'jiwa' => 'required|integer',
+            'luka_berat' => 'required|integer',
+            'luka_ringan' => 'required|integer',
+            'meninggal' => 'required|integer',
+            'hilang' => 'required|integer',
+            'mengungsi' => 'required|integer',
+            'nama_lokasi' => 'required|string',
+            'laki_laki' => 'required|integer',
+            'perempuan' => 'required|integer',
+            'kurang_dari_5' => 'required|integer',
+            'atr_5_sampai_18' => 'required|integer',
+            'lebih_dari_18' => 'required|integer',
+            'jumlah' => 'required|integer',
+            'desc_kerusakan' => 'required|string',
+            'sekolah' => 'required|integer',
+            'tempat_ibadah' => 'required|integer',
+            'rumah_sakit' => 'required|integer',
+            'pasar' => 'required|integer',
+            'gedung_pemerintah' => 'required|integer',
+            'lain_lain' => 'required|integer',
+            'id_personil' => 'required',
+            'id_tsr' => 'required',
+            'id_alat_tdb' => 'required',
+            'pengurus' => 'required|string',
+            'staff_markas_kabkota' => 'required|string',
+            'staff_markas_prov' => 'required|string',
+            'staff_markas_pusat' => 'required|string',
+            'relawan_pmi_kabkot' => 'required|string',
+            'relawan_pmi_prov' => 'required|string',
+            'relawan_pmi_linprov' => 'required|string',
+            'sukarelawan_sp' => 'required|string',
+            'medis' => 'required|string',
+            'paramedis' => 'required|string',
+            'relief' => 'required|string',
+            'logistik' => 'required|string',
+            'watsan' => 'required|string',
+            'it_telkom' => 'required|string',
+            'sheltering' => 'required|string',
+            'kend_ops' => 'required|string',
+            'truk_angkut' => 'required|string',
+            'truk_tanki' => 'required|string',
+            'double_cabin' => 'required|string',
+            'alat_du' => 'required|string',
+            'ambulans' => 'required|string',
+            'alat_watsan' => 'required|string',
+            'rs_lapangan' => 'required|string',
+            'alat_pkdd' => 'required|string',
+            'gudang_lapangan' => 'required|string',
+            'posko_aju' => 'required|string',
+            'alat_it_lapangan' => 'required|string',
+            'nama_kejadian' => 'required|string',
+            'nama_lengkap' => 'required|string',
+            'posisi' => 'required|string',
+            'kontak' => 'required|string',
+        ]);
+
+        // Update kejadian_bencana
+        $kejadian = KejadianBencana::findOrFail($id);
+        $kejadian->update($request->only([
+            'id_jeniskejadian', 'id_admin', 'id_relawan', 'tanggal_kejadian', 'lokasi', 
+            'update', 'dukungan_internasional', 'keterangan', 'akses_ke_lokasi', 'kebutuhan', 
+            'giat_pemerintah', 'hambatan'
+        ]));
+
+        // Update related tables
+        Assessment::findOrFail($request->id_assessment)->update($request->only(['status']));
+        MobilisasiSd::findOrFail($request->id_mobilisasi_sd)->update($request->only(['id_personil', 'id_tsr', 'id_alat_tdb']));
+        GiatPmi::findOrFail($request->id_giat_pmi)->update($request->only(['id_evakuasikorban', 'id_layanankorban']));
+        LampiranDokumentasi::findOrFail($request->id_dokumentasi)->update($request->only(['file_dokumentasi']));
+        PersonilNarahubung::findOrFail($request->id_narahubung)->update($request->only(['nama_lengkap', 'posisi', 'kontak']));
+        PetugasPosko::findOrFail($request->id_petugas_posko)->update($request->only(['nama_lengkap', 'kontak']));
+        EvakuasiKorban::findOrFail($request->id_evakuasikorban)->update($request->only(['luka_ringanberat', 'meninggal', 'keterangan']));
+        LayananKorban::findOrFail($request->id_layanankorban)->update($request->only(['distribusi', 'dapur_umum', 'evakuasi', 'layanan_kesehatan']));
+
+        Dampak::where('id_kejadian', $id)->first()->update($request->only(['id_korban_terdampak', 'id_kerusakan_rumah', 'id_kerusakan_fasil_sosial', 'id_kerusakan_infrastruktur', 'id_pengungsian', 'id_korban_jlw']));
+        KerusakanRumah::findOrFail($request->id_kerusakan_rumah)->update($request->only(['rusak_berat', 'rusak_sedang', 'rusak_ringan']));
+        KorbanTerdampak::findOrFail($request->id_korban_terdampak)->update($request->only(['kk', 'jiwa']));
+        KorbanJlw::findOrFail($request->id_korban_jlw)->update($request->only(['luka_berat', 'luka_ringan', 'meninggal', 'hilang', 'mengungsi']));
+        Pengungsian::findOrFail($request->id_pengungsian)->update($request->only(['nama_lokasi', 'laki_laki', 'perempuan', 'kurang_dari_5', 'atr_5_sampai_18', 'lebih_dari_18', 'jumlah', 'kk', 'jiwa']));
+        KerusakanFasilSosial::findOrFail($request->id_kerusakan_fasil_sosial)->update($request->only(['sekolah', 'tempat_ibadah', 'rumah_sakit', 'pasar', 'gedung_pemerintah', 'lain_lain']));
+        KerusakanInfrastruktur::findOrFail($request->id_kerusakan_infrastruktur)->update($request->only(['desc_kerusakan']));
+        Personil::findOrFail($request->id_personil)->update($request->only(['pengurus', 'staff_markas_kabkota', 'staff_markas_prov', 'staff_markas_pusat', 'relawan_pmi_kabkot', 'relawan_pmi_prov', 'relawan_pmi_linprov', 'sukarelawan_sp']));
+        Tsr::findOrFail($request->id_tsr)->update($request->only(['medis', 'paramedis', 'relief', 'logistik', 'watsan', 'it_telkom', 'sheltering']));
+        AlatTdb::findOrFail($request->id_alat_tdb)->update($request->only(['kend_ops', 'truk_angkut', 'truk_tanki', 'double_cabin', 'alat_du', 'ambulans', 'alat_watsan', 'rs_lapangan', 'alat_pkdd', 'gudang_lapangan', 'posko_aju', 'alat_it_lapangan']));
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data berhasil diperbarui.',
+        ]);
+    }
+
     public function delete_assessment(string $id)
     {
         // Ambil data assessment berdasarkan id
@@ -184,10 +444,380 @@ class RelawanController extends Controller
     }
 
     // CREATE, UPDATE, DELETE LAPORAN SITUASI
+    public function response_lapsit($id)
+    {
+        $lapsit = KejadianBencana::where('id_kejadian', $id) // Nama fungsi relasi dalam model Report
+            ->with([
+                'jenisKejadian',
+                'assessment.report',
+                'admin',
+                'relawan',
+                'mobilisasiSd.personil',
+                'mobilisasiSd.tsr',
+                'mobilisasiSd.alatTdb',
+                'giatPmi.evakuasiKorban',
+                'giatPmi.layananKorban',
+                'dokumentasi',
+                'narahubung',
+                'petugasPosko',
+                'dampak.korbanTerdampak',
+                'dampak.korbanJlw',
+                'dampak.kerusakanRumah',
+                'dampak.kerusakanFasilitasSosial',
+                'dampak.kerusakanInfrastruktur',
+                'dampak.pengungsian'
+            ])
+            ->first();
+        ;
+
+        $lapsit->locationName = $this->getLocationName($lapsit->assessment->report->lokasi_latitude, $lapsit->assessment->report->lokasi_longitude);
+        $lapsit->googleMapsLink = $this->getGoogleMapsLink($lapsit->assessment->report->lokasi_latitude, $lapsit->assessment->report->lokasi_longitude);
+        $lapsit->waktuKejadian = $this->formatDateTime($lapsit->assessment->report->timestamp_report);
+        $lapsit->updateAt = $this->formatDateTime($lapsit->assessment->report->updated_at);
+
+        return response()->json($lapsit);
+        // return view('relawan.assessment.view', compact('assessment'));
+
+    }
+    public function view_lapsit($id)
+    {
+        $lapsit = KejadianBencana::where('id_kejadian', $id) // Nama fungsi relasi dalam model Report
+            ->with([
+                'jenisKejadian',
+                'assessment.report',
+                'admin',
+                'relawan',
+                'mobilisasiSd.personil',
+                'mobilisasiSd.tsr',
+                'mobilisasiSd.alatTdb',
+                'giatPmi.evakuasiKorban',
+                'giatPmi.layananKorban',
+                'dokumentasi',
+                'narahubung',
+                'petugasPosko',
+                'dampak.korbanTerdampak',
+                'dampak.korbanJlw',
+                'dampak.kerusakanRumah',
+                'dampak.kerusakanFasilitasSosial',
+                'dampak.kerusakanInfrastruktur',
+                'dampak.pengungsian'
+            ])
+            ->first();
+        ;
+
+        $lapsit->locationName = $this->getLocationName($lapsit->assessment->report->lokasi_latitude, $lapsit->assessment->report->lokasi_longitude);
+        $lapsit->googleMapsLink = $this->getGoogleMapsLink($lapsit->assessment->report->lokasi_latitude, $lapsit->assessment->report->lokasi_longitude);
+        $lapsit->waktuKejadian = $this->formatDateTime($lapsit->assessment->report->timestamp_report);
+        $lapsit->updateAt = $this->formatDateTime($lapsit->assessment->report->updated_at);
+
+        $lapsit->korbanTerdampak = $lapsit->dampak->korbanTerdampak;
+        $lapsit->korbanJlw = $lapsit->dampak->korbanJlw;
+        $lapsit->kerusakanRumah = $lapsit->dampak->kerusakanRumah;
+        $lapsit->kerusakanFasilitasSosial = $lapsit->dampak->kerusakanFasilitasSosial;
+        $lapsit->kerusakanInfrastruktur = $lapsit->dampak->kerusakanInfrastruktur;
+        $lapsit->pengungsian = $lapsit->dampak->pengungsian;
+        $lapsit->evakuasiKorban = $lapsit->giatPmi->evakuasiKorban;
+        $lapsit->layananKorban = $lapsit->giatPmi->layananKorban;
+        $lapsit->personil = $lapsit->mobilisasiSd->personil;
+        $lapsit->tsr = $lapsit->mobilisasiSd->tsr;
+        $lapsit->alatTdb = $lapsit->mobilisasiSd->alatTdb;
+
+        $assessment = $lapsit->assessment;
+
+        return view('relawan.lapsit.view', compact('lapsit', 'assessment'));
+
+        // return response()->json($assessment);
+
+    }
+
     public function create_lapsit()
     {
         //
-        return view('relawan.lapsit.create');
+        //$jenisKejadian = DB::table('jenis_kejadian')->get();
+
+        $lapsit = DB::table('kejadian_bencana')->join('dampak', 'kejadian_bencana.id_kejadian', '=', 'dampak.id_kejadian')->join('assessment', 'kejadian_bencana.id_assessment', '=', 'assessment.id_assessment')->
+            join('mobilisasi_sd', 'kejadian_bencana.id_mobilisasi_sd', '=', 'mobilisasi_sd.idmobilisasi_sd')->join('giat_pmi', 'kejadian_bencana.id_giat_pmi', '=', 'giat_pmi.id_giat_pmi')->
+            join('lampiran_dokumentasi', 'kejadian_bencana.id_dokumentasi', '=', 'lampiran_dokumentasi.id_dokumentasi')->join('personil_narahubung', 'kejadian_bencana.id_narahubung', '=', 'personil_narahubung.id_narahubung')->
+            join('petugas_posko', 'kejadian_bencana.id_petugas_posko', '=', 'petugas_posko.id_petugas_posko')->join('user', 'kejadian_bencana.id_admin', '=', 'user.id_user')->
+            join('user', 'kejadian_bencana.id_relawan', '=', 'user.id_user')->join('mobilisasi_sd', 'personil.id_personil', '=', 'mobilisasi_sd.id_personil')->join('mobilisasi_sd', 'alat_tdb.id_alat_tdb', '=', 'mobilisasi_sd.id_mobilisasi_sd')->
+            join('mobilisasi_sd', 'tsr.id_tsr', '=', 'mobilisasi_sd.id_tsr')->join('giat_pmi', 'evakuasi_korban.id_evakuasikorban', '=', 'giat_pmi.id_evakuasikorban')->join('giat_pmi', 'layanan_korban.id_layanankorban', '=', 'giat_pmi.id_layanankorban')->
+            join('assessment', 'layanan_korban.id_assessment', '=', 'assessment.id_assessment')->join('dampak', 'korban_terdampak.id_korban_terdampak', '=', 'dampak.id_korban_terdampak')->join('dampak', 'kerusakan_rumah.id_kerusakan_rumah', '=', 'dampak.id_kerusakan_rumah')->
+            join('dampak', 'kerusakan_fasil_sosial.id_kerusakan_fasil_sosial', '=', 'dampak.id_kerusakan_fasil_sosial')->join('dampak', 'kerusakan_infrastruktur.id_kerusakan_infrastruktur', '=', 'dampak.id_kerusakan_infrastruktur')->
+            join('dampak', 'pengungsian.id_pengungsian', '=', 'dampak.id_pengungsian')->join('dampak', 'korban_jlw.id_korban_jlw', '=', 'dampak.id_korban_jlw')->first();
+
+        $jenisKejadian = JenisKejadian::all();
+        $kejadianBencana = KejadianBencana::all();
+
+        return view('relawan.lapsit.create', compact('jenisKejadian', 'kejadianBencana'));
+    }
+
+    public function store_lapsit(Request $request)
+    {
+        $validatedData = $request->validate([
+            //'id_jeniskejadian' => 'required|exists:jenis_kejadian,id_jeniskejadian',
+            'nama_kejadian' => 'required|string|max:255|exists:jenis_kejadian,nama_kejadian',
+            'lokasi' => 'required|string|max:255|exists:kejadian_bencana,lokasi',
+            'tanggal_kejadian' => 'required|date|exists:kejadian_bencana,tanggal_kejadian',
+            'update' => 'required|date|exists:kejadian_bencana,update',
+            'dukungan_internasional' => 'required|in:Ya, Tidak|exists:kejadian_bencana,dukungan_internasional',
+            'gambaran_situasi' => 'nullable|exists:kejadian_bencana,keterangan',
+            'akses_ke_lokasi' => 'required|in:Accessible, Not Accessible|exists:kejadian_bencana,akses_ke_lokasi',
+            /*'id_assessment' => 'nullable|exists:assessment,id_assessment',
+            'id_mobilisasi_sd' => 'nullable|exists:mobilisasi_sd,id_mobilisasi_sd',
+            'id_giat_pmi' => 'nullable|exists:giat_pmi,id_giat_pmi',
+            'id_dokumentasi' => 'nullable|exists:lampiran_dokumentasi,id_dokumentasi',
+            'id_narahubung' => 'nullable|exists:personil_narahubung,id_narahubung',
+            'id_petugas_posko' => 'nullable|exists:petugas_posko,id_petugas_posko',*/
+            'file_dokumentasi' => 'nullable|image:jpeg,jpg,png|max:2048|exists:lampiran_dokumentasi,file_dokumentasi',
+            'kk' => 'nullable|integer|exists:korban_terdampak,kk',
+            'jiwa' => 'nullable|integer|exists:korban_terdampak,jiwa',
+            'luka_berat' => 'nullable|integer|exists:korban_jlw,luka_berat',
+            'luka_ringan' => 'nullable|integer|exists:korban_jlw,luka_ringan',
+            'meninggal' => 'nullable|integer|exists:korban_jlw,meninggal',
+            'hilang' => 'nullable|integer|exists:korban_jlw,hilang',
+            'mengungsi' => 'nullable|integer|exists:korban_jlw,mengungsi',
+            'rusak_ringan' => 'nullable|integer|exists:kerusakan_rumah,rusak_ringan',
+            'rusak_sedang' => 'nullable|integer|exists:kerusakan_rumah,rusak_sedang',
+            'rusak_berat' => 'nullable|integer|exists:kerusakan_rumah,rusak_berat',
+            'sekolah' => 'nullable|integer|exists:kerusakan_fasil_sosial,sekolah',
+            'tempat_ibadah' => 'nullable|integer|exists:kerusakan_fasil_sosial,tempat_ibadah',
+            'rumah_sakit' => 'nullable|integer|exists:kerusakan_fasil_sosial,rumah_sakit',
+            'pasar' => 'nullable|integer|exists:kerusakan_fasil_sosial,pasar',
+            'gedung_pemerintah' => 'nullable|integer|exists:kerusakan_fasil_sosial,gedung_pemerintah',
+            'lain_lain' => 'nullable|integer|exists:kerusakan_fasil_sosial,lain_lain',
+            'desc_kerusakan' => 'nullable|string|max:255|exists:kerusakan_infrastruktur,desc_kerusakan',
+            'nama_lokasi' => 'nullable|string|max:255|exists:pengungsian,nama_lokasi',
+            'jumlah_kk' => 'nullable|integer|exists:pengungsian,kk',
+            'jumlah_orang' => 'nullable|integer|exists:pengungsian,jiwa',
+            'laki_laki' => 'nullable|integer|exists:pengungsian,laki_laki',
+            'perempuan' => 'nullable|integer|exists:pengungsian,perempuan',
+            'kurang_dari_5' => 'nullable|integer|exists:pengungsian,kurang_dari_5',
+            'antara_5_18' => 'nullable|integer|exists:pengungsian,atr_5_sampai_8',
+            'lebih_dari_18' => 'nullable|integer|exists:pengungsian,lebih_dari_18',
+            'jumlah' => 'nullable|integer|exists:pengungsian,jumlah',
+            'pengurus' => 'nullable|integer|exists:personil,pengurus',
+            'staff_markas_kabkota' => 'nullable|integer|eexists:personil,staff_markas_kabkota',
+            'staff_markas_prov' => 'nullable|integer|exists:personil,staff_markas_prov',
+            'staff_markas_pusat' => 'nullable|integer|exists:personil,staff_markas_pusat',
+            'relawan_pmi_kabkot' => 'nullable|integer|exists:personil,relawan_pmi_kabkot',
+            'relawan_pmi_prov' => 'nullable|integer|exists:personil,relawan_pmi_prov',
+            'relawan_pmi_linprov' => 'nullable|integer|exists:personil,relawan_pmi_linprov',
+            'sukarelawan_sp' => 'nullable|integer|exists:personil,sukarelawan_sp',
+            'medis' => 'nullable|integer|exists:tsr,medis',
+            'paramedis' => 'nullable|integer|exists:tsr,paramedis',
+            'relief' => 'nullable|integer|exists:tsr,relief',
+            'logistik' => 'nullable|integer|exists:tsr,logistik',
+            'watsan' => 'nullable|integer|exists:tsr,watsan',
+            'it_telekom' => 'nullable|integer|exists:tsr,it_telekom',
+            'sheltering' => 'nullable|integer|exists:tsr,sheltering',
+            'kend_ops' => 'nullable|integer|exists:alat_tdb,kend_ops',
+            'truk_angkut' => 'nullable|integer|exists:alat_tdb,truk_angkut',
+            'truk_tanki' => 'nullable|integer|exists:alat_tdb,truk_tanki',
+            'double_cabin' => 'nullable|integer|exists:alat_tdb,double_cabin',
+            'alat_du' => 'nullable|integer|exists:alat_tdb,alat_du',
+            'ambulans' => 'nullable|integer|exists:alat_tdb,ambulans',
+            'alat_watsan' => 'nullable|integer|exists:alat_tdb,alat_watsan',
+            'rs_lapangan' => 'nullable|integer|exists:alat_tdb,rs_lapangan',
+            'alat_pkdd' => 'nullable|integer|exists:alat_tdb,alat_pkdd',
+            'gudang_lapangan' => 'nullable|integer|exists:alat_tdb,gudang_lapangan',
+            'posko_aju' => 'nullable|integer|exists:alat_tdb,posko_aju',
+            'alat_it_lapangan' => 'nullable|integer|exists:alat_tdb,alat_it_lapangan',
+            'luka_ringanberat' => 'nullable|integer|exists:evakuasi_korban,luka_ringanberat',
+            'korban_meninggal' => 'nullable|integer|exists:evakuasi_korban,meninggal',
+            'keterangan' => 'nullable|string|max:255|exists:evakuasi_korban,keterangan',
+            'assessment' => 'nullable|in:On Process, Aktif, Selesai|exists:assessment,status',
+            'distribusi' => 'nullable|string|max:255|exists:layanan_korban,distribusi',
+            'evakuasi' => 'nullable|string|max:255|exists:layanan_korban,evakuasi',
+            'layanan_kesehatan' => 'nullable|string|max:255|exists:layanan_korban,layanan_kesehatan',
+            'dapur_umum' => 'nullable|string|max:255|exists:layanan_korban,dapur_umum',
+            'giat_pemerintah' => 'nullable|string|max:255|exists:kejadian_bencana,giat_pemerintah',
+            'hambatan' => 'nullable|string|max:255|exists:kejadian_bencana,hambatan',
+            'kebutuhan' => 'nullable|string|max:255|exists:kejadian_bencana,kebutuhan',
+            'nama_lengkap' => 'nullable|string|max:255|exists:personil_narahubung,nama_lengkap',
+            'posisi' => 'nullable|string|max:255|exists:personil_narahubung,posisi',
+            'kontak' => 'nullable|string|max:255|exists:personil_narahubung,kontak',
+            'nama_lengkap_posko' => 'nullable|string|max:255|exists:petugas_posko,nama_lengkap',
+            'kontak_posko' => 'nullable|string|max:255|exists:petugas_posko,kontak',
+            //'status' => 'nullable',
+        ]);
+
+        //$user = DB::table('user')->->where('id_user', $idUser)->first();;
+
+
+
+        $assessment = Assessment::create([
+            'status' => $request->assessment,
+        ]);
+
+        /*$lampiranDokumentasi = $request->file('file_dokumentasi');
+        $filePath = $fileDokumentasi->store('documentation', 'public');*/
+
+        if ($request->hasFile('file_dokumentasi')) {
+            $file = $request->file('file_dokumentasi');
+            $filePath = $file->store('dokumentasi', 'public');
+            $lampiranDokumentasi = LampiranDokumentasi::create([
+                'file_dokumentasi' => $filePath,
+            ]);
+        } else {
+            $lampiranDokumentasi = LampiranDokumentasi::create([
+                'file_dokumentasi' => null,
+            ]);
+        }
+
+        $jenisKejadian = JenisKejadian::create([
+            'nama_kejadian' => $request->nama_kejadian,
+        ]);
+
+        //$jenisKejadian = JenisKejadian::table('jenis_kejadian')->get();
+
+        $personil = Personil::create([
+            'pengurus' => $request->pengurus,
+            'staff_markas_kabkot' => $request->staff_markas_kabkot,
+            'staff_markas_prov' => $request->staff_markas_prov,
+            'staff_markas_pusat' => $request->staff_markas_pusat,
+            'relawan_pmi_kabkot' => $request->relawan_pmi_kabkot,
+            'relawan_pmi_prov' => $request->relawan_pmi_prov,
+            'relawan_pmi_linprov' => $request->relawan_pmi_linprov,
+            'sukarelwan_sp' => $request->sukarelwan_sp,
+        ]);
+
+        $tsr = Tsr::create([
+            'medis' => $request->medis,
+            'paramedis' => $request->paramedis,
+            'relief' => $request->relief,
+            'logistik' => $request->logistik,
+            'watsan' => $request->watsan,
+            'it_telekom' => $request->it_telekom,
+            'sheltering' => $request->sheltering,
+        ]);
+
+        $alatTdb = AlatTdb::create([
+            'kend_ops' => $request->kend_ops,
+            'truk_angkut' => $request->truk_angkut,
+            'truk_tanki' => $request->truk_tanki,
+            'double_cabin' => $request->double_cabin,
+            'alat_du' => $request->alat_du,
+            'ambulans' => $request->ambulans,
+            'alat_watsan' => $request->alat_watsan,
+            'rs_lapangan' => $request->rs_lapangan,
+            'alat_pkdd' => $request->alat_pkdd,
+            'gudang_lapangan' => $request->gudang_lapangan,
+            'posko_aju' => $request->posko_aju,
+            'alat_it_lapangan' => $request->alat_it_lapangan,
+        ]);
+
+        $mobilisasiSd = MobilisasiSd::create([
+            //'id_mobilisasi_sd' => $request->id_mobilisasi_sd,
+            'id_personil' => $personil->id_personil,
+            'id_tsr' => $tsr->id_tsr,
+            'id_alat_tdb' => $alatTdb->id_alat_tdb,
+        ]);
+
+        $evakuasiKorban = EvakuasiKorban::create([
+            'luka_ringanberat' => $request->luka_ringanberat,
+            'meninggal' => $request->korban_meninggal,
+            'keterangan' => $request->keterangan,
+        ]);
+
+        $layananKorban = LayananKorban::create([
+            'id_assessment' => $assessment->id_assessment,
+            'distribusi' => $request->distribusi,
+            'dapur_umum' => $request->dapur_umum,
+            'evakuasi' => $request->evakuasi,
+            'layanan_kesehatan' => $request->layanan_kesehatan,
+        ]);
+
+        $giatPmi = GiatPMI::create([
+            //'id_giat_pmi' => $request->id_giat_pmi,
+            'id_evakuasikorban' => $evakuasiKorban->id_evakuasikorban,
+            'id_layanankorban' => $layananKorban->id_layanankorban,
+        ]);
+
+        $personilNarahubung = PersonilNarahubung::create([
+            'nama_lengkap' => $request->nama_lengkap,
+            'posisi' => $request->posisi,
+            'kontak' => $request->kontak,
+        ]);
+
+        $petugasPosko = PetugasPosko::create([
+            'nama_lengkap' => $request->nama_lengkap_posko,
+            'kontak' => $request->kontak_posko,
+        ]);
+
+        $lampiranDokumentasi = LampiranDokumentasi::create([
+            'file_dokumentasi' => $filePath,
+        ]);
+
+        $kejadianBencana = KejadianBencana::create([
+            'id_jeniskejadian' => $jenisKejadian->id_jeniskejadian,
+            'lokasi' => $request->lokasi,
+            'tanggal_kejadian' => $request->tanggal_kejadian,
+            'update' => $request->update,
+            'dukungan_internasional' => $request->dukungan_internasional,
+            'akses_ke_lokasi' => $request->akses_ke_lokasi,
+            'id_assessment' => $assessment->id_assessment,
+            'id_mobilisasi_sd' => $mobilisasiSd->id_mobilisasi_sd,
+            'id_giat_pmi' => $giatPmi->id_giat_pmi,
+            'id_dokumentasi' => $lampiranDokumentasi->id_dokumentasi,
+            'id_narahubung' => $personilNarahubung->id_narahubung,
+            'id_petugas_posko' => $petugasPosko->id_petugas_posko,
+        ]);
+
+        $korbanTerdampak = KorbanTerdampak::create([
+            'kk' => $request->kk,
+            'jiwa' => $request->jiwa,
+        ]);
+
+        $korbanJiwa = KorbanJlw::create([
+            'luka_berat' => $request->luka_berat,
+            'luka_ringan' => $request->luka_ringan,
+            'meninggal' => $request->meninggal,
+            'hilang' => $request->hilang,
+            'mengungsi' => $request->mengungsi,
+        ]);
+
+        $kerusakanRumah = KerusakanRumah::create([
+            'rusak_berat' => $request->rusak_berat,
+            'rusak_sedang' => $request->rusak_sedang,
+            'rusak_ringan' => $request->rusak_ringan,
+        ]);
+
+        $kerusakanFasos = KerusakanFasilSosial::create([
+            'sekolah' => $request->sekolah,
+            'tempat_ibadah' => $request->tempat_ibadah,
+            'rumah_sakit' => $request->rumah_sakit,
+            'pasar' => $request->pasar,
+            'gedung_pemerintah' => $request->gedung_pemerintah,
+            'lain_lain' => $request->lain_lain,
+        ]);
+
+        $kerusakanInfrastruktur = KerusakanInfrastruktur::create([
+            'desc_infrastruktur' => $request->desc_infrastruktur,
+        ]);
+
+        $pengungsian = Pengungsian::create([
+            'nama_lokasi' => $request->nama_lokasi,
+            'kk' => $request->jumlah_kk,
+            'jiwa' => $request->jumlah_orang,
+            'laki_laki' => $request->laki_laki,
+            'perempuan' => $request->perempuan,
+            'kurang_dari_5' => $request->kurang_dari_5,
+            'atr_5_18' => $request->antara_5_18,
+            'lebih_dari_18' => $request->lebih_dari_188,
+            'jumlah' => $request->jumlah,
+        ]);
+
+        $dampak = Dampak::create([
+            'id_korban_terdampak' => $korbanTerdampak->id_korban_terdampak,
+            'id_kerusakan_rumah' => $kerusakanRumah->id_kerusakan_rumah,
+            'id_kerusakan_fasil_sosial' => $kerusakanFasos->id_kerusakan_fasil_sosial,
+            'id_kerusakan_infrastruktur' => $kerusakanInfrastruktur->id_kerusakan_infrastruktur,
+            'id_pengungsian' => $pengungsian->id_pengungsian,
+            'id_kejadian' => $kejadianBencana->id_kejadian,
+            'id_korban_jlw' => $korbanJiwa->id_korban_jlw,
+        ]);
+
+        return redirect('relawan.lapsit.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     public function edit_lapsit($id)
@@ -225,6 +855,11 @@ class RelawanController extends Controller
         $kejadianBencana->update($validatedData);
 
         return redirect()->route('relawan.lapsit.index')->with('success', 'Laporan situasi berhasil diperbarui.');
+    }
+    public function delete_lapsit(string $id)
+    {
+
+        return redirect('relawan.lapsit.index')->with('success', 'Laporan berhasil dihapus');
     }
 
     public function detail_lapsit()

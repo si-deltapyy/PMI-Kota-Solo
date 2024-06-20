@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http; // Import Http Facade
 use Spatie\Permission\Models\Role;
 
 
-class pdfController extends Controller
+class PDFController extends Controller
 {
 
 
@@ -24,6 +24,42 @@ class pdfController extends Controller
 
         // return $pdf->stream(); 
 
+    }
+
+    public function test()
+    {
+        notify()->success('Hi Admin , welcome to codelapan');
+        return view('pdf.flash-report');
+    }
+
+    public function checkExportPDF()
+    {
+        // notify()->success('Hi Admin , welcome to codelapan');
+        // return view('pdf.flash-report');
+
+        // Load the PDF view with the data
+        // bisa ganti nama file
+        $pdf = PDF::loadView('pdf.flash-report');
+        $pdf->setPaper('A4', 'landscape');
+
+        // Stream the PDF for download
+        return $pdf->stream('laporan-kejadian.pdf');
+
+        
+    }
+
+    public function checkViewPDF()
+    {
+        // bisa ganti nama file blade
+        return view('pdf.flash-report');
+
+        // Load the PDF view with the data
+        // bisa ganti nama file
+        // $pdf = PDF::loadView('pdf.flash-report');
+        // $pdf->setPaper('A4', 'landscape');
+
+        // Stream the PDF for download
+        // return $pdf->stream('laporan-kejadian.pdf');
     }
 
     public function downloadPDF()
@@ -77,7 +113,7 @@ class pdfController extends Controller
 
         // return view('pdf.laporan-kejadian', $data);
 
-        $pdf = PDF::loadView('pdf.assessment', $data);
+        $pdf = PDF::loadView('pdf.lapsit', $data);
 
         return $pdf->stream('laporan-kejadian.pdf');
     }
