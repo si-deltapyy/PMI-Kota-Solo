@@ -26,6 +26,8 @@ Route::get('admin/select-laporan-kejadian/verified', [SelectStatusController::cl
 
 Route::get('reports/{id}/pdf', [App\Http\Controllers\PDFController::class, 'exportLaporanKejadian'])->name('reports.pdf');
 Route::get('reports/{id}/view', [App\Http\Controllers\PDFController::class, 'viewLaporanKejadian']);
+Route::get('pdf/view', [App\Http\Controllers\PDFController::class, 'checkViewPDF']);
+Route::get('pdf/check', [App\Http\Controllers\PDFController::class, 'checkExportPDF']);
 
 //route to pdf export
 Route::post('users/view-pdf/{id}', [PDFController::class, 'viewPDF'])->name('view-pdf');
