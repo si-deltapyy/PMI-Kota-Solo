@@ -27,7 +27,7 @@ class ReportFactory extends Factory
             'id_jeniskejadian' => $this->faker->numberBetween(1, 6),
             'keterangan' => $this->faker->sentence,
             'timestamp_report' => now(),
-            'status' => $this->faker->randomElement(['On Process', 'Selesai', 'Belum Diverifikasi']),
+            'status' => $this->faker->randomElement(['On Process', 'Valid', 'Invalid']),
             'lokasi_longitude' => $this->faker->longitude,
             'lokasi_latitude' => $this->faker->latitude,
         ];

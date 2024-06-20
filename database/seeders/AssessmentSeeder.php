@@ -15,20 +15,14 @@ class AssessmentSeeder extends Seeder
     {
         DB::table('assessment')->insert([
             [
-                'id_user' => 2,
+                'id_relawan' => 2,
                 'id_report' => 1,
-                'timestamp_verifikasi' => Carbon::now(),
-                'hasil_verifikasi' => 'Verification result 1',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'status' => 'On Process'
             ],
             [
-                'id_user' => 2,
+                'id_relawan' => 2,
                 'id_report' => 2,
-                'timestamp_verifikasi' => Carbon::now(),
-                'hasil_verifikasi' => 'Verification result 2',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'status' => 'Aktif'
             ],
             // Add more entries as needed
         ]);

@@ -42,6 +42,32 @@ class SelectStatusController extends Controller
         return response()->json($reports);
     }
 
+    public function admin_laporan_kejadian(Request $request)
+    {
+        $status = $request->query('status');
+        $id_user = Auth::id(); // Get the authenticated user's ID
+
+        if ($status) {
+            $reports = Report::with('jenisKejadian') // Nama fungsi relasi dalam model Report
+                ->where('status', $status)
+                ->get();
+        } else {
+            $reports = Report::with('jenisKejadian')
+                ->get();
+        }
+
+        // Iterate through each report and add 'nama_kejadian' from the related jenisKejadian
+        $reports->each(function ($report) {
+            $report->id = $report->id_report;
+            $report->nama_kejadian = $report->jenisKejadian->nama_kejadian;
+            // Fetch location details
+            $report->locationName = $this->getLocationName($report->lokasi_latitude, $report->lokasi_longitude);
+            $report->googleMapsLink = $this->getGoogleMapsLink($report->lokasi_latitude, $report->lokasi_longitude);
+        });
+
+        return response()->json($reports);
+    }
+
     public function relawan_laporan_kejadian(Request $request)
     {
         $status = $request->query('status');

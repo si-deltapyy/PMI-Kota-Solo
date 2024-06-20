@@ -20,7 +20,6 @@ class Dampak extends Model
         'id_kerusakan_fasil_sosial',
         'id_kerusakan_infrastruktur',
         'id_pengungsian',
-        'id_kejadian',
     ];
 
     public function korbanTerdampak()
@@ -53,8 +52,4 @@ class Dampak extends Model
         return $this->belongsTo(Pengungsian::class, 'id_pengungsian');
     }
 
-    public function kejadianBencana()
-    {
-        return $this->belongsTo(KejadianBencana::class, 'id_kejadian');
-    }
 }

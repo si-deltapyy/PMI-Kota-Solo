@@ -10,8 +10,7 @@
         <p class="card-description">{{ $description }}</p>
         <div class="home-tab">
             <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                @if (auth()->user()->getRoleNames()->first() != "admin")
-                    @if ($baseUrl != "lapsit")
+                    @if ($baseUrl != "lapsit" && $baseUrl != "assessment/unverified" && $baseUrl != "assessment/verified")
                         <div class="dropdown">
                             <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuSizeButton3"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -25,12 +24,13 @@
                             </div>
                         </div>
                     @endif
+                    @if ($baseUrl != "assessment/unverified" && $baseUrl != "assessment/verified" && $baseUrl != "lapsit" || auth()->user()->getRoleNames()->first() != "admin")
                     <div class="btn-wrapper ms-auto">
                         <a href="{{ $createRoute }}" class="btn btn-primary text-white me-0">
                             <i class="icon-download"></i> Tambah Data
                         </a>
                     </div>
-                @endif
+                    @endif
             </div>
         </div>
         <div>

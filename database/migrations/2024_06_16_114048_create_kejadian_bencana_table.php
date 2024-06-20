@@ -26,6 +26,7 @@ return new class extends Migration
             $table->enum('giat_pemerintah', ['Ya', 'Tidak']);
             $table->string('hambatan');
             $table->unsignedBigInteger('id_assessment');
+            $table->unsignedBigInteger('id_dampak');
             $table->unsignedBigInteger('id_mobilisasi_sd');
             $table->unsignedBigInteger('id_giat_pmi');
             $table->unsignedBigInteger('id_dokumentasi');
@@ -39,6 +40,7 @@ return new class extends Migration
             $table->foreign('id_relawan')->references('id')->on('users')->onDelete('CASCADE');
             $table->foreign('id_admin')->references('id')->on('users')->onDelete('CASCADE');
             $table->foreign('id_assessment')->references('id_assessment')->on('assessment')->onDelete('CASCADE');
+            $table->foreign('id_dampak')->references('id_dampak')->on('dampak')->onDelete('CASCADE');
             $table->foreign('id_mobilisasi_sd')->references('id_mobilisasi_sd')->on('mobilisasi_sd')->onDelete('CASCADE');
             $table->foreign('id_giat_pmi')->references('id_giatpmi')->on('giat_pmi')->onDelete('CASCADE');
             $table->foreign('id_dokumentasi')->references('id_dokumentasi')->on('lampiran_dokumentasi')->onDelete('CASCADE');

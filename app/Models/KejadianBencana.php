@@ -27,6 +27,7 @@ class KejadianBencana extends Model
         'giat_pemerintah',
         'hambatan',
         'id_assessment',
+        'id_dampak',
         'id_mobilisasi_sd',
         'id_giat_pmi',
         'id_dokumentasi',
@@ -81,5 +82,10 @@ class KejadianBencana extends Model
     public function petugasPosko()
     {
         return $this->belongsTo(PetugasPosko::class, 'id_petugas_posko');
+    }
+
+    public function dampak()
+    {
+        return $this->belongsTo(Dampak::class, 'id_dampak');
     }
 }

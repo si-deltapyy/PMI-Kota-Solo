@@ -18,7 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_kerusakan_fasil_sosial');
             $table->unsignedBigInteger('id_kerusakan_infrastruktur');
             $table->unsignedBigInteger('id_pengungsian');
-            $table->unsignedBigInteger('id_kejadian');
             $table->unsignedBigInteger('id_korban_jlw');
 
             $table->timestamps();
@@ -29,7 +28,6 @@ return new class extends Migration
             $table->foreign('id_kerusakan_fasil_sosial')->references('id_kerusakan_fasil_sosial')->on('kerusakan_fasil_sosial')->onDelete('CASCADE');
             $table->foreign('id_kerusakan_infrastruktur')->references('id_kerusakan_infrastruktur')->on('kerusakan_infrastruktur')->onDelete('CASCADE');
             $table->foreign('id_pengungsian')->references('id_pengungsian')->on('pengungsian')->onDelete('CASCADE');
-            $table->foreign('id_kejadian')->references('id_kejadian')->on('kejadian_bencana')->onDelete('CASCADE');
         });
     }
 
