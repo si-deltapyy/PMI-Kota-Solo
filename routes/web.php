@@ -11,14 +11,27 @@ use App\Http\Controllers\PengelolaProfilController;
 
 
 Auth::routes();
+// Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+// Route::post('register', [RegisterController::class, 'register']);
+
+Route::any('/', function()
+{
+    return 'default loads';
+});
 
 Route::get('/', function () {
     return view('welcome');
+    
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/relawan/assessment/response/{id}', [RelawanController::class, 'response_assessment'])->name('relawan-view-assessment');
+Route::get('/relawan/lapsit/response/{id}', [RelawanController::class, 'response_lapsit'])->name('relawan-view-assessment');
+
 Route::get('relawan/select-laporan-kejadian', [SelectStatusController::class, 'relawan_laporan_kejadian']);
+Route::get('relawan/select-assessment', [SelectStatusController::class, 'relawan_assessment']);
+Route::get('relawan/select-lapsit', [SelectStatusController::class, 'relawan_lapsit']);
 Route::get('admin/select-laporan-kejadian', [SelectStatusController::class, 'admin_laporan_kejadian']);
 
 Route::get('admin/select-laporan-kejadian/unverified', [SelectStatusController::class, 'admin_laporan_kejadian_unverified']);
@@ -45,18 +58,20 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::get('/relawan/lapsit', [RelawanController::class, 'index_lapsit'])->name('relawan-lapsit');
     Route::get('/relawan/lapsit/create', [RelawanController::class, 'create_lapsit'])->name('create-lapsit');
     Route::post('/relawan/lapsit/store', [RelawanController::class, 'store_lapsit'])->name('store-lapsit'); //store
-    Route::get('/relawan/lapsit/{id}/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit
+    Route::get('/relawan/lapsit/edit/{id}', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit
     Route::put('/relawan/lapsit/{id}', [RelawanController::class, 'update_lapsit'])->name('edit-lapsit.update'); //edit
     // Route::post('/relawan/lapsit/{id}/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit
-    Route::get('/relawan/lapsit/detail', [RelawanController::class, 'detail_lapsit'])->name('detail-lapsit');
-    Route::get('/relawan/assesment', [RelawanController::class, 'index_assessment'])->name('relawan-assessment');
-    Route::get('/relawan/assesment/create', [RelawanController::class, 'create_assessment'])->name('create-assessment');
-    Route::post('/relawan/assesment/{id}/edit', [RelawanController::class, 'edit_assessment'])->name('edit-assessment'); //edit
-    Route::delete('/relawan/assesment/delete/{id}', [RelawanController::class, 'delete_assessment'])->name('delete-assessment'); //edit
+    Route::get('/relawan/lapsit/view/{id}', [RelawanController::class, 'view_lapsit'])->name('relawan-view-lapsit');
+    Route::get('/relawan/assessment', [RelawanController::class, 'index_assessment'])->name('relawan-assessment');
+    Route::get('/relawan/assessment/view/{id}', [RelawanController::class, 'view_assessment'])->name('relawan-view-assessment');
+    Route::get('/relawan/assessment/create', [RelawanController::class, 'create_assessment'])->name('create-assessment');
+    Route::get('/relawan/assessment/edit/{id_assessment}', [RelawanController::class, 'edit_assessment'])->name('edit-assessment'); //edit
+    Route::post('/relawan/assessment/update/{id}', [RelawanController::class, 'update_assessment'])->name('update-assessment'); //edit
+    Route::delete('/relawan/assessment/delete/{id}', [RelawanController::class, 'delete_assessment'])->name('delete-assessment'); //edit
 });
 
 //test middleware pengelola profil role
-Route::group(['middleware' => ['auth', 'role:pengelola_profil']], function () {
+Route::group(['middleware' => ['auth',  'role:pengelola_profil']], function () {
     Route::get('/pengelolaProfil/dashboard', [PengelolaProfilController::class, 'index'])->name('pengelolaProfil-home');
     Route::get('/pengelolaProfil/user_management', [PengelolaProfilController::class, 'user_management'])->name('pengelola-user');
     Route::get('/pengelolaProfil/user_management/{id}/edit', [PengelolaProfilController::class, 'user_management_edit'])->name('pengelola-user.edit');
@@ -69,15 +84,19 @@ Route::group(['middleware' => ['auth', 'role:pengelola_profil']], function () {
     Route::get('/pengelolaProfil/{id}/editRelawan', [PengelolaProfilController::class, 'edit_relawan'])->name('pengelolaProfiledit_relawan');
     Route::put('/pengelolaProfil/{id}/editRelawan', [PengelolaProfilController::class, 'update_relawan'])->name('pengelolaProfil.update_relawan');
     Route::get('/pengelolaProfil/{id}/relawan',  [PengelolaProfilController::class, 'show_relawan'])->name('pengelolaProfil.show_relawan');
-    Route::get('/pengelolaProfil/hapus-relawan/{id}/hapusRelawan', [PengelolaProfilController::class, 'destroy_relawan'])->name('pengelola-user-hapusRelawan');
+    Route::delete('/pengelolaProfil/hapus-relawan/{id}/hapusRelawan', [PengelolaProfilController::class, 'destroy_relawan'])->name('pengelola-user-hapusRelawan');
     //admin CRUD
     Route::post('/pengelolaProfil/store-admin', [PengelolaProfilController::class, 'store_admin'])->name('pengelola-user-admin');  
     Route::get('/pengelolaProfil/add-admin', [PengelolaProfilController::class, 'create_admin'])->name('pengelola-add-admin');//nampilin view 
     Route::get('pengelolaProfil/{id}/edit', [PengelolaProfilController::class, 'edit_admin'])->name('pengelolaProfil.edit_admin');
     Route::put('pengelolaProfil/{id}/edit', [PengelolaProfilController::class, 'update_admin'])->name('pengelolaProfil.update_admin');
     Route::resource('pengelolaProfil', PengelolaProfilController::class);
-    Route::get('/pengelolaProfil/hapus-admin/{id}/hapus', [PengelolaProfilController::class, 'destroy_admin'])->name('pengelola-user-hapusAdmin');
+    Route::delete('/pengelolaProfil/hapus-admin/{id}/hapus', [PengelolaProfilController::class, 'destroy_admin'])->name('pengelola-user-hapusAdmin');
     Route::get('pengelolaProfil/{id}',  [PengelolaProfilController::class, 'show_admin'])->name('pengelolaProfil.show_admin');
+
+    // approval 
+    Route::get('/pengelolaProfil/approve', [PengelolaProfilController::class, 'show_ApprovalPage'])->name('approval.page');
+    Route::post('/pengelolaProfil/approved/{id}', [PengelolaProfilController::class, 'approveUser'])->name('approve.user');
 });
 //test middleware admin role
 Route::group(['middleware' => ['auth', 'role:admin']], function () {

@@ -15,12 +15,12 @@ class AssessmentSeeder extends Seeder
     {
         DB::table('assessment')->insert([
             [
-                'id_relawan' => 2,
+                'id_relawan' => 3,
                 'id_report' => 1,
                 'status' => 'On Process'
             ],
             [
-                'id_relawan' => 2,
+                'id_relawan' => 3,
                 'id_report' => 2,
                 'status' => 'Aktif'
             ],

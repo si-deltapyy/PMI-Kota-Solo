@@ -18,6 +18,58 @@
                 <i class="fa fa-bars"></i>
             </button>
 
+            <!-- modal sukses-tidak -->
+            <!-- Success Modal -->
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="successModalLabel">Success</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {{ session('success') }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Modal -->
+            <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {{ session('error') }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Check for session messages and trigger modals -->
+            @if(session('success'))
+                <script>
+                    var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                    successModal.show();
+                </script>
+            @endif
+
+            @if(session('error'))
+                <script>
+                    var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                    errorModal.show();
+                </script>
+            @endif
+
             <!-- Topbar Search -->
             <form
                 class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="GET" action="{{ route('pengelola-relawan') }}">
@@ -37,7 +89,11 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card card-rounded">
                         <div class="card-body">
-                        <div class="d-sm-flex justify-content-between align-items-center">
+                        <div class="w-80 text-center">
+                            <h1 class="card-title card-title-dash">LIST RELAWAN</h1>
+                        </div>
+                        <br>
+                        <!-- <div class="d-sm-flex justify-content-between align-items-center">
                             <div class="w-100 text-center">
                                 <h1 class="card-title card-title-dash">LIST RELAWAN</h1>
                             </div>
@@ -55,42 +111,116 @@
                                 </div>
                             </form>
                             </div>
-                        </div>
+                        </div> -->
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
                        
-                      
+                            <!-- Add Filter Buttons -->
+                            <div>
+                            <a href="{{ route('pengelola-relawan', ['status' => 'approved'] && ['status' => 'approved']) }}" class="btn btn-outline-primary btn-sm @if(empty(request('status'))) active @endif">All</a>
+                                <a href="{{ route('pengelola-relawan', ['status' => 'approved']) }}" class="btn btn-outline-success btn-sm @if(request('status') == 'approved') active @endif">Approved</a>
+                                <a href="{{ route('pengelola-relawan', ['status' => 'not_approved']) }}" class="btn btn-outline-danger btn-sm @if(request('status') == 'not_approved') active @endif">Not Approved</a>
+                            </div>
+                            <!-- Add Search Form -->
+                            <form class="search-form ms-auto" method="GET" action="{{ route('pengelola-relawan') }}">
+                                <div class="input-group">
+                                    <input type="search" name="search" class="form-control" placeholder="Search Here" value="{{ request('search') }}">
+                                    <span class="input-group-text"><i class="icon-search"></i></span>
+                                </div>
+                            </form>
+                        </div>
+
+                       
+                       
+                        
                             <div class="table-responsive  ">
-                            <table class="table ">
+                            <table class="table">
                                 <thead>
-                                <tr>
-                                    <th>Nama</th>
-                                    <th>Email</th>
-                                    <th>Username</th>
-                                    <th>Action</th>
-                                    
-                                </tr>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Email</th>
+                                        <th>Username</th>
+                                        <th>Status</th>
+                                        <th colspan="2" style="text-align: center">Action</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($user as $list)
+                                    @if (empty(request('status')) || (request('status') == 'approved' && $list->is_approved) || (request('status') == 'not_approved' && !$list->is_approved))
                                     <tr>
-                                            <td>{{$list->name}}</td>
-                                            <td>{{$list->email}}</td>
-                                            <td>{{$list->username}}</td>
-                                            <td>
-                                            <a href="{{ route('pengelolaProfiledit_relawan', $list->id) }}">
-                                                <label class="btn btn-info btn-sm"><i class="mdi mdi-pencil"></i></label>
-                                            </a>
-
-                                                <a href="{{ route('pengelola-user-hapusRelawan',  $list->id) }}">
-                                                    <label class="btn btn-danger btn-sm"><i class="mdi mdi-delete-forever"></i></label>
-                                                </a>
-                                            </td>
-                                </tr>
-                                @endforeach
+                                        <td>{{$list->name}}</td>
+                                        <td>{{$list->email}}</td>
+                                        <td>{{$list->username}}</td>
+                                        <td>{{$list->is_approved ? 'Approved' : 'Not Approved' }}</td>
+                                        <td>
+                                            <a href="{{ route('pengelolaProfiledit_relawan', $list->id) }}" class="btn btn-info btn-sm"><i class="mdi mdi-pencil"></i></a>
                                             
+                                        <!-- </td> -->
+                                        <!-- <td> -->
+                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $list->id }}"><i class="mdi mdi-delete-forever"></i></button>
+                                        <!-- </td> -->
+                                        <!-- <td> -->
+                                            @if (!$list->is_approved)
+                                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#approveModal{{ $list->id }}" @if ($list->is_approved) disabled @endif>Approve</button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    @endforeach
                                 </tbody>
                             </table>
+
                             </div>
-                           
+                            <!-- Modals  approve-->
+                            @foreach($user as $list)
+                            <div class="modal fade" id="approveModal{{ $list->id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $list->id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel{{ $list->id }}">Approve User</h5>
+                                            <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Apakah yakin ingin memberi akses relawan pada akun ini?</div>
+                                        <div class="modal-footer">
+                                            <form action="{{ route('approve.user', $list->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-success">Approve</button>
+                                            </form>
+                                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                            <!-- endmodals -->
+
+                           <!-- Modals -->
+                            @foreach($user as $list)
+                            <div class="modal fade" id="deleteModal{{ $list->id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $list->id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel{{ $list->id }}">Yakin untuk hapus data?</h5>
+                                            <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Tekan tombol di bawah ini untuk menghapus data.</div>
+                                        <div class="modal-footer">
+                                            <form action="{{ route('pengelola-user-hapusRelawan', $list->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">DELETE</button>
+                                            </form>
+                                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">CANCEL</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                            <!-- end modal -->
                         </div>
                     </div>
                 </div>

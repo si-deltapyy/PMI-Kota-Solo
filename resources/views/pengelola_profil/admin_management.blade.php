@@ -19,17 +19,7 @@
             </button>
 
             <!-- Topbar Search -->
-            <form
-                class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="GET" action="{{ route('pengelola-admin') }}">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" value="{{ request('search') }}">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="submit">
-                            <i class="fas fa-search fa-sm"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
+        
             
             @section('content')
             <div class="content-wrapper">
@@ -111,7 +101,9 @@
 
                                      
                                                 <a href="{{ route('pengelolaProfil.edit_admin', $list->id) }}"><label class="btn btn-info btn-sm"><i class="mdi mdi-pencil"></i></label></a> 
-                                                <a href="{{ route('pengelola-user-hapusAdmin', $list->id) }}"><label class="btn btn-danger btn-sm"><i class="mdi mdi-delete-forever"></i></label></a>
+                                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $list->id }}">
+                                                    <i class="mdi mdi-delete-forever"></i>
+                                                </button>
                                           
                                     </td>
                                 </tr>
@@ -120,6 +112,32 @@
                                 </tbody>
                             </table>
                             </div>
+
+                            <!-- Modals -->
+                        @foreach($user as $list)
+                        <div class="modal fade" id="deleteModal{{ $list->id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $list->id }}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel{{ $list->id }}">Yakin untuk hapus data?</h5>
+                                        <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">Tekan tombol di bawah ini untuk menghapus data.</div>
+                                    <div class="modal-footer">
+                                        <form action="{{ route('pengelola-user-hapusAdmin', $list->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">DELETE</button>
+                                        </form>
+                                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">CANCEL</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+<!-- end modal -->
                         </div>
                     </div>
                 </div>
@@ -132,29 +150,3 @@
 </div>
 @endsection
 
-<!-- <script>
-(function($) {
-  'use strict';
-  $('#confirmationModal').on('show.bs.modal', function(event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var action = button.data('action'); // Extract info from data-* attributes
-    var url = button.data('url'); // URL for the action
-
-    // Determine the message based on the action
-    var message = '';
-    if (action === 'edit') {
-      message = 'Apakah Anda yakin ingin mengedit akun Relawan ini?';
-    } else if (action === 'delete') {
-      message = 'Apakah Anda yakin ingin menghapus akun Relawan ini?';
-    }
-
-    // Update the modal's content
-    var modal = $(this);
-    modal.find('#confirmationMessage').text(message);
-    modal.find('#confirmationButton').attr('href', url);
-  });
-})(jQuery);
-</script> -->
-
-   
-    
