@@ -20,18 +20,16 @@
 
             <!-- Topbar Search -->
             <form
-                class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="GET" action="{{ route('pengelola-relawan') }}">
                 <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                        aria-label="Search" aria-describedby="basic-addon2">
+                    <input type="text" name="search" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" value="{{ request('search') }}">
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="button">
+                        <button class="btn btn-primary" type="submit">
                             <i class="fas fa-search fa-sm"></i>
                         </button>
                     </div>
                 </div>
             </form>
-
             
             @section('content')
             <div class="content-wrapper">
@@ -50,9 +48,9 @@
                                     <i class="mdi mdi-account-plus"></i> Tambah Akun
                              </a>
                             <div class="d-flex ms-auto align-items-center">
-                            <form class="search-form" action="#">  
+                            <form class="search-form" method="GET" action="{{ route('pengelola-relawan') }}">  
                                 <div class="input-group">
-                                    <input type="search" class="form-control" placeholder="Search Here" title="Search here">
+                                    <input type="search" name="search" class="form-control" placeholder="Search Here" title="Search here" value="{{ request('search') }}">
                                     <span class="input-group-text"><i class="icon-search"></i></span>
                                 </div>
                             </form>
@@ -72,30 +70,23 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($user as $list)
                                     <tr>
-                                            <td>aura</td>
-                                            <td>relawan@gmail</td>
-                                            <td>aura12</td>
-                                            <td><label class="btn btn-danger btn-sm">Hapus</label> <label class="btn btn-info btn-sm">Edit</label></td>
-                                    </tr>
-                                    <tr>
-                                            <td>sekar</td>
-                                            <td>relawan3@gmail</td>
-                                            <td>sekar12</td>
-                                            <td><label class="btn btn-danger btn-sm">Hapus</label> <label class="btn btn-info btn-sm">Edit</label></td>
-                                    </tr>
-                                    <tr>
-                                            <td>dyang</td>
-                                            <td>relawan2@gmail</td>
-                                            <td>dyang12</td>
-                                            <td><label class="btn btn-danger btn-sm">Hapus</label> <label class="btn btn-info btn-sm">Edit</label></td>
-                                    </tr>
-                                    <tr>
-                                            <td>raisa</td>
-                                            <td>relawan@gmail</td>
-                                            <td>raisa12</td>
-                                            <td><label class="btn btn-danger btn-sm">Hapus</label> <label class="btn btn-info btn-sm">Edit</label></td>
-                                    </tr>
+                                            <td>{{$list->name}}</td>
+                                            <td>{{$list->email}}</td>
+                                            <td>{{$list->username}}</td>
+                                            <td>
+                                            <a href="{{ route('pengelolaProfiledit_relawan', $list->id) }}">
+                                                <label class="btn btn-info btn-sm"><i class="mdi mdi-pencil"></i></label>
+                                            </a>
+
+                                                <a href="{{ route('pengelola-user-hapusRelawan',  $list->id) }}">
+                                                    <label class="btn btn-danger btn-sm"><i class="mdi mdi-delete-forever"></i></label>
+                                                </a>
+                                            </td>
+                                </tr>
+                                @endforeach
+                                            
                                 </tbody>
                             </table>
                             </div>

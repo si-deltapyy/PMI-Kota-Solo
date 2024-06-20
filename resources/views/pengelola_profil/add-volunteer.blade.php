@@ -28,24 +28,37 @@
             <div class="col-20 grid-margin stretch-card">
                 <div class="card card-rounded">
                   <div class="card-body">
-                    <h4 class="card-title">Menambahkan Akun Relawan</h4>
-                    
-                    <form class="forms-sample" action="post" >
+                    <h4 class="card-title">Menambahkan Akun Admin</h4>
+                    @if ($errors->any())
+                        <div>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <form class="forms-sample" action="{{ url('/pengelolaProfil/store-relawan') }}" method="POST">
+                      @csrf
                       <div class="form-group">
-                        <label for="exampleInputName1">Name</label>
-                        <input type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" class="form-control"  placeholder="Name" value="{{ old('name') }}" required>
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputName1">Username</label>
-                        <input type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="{{ old('username') }}" required>
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputEmail3">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="{{ old('email') }}" required>
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputPassword4">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="password_confirmation">Confirm Password</label>
+                        <input type="password" class="form-control" id="password_confirmation" placeholder="Password Confirm" name="password_confirmation" required>
                       </div>
                       
                       <button type="submit" class="btn btn-primary me-2">Submit</button>
