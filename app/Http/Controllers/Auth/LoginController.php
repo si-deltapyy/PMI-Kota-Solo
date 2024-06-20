@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\HasRoles;
 
 class LoginController extends Controller
 {
@@ -19,7 +20,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers, HasRoles;
 
     /**
      * Where to redirect users after login.
@@ -32,10 +33,13 @@ class LoginController extends Controller
 
         // Example role-based redirection
         if ($user->hasRole('admin')) {
+            notify()->preset('success', ['message' => 'Hi '.$user->name.' Selamat Datang']);
             return '/admin/dashboard';
         } elseif ($user->hasRole('relawan')) {
+            notify()->preset('success', ['message' => 'Hi '.$user->name.' Selamat Datang']);
             return '/relawan/dashboard';
         } elseif ($user->hasRole('pengelolaProfil')) {
+            notify()->preset('success', ['message' => 'Hi '.$user->name.' Selamat Datang']);
             return '/pengelolaProfil/dashboard';
         }
 

@@ -19,9 +19,12 @@ return new class extends Migration
             $table->unsignedBigInteger('id_kerusakan_infrastruktur');
             $table->unsignedBigInteger('id_pengungsian');
             $table->unsignedBigInteger('id_kejadian');
+            $table->unsignedBigInteger('id_korban_jlw');
+
             $table->timestamps();
 
             $table->foreign('id_korban_terdampak')->references('id_korban_terdampak')->on('korban_terdampak')->onDelete('CASCADE');
+            $table->foreign('id_korban_jlw')->references('id_korban_jlw')->on('korban_jlw')->onDelete('CASCADE');
             $table->foreign('id_kerusakan_rumah')->references('id_kerusakan_rumah')->on('kerusakan_rumah')->onDelete('CASCADE');
             $table->foreign('id_kerusakan_fasil_sosial')->references('id_kerusakan_fasil_sosial')->on('kerusakan_fasil_sosial')->onDelete('CASCADE');
             $table->foreign('id_kerusakan_infrastruktur')->references('id_kerusakan_infrastruktur')->on('kerusakan_infrastruktur')->onDelete('CASCADE');

@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kerusakan_infrastruktur', function (Blueprint $table) {
-            $table->id('id_kerusakan_infrastruktur');
-            $table->string('desc_kerusakan');
+        Schema::create('korban_jlw', function (Blueprint $table) {
+            $table->id('id_korban_jlw');
+            $table->integer('luka_berat');
+            $table->integer('luka_ringan');
+            $table->integer('meninggal');
+            $table->integer('hilang');
+            $table->integer('mengungsi');
             $table->timestamps();
         });
     }
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kerusakan_infrastruktur');
+        Schema::dropIfExists('korban_jlw');
     }
 };

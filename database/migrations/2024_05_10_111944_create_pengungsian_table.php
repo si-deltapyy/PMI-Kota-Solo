@@ -16,10 +16,12 @@ return new class extends Migration
             $table->string('nama_lokasi');
             $table->double('laki_laki');
             $table->double('perempuan');
-            $table->integer('<5');
-            $table->integer('>5_<=18');
-            $table->integer('>18');
+            $table->integer('kurang_dari_5');
+            $table->integer('atr_5_sampai_18');
+            $table->integer('lebih_dari_18');
             $table->integer('jumlah');
+            $table->integer('kk');
+            $table->integer('jiwa');
             $table->timestamps();
         });
     }

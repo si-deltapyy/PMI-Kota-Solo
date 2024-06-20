@@ -14,6 +14,6 @@ class KerusakanInfrastruktur extends Model
     protected $primaryKey = 'id_kerusakan_infrastruktur';
 
     protected $fillable = [
-        'desa_kerusakan',
+        'desc_kerusakan',
     ];
 }

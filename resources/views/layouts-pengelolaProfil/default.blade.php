@@ -3,6 +3,7 @@
 
 <head>
     @include('layouts.head')
+    @notifyCss
 </head>
 
 <body class="sb-nav-fixed">
@@ -11,6 +12,8 @@
 
     <div class="container-fluid page-body-wrapper">
         @include('layouts-pengelolaProfil.sidebar')
+
+        @include('notify::components.notify')
 
         @yield('content')
 

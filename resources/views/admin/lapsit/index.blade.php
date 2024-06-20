@@ -45,10 +45,18 @@
                     <td>{{$x->created_at}}</td>
                     <td>{{$x->updated_at}}</td>
                     <td>
+                      <div class="d-flex">
                       <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal"><i
                           class="menu-icon mdi mdi-information"></i></a>
-                      <a href="#" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#shareModal"><i
-                          class="menu-icon mdi mdi-share-variant"></i></a>
+                      <!-- <a href="#" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#shareModal"><i
+                          class="menu-icon mdi mdi-share-variant"></i></a> -->
+                          <form action="{{ route('share.lapsit', $x->id) }}" method="post">
+                              @csrf
+                              <button  class="btn btn-success text-white me-0 btn-sm">
+                                <i class="mdi mdi-whatsapp"></i>
+                              </button>
+                            </form>
+                      </div>
                     </td>
                   </tr>
 
@@ -157,6 +165,8 @@
                   
                 </tbody>
               </table>
+              <x-notify::notify />
+              @notifyJs
             </div>
           </div>
         </div>
