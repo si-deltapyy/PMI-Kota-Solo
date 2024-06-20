@@ -29,7 +29,7 @@ Route::get('reports/{id}/view', [App\Http\Controllers\PDFController::class, 'vie
 
 //route to pdf export
 Route::post('users/view-pdf/{id}', [PDFController::class, 'viewPDF'])->name('view-pdf');
-Route::post('users/download-pdf', [PDfController::class, 'downloadPDF'])->name('download-pdf');
+Route::post('users/download-pdf', [PDFController::class, 'downloadPDF'])->name('download-pdf');
 
 //test middleware relawan role
 Route::group(['middleware' => ['auth', 'role:relawan']], function () {
