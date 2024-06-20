@@ -47,7 +47,7 @@ Route::post('users/view-pdf/{id}', [PDFController::class, 'viewPDF'])->name('vie
 Route::post('users/download-pdf', [PDFController::class, 'downloadPDF'])->name('download-pdf');
 
 //test middleware relawan role
-Route::group(['middleware' => ['auth', 'approve', 'role:relawan']], function () {
+Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::get('/relawan/dashboard', [RelawanController::class, 'index'])->name('home-relawan');
     Route::get('/relawan/laporan-kejadian', [RelawanController::class, 'index_laporankejadian'])->name('relawan-laporankejadian');
     // Route::get('/relawan/laporan-kejadian/create', [RelawanController::class, 'create_laporankejadian'])->name('create-laporankejadian');
