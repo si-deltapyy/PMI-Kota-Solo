@@ -34,23 +34,30 @@ class AllSeeder extends Seeder
      */
     public function run(): void
     {
-        AlatTdb::factory(5)->create();
-        Assessment::factory(5)->create();
-        Dampak::factory(5)->create();
-        EvakuasiKorban::factory(5)->create();
-        GiatPmi::factory(5)->create();
-        KejadianBencana::factory(5)->create();
-        KerusakanFasilSosial::factory(5)->create();
-        KerusakanInfrastruktur::factory(5)->create();
-        KerusakanRumah::factory(5)->create();
-        KorbanTerdampak::factory(5)->create();
-        LampiranDokumentasi::factory(5)->create();
-        LayananKorban::factory(5)->create();
-        MobilisasiSd::factory(5)->create();
-        Pengungsian::factory(5)->create();
-        Personil::factory(5)->create();
-        PersonilNarahubung::factory(5)->create();
-        PetugasPosko::factory(5)->create();
-        Tsr::factory(5)->create();
+        $this->call([
+            RoleSeeder::class,
+            UserSeeder::class,
+            JenisKejadianSeeder::class,
+            AssessmentSeeder::class,
+            PersonilNarahubungSeeder::class,
+            PetugasPoskoSeeder::class,
+            PersonilSeeder::class,
+            TsrSeeder::class,
+            AlatTdbSeeder::class,
+            MobilisasiSdSeeder::class,
+            EvakuasiKorbanSeeder::class,
+            LayananKorbanSeeder::class,
+            GiatPmiSeeder::class,
+            KerusakanFasilSosialSeeder::class,
+            KerusakanInfrastrukturSeeder::class,
+            KorbanTerdampakSeeder::class,
+            KerusakanRumahSeeder::class,
+            PengungsianSeeder::class,
+            LampiranDokumentasiSeeder::class,
+            ReportsSeeder::class,
+            KorbanJlwSeeder::class,
+            DampakSeeder::class,
+            KejadianBencanaSeeder::class,
+        ]);
     }
 }

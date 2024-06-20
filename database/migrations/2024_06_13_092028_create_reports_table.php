@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id('id_report');
-            $table->unsignedBigInteger('id_admin');
+            $table->unsignedBigInteger('id_relawan');
             $table->unsignedBigInteger('id_jeniskejadian');
             $table->date('tanggal_kejadian');
             $table->text('keterangan');
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->double('lokasi_latitude')->nullable();
             $table->timestamps();
 
-            $table->foreign('id_admin')->references('id')->on('users')->onDelete('CASCADE');
+            $table->foreign('id_relawan')->references('id')->on('users')->onDelete('CASCADE');
             $table->foreign('id_jeniskejadian')->references('id_jeniskejadian')->on('jenis_kejadian')->onDelete('CASCADE');
         });
     }

@@ -15,30 +15,27 @@ class KerusakanRumahSeeder extends Seeder
     {
         DB::table('kerusakan_rumah')->insert([
             [
-                'luka_berat' => 5, // Number of serious injuries
-                'luka_ringan' => 10, // Number of minor injuries
-                'hilang' => 2, // Number of missing persons
-                'mengungsi' => 50, // Number of displaced individuals
+                'rusak_berat' => 10,
+                'rusak_sedang' => 20,
+                'rusak_ringan' => 30,
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ],
             [
-                'luka_berat' => 3,
-                'luka_ringan' => 8,
-                'hilang' => 1,
-                'mengungsi' => 40,
+                'rusak_berat' => 5,
+                'rusak_sedang' => 15,
+                'rusak_ringan' => 25,
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ],
             [
-                'luka_berat' => 7,
-                'luka_ringan' => 12,
-                'hilang' => 3,
-                'mengungsi' => 60,
+                'rusak_berat' => 8,
+                'rusak_sedang' => 12,
+                'rusak_ringan' => 22,
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ],
-            // Add more entries as needed
+            // Add more records as needed
         ]);
     }
 }

@@ -14,7 +14,7 @@ class Report extends Model
     protected $primaryKey = 'id_report';
 
     protected $fillable = [
-        'id_user',
+        'id_relawan',
         'id_jeniskejadian',
         'tanggal_kejadian',
         'keterangan',
@@ -26,7 +26,7 @@ class Report extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'id_relawan');
     }
 
     public function jenisKejadian()

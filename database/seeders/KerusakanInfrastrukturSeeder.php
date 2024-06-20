@@ -13,23 +13,25 @@ class KerusakanInfrastrukturSeeder extends Seeder
      */
     public function run(): void
     {
+
+        // Insert data
         DB::table('kerusakan_infrastruktur')->insert([
             [
-                'desa_kerusakan' => 'Desa A', // Replace with actual village name as a string
+                'desc_kerusakan' => 'Jembatan rusak parah',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ],
             [
-                'desa_kerusakan' => 'Desa B', // Replace with actual village name as a string
+                'desc_kerusakan' => 'Bangunan roboh',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ],
             [
-                'desa_kerusakan' => 'Desa C', // Replace with actual village name as a string
+                'desc_kerusakan' => 'Jalanan terbelah',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ],
-            // Add more entries as needed
+            // Add more records as needed
         ]);
     }
 }
