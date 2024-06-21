@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\ExsumChart;
 use App\Models\Report;
 use App\Models\User;
 use DateTime;
@@ -9,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\KejadianBencana;
 use App\Models\Assessment;
+use App\Models\Dampak;
 use App\Models\JenisKejadian;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Carbon;
@@ -22,10 +24,16 @@ class AdminController extends Controller
     {
         //
     }
-    public function index_admin()
+    public function index_admin(ExsumChart $chart)
     {
-
-        return view('admin.dashboard');
+        $dampak = Dampak::all()->count();
+        $kejadian = Report::all();
+        return view('admin.dashboard',
+        [
+            'chart' => $chart->build(), 
+            'dampak' => $dampak,
+            'kejadian' => $kejadian
+        ]);
     }
     /**
      * Show the form for creating a new resource.
