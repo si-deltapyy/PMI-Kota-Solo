@@ -50,7 +50,7 @@ class AdminController extends Controller
         return view('admin.laporan-kejadian.index');
     }
 
-        /**
+    /**
      * Show the form for creating a new resource.
      */
     // CREATE, UPDATE, DELETE LAPORAN KEJADIAN
@@ -69,7 +69,7 @@ class AdminController extends Controller
             'lokasi_latitude' => 'nullable|numeric',
             'status' => 'required|in:On Process,Selesai,Belum Diverifikasi',
         ]);
-    
+
         $laporanKejadian = new Report();
         $laporanKejadian->id_user = auth()->id(); // Assuming authenticated user ID
         $laporanKejadian->id_jeniskejadian = $request->id_jeniskejadian;
@@ -80,11 +80,11 @@ class AdminController extends Controller
         $laporanKejadian->status = $request->status;
         $laporanKejadian->timestamp_report = Carbon::now();
         $laporanKejadian->save();
-    
+
         return redirect('/admin/laporan-kejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
         // return redirect()->route('relawan-laporankejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
     }
-    
+
 
     public function view_laporankejadian($id)
     {
@@ -183,6 +183,38 @@ class AdminController extends Controller
         $report->updateAt = $this->formatDateTime($report->updated_at);
 
         return view('admin.laporan-kejadian.unverified.verif', compact('report'));
+    }
+
+    public function admin_lapsit(Request $request)
+    {
+
+        $lapsit = KejadianBencana::with([
+            'jenisKejadian',
+            'assessment',
+            'relawan',
+            'admin',
+            'mobilisasiSd',
+            'giatPmi',
+            'dokumentasi',
+            'narahubung',
+            'petugasPosko',
+            'dampak'
+        ])
+            ->get();
+
+        // Iterate through each report and add 'nama_kejadian' from the related jenisKejadian
+        $lapsit->each(function ($lapsit) {
+            $lapsit->id = $lapsit->assessment->report->id_report;
+            $lapsit->status = $lapsit->assessment->status;
+            $lapsit->nama_kejadian = $lapsit->jenisKejadian->nama_kejadian;
+            $lapsit->timestamp_report = $this->formatDateTime($lapsit->assessment->report->timestamp_report);
+            $lapsit->updateAt = $this->formatDateTime($lapsit->timestamp_update);
+            // Fetch location details
+            $lapsit->locationName = $this->getLocationName($lapsit->assessment->report->lokasi_latitude, $lapsit->assessment->report->lokasi_longitude);
+            $lapsit->googleMapsLink = $this->getGoogleMapsLink($lapsit->assessment->report->lokasi_latitude, $lapsit->assessment->report->lokasi_longitude);
+        });
+
+        return view('admin.lapsit.index', compact('lapsit'));
     }
 
     public function lapsit()

@@ -37,25 +37,26 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($user as $x)
+                  <?php $i = 1 ?>
+                  @foreach($lapsit as $x)
                   <tr>
-                    <td>{{$x->id}}</td>
-                    <td>{{$x->name}}</td>
-                    <td>{{$x->username}}</td>
-                    <td>{{$x->created_at}}</td>
-                    <td>{{$x->updated_at}}</td>
+                    <td>{{$i}}</td>
+                    <td>{{$x->nama_kejadian}}</td>
+                    <td>{{$x->locationName}}</td>
+                    <td>{{$x->timestamp_report['date']}}</td>
+                    <td>{{$x->updateAt['date']}} - {{ $x->updateAt['time'] }}</td>
                     <td>
                       <div class="d-flex">
-                      <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal"><i
+                      <a href="#" class="btn btn-info btn-sm me-2" data-bs-toggle="modal" data-bs-target="#detailModal"><i
                           class="menu-icon mdi mdi-information"></i></a>
-                      <!-- <a href="#" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#shareModal"><i
-                          class="menu-icon mdi mdi-share-variant"></i></a> -->
-                          <form action="{{ route('share.lapsit', $x->id) }}" method="post">
+                      <div>
+                      <form action="{{ route('share.lapsit', $x->id) }}" method="post">
                               @csrf
                               <button  class="btn btn-success text-white me-0 btn-sm">
                                 <i class="mdi mdi-whatsapp"></i>
                               </button>
                             </form>
+                      </div>
                       </div>
                     </td>
                   </tr>
@@ -161,6 +162,7 @@
                       </div>
                     </div>
                   </div>
+                  <?php $i++ ?>
                   @endforeach
                   
                 </tbody>

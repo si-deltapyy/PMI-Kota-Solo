@@ -136,6 +136,70 @@ class SelectStatusController extends Controller
                 ->get();
         }
 
+
+
+        // Iterate through each report and add 'nama_kejadian' from the related jenisKejadian
+        $assessment->each(function ($assessment) {
+            $assessment->id = $assessment->report->id_report;
+            $assessment->nama_kejadian = $assessment->report->jenisKejadian->nama_kejadian;
+            $assessment->timestamp_report = $assessment->report->timestamp_report;
+            // Fetch location details
+            $assessment->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+            $assessment->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+        });
+
+        return response()->json($assessment);
+    }
+
+    public function admin_assessment_unverif(Request $request)
+    {
+
+        $assessment = Assessment::where('status', 'On Process')
+            ->with([
+                'report.jenisKejadian',
+                'kejadianBencana.jenisKejadian',
+                'kejadianBencana.admin',
+                'kejadianBencana.relawan',
+                'kejadianBencana.mobilisasiSd',
+                'kejadianBencana.giatPmi',
+                'kejadianBencana.dokumentasi',
+                'kejadianBencana.narahubung',
+                'kejadianBencana.petugasPosko',
+                'kejadianBencana.dampak'
+            ])
+            ->get();
+
+        // Iterate through each report and add 'nama_kejadian' from the related jenisKejadian
+        $assessment->each(function ($assessment) {
+            $assessment->id = $assessment->report->id_report;
+            $assessment->nama_kejadian = $assessment->report->jenisKejadian->nama_kejadian;
+            $assessment->timestamp_report = $assessment->report->timestamp_report;
+            // Fetch location details
+            $assessment->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+            $assessment->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+        });
+
+        return response()->json($assessment);
+    }
+
+    public function admin_assessment_verif(Request $request)
+    {
+
+        $assessment = Assessment::whereNot('status', 'On Process')
+            ->with([
+                'report.jenisKejadian',
+                'kejadianBencana.jenisKejadian',
+                'kejadianBencana.admin',
+                'kejadianBencana.relawan',
+                'kejadianBencana.mobilisasiSd',
+                'kejadianBencana.giatPmi',
+                'kejadianBencana.dokumentasi',
+                'kejadianBencana.narahubung',
+                'kejadianBencana.petugasPosko',
+                'kejadianBencana.dampak'
+            ])
+            ->get();
+
         // Iterate through each report and add 'nama_kejadian' from the related jenisKejadian
         $assessment->each(function ($assessment) {
             $assessment->id = $assessment->report->id_report;

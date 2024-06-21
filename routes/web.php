@@ -36,6 +36,8 @@ Route::get('admin/select-laporan-kejadian', [SelectStatusController::class, 'adm
 
 Route::get('admin/select-laporan-kejadian/unverified', [SelectStatusController::class, 'admin_laporan_kejadian_unverified']);
 Route::get('admin/select-laporan-kejadian/verified', [SelectStatusController::class, 'admin_laporan_kejadian_verified']);
+Route::get('admin/select-assessment/unverified', [SelectStatusController::class, 'admin_assessment_unverif']);
+Route::get('admin/select-assessment/verified', [SelectStatusController::class, 'admin_assessment_verif']);
 
 Route::get('reports/{id}/pdf', [App\Http\Controllers\PDFController::class, 'exportLaporanKejadian'])->name('reports.pdf');
 Route::get('reports/{id}/view', [App\Http\Controllers\PDFController::class, 'viewLaporanKejadian']);
@@ -120,7 +122,7 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/admin/laporan-kejadian/verified/view/{id}', [AdminController::class, 'laporan_kejadian_view'])->name('admin-laporan-kejadian-view-verif');
     Route::get('/admin/laporan-kejadian/unverified/verif/{id}', [AdminController::class, 'laporan_kejadian_verif_view'])->name('admin-laporan-kejadian-verif-view');
     Route::post('/admin/verif/laporan-kejadian', [AdminController::class, 'verif_laporan_kejadian'])->name('verif-laporan-kejadian');
-    Route::get('/admin/lapsit', [AdminController::class, 'lapsit'])->name('admin-lapsit');
+    Route::get('/admin/lapsit', [AdminController::class, 'admin_lapsit'])->name('admin-lapsit');
     Route::post('/admin/lapsit/{id}/share', [AdminController::class, 'Sharelapsit'])->name('share.lapsit');
     Route::get('/admin/exsum', [AdminController::class, 'index_exsum'])->name('admin-exsum');
 });
