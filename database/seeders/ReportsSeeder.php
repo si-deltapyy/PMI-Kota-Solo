@@ -21,7 +21,7 @@ class ReportsSeeder extends Seeder
         // Insert data
         DB::table('reports')->insert([
             [
-                'id_relawan' => 2,
+                'id_relawan' => 3,
                 'id_jeniskejadian' => 1,
                 'tanggal_kejadian' => '2023-01-15',
                 'keterangan' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -33,7 +33,7 @@ class ReportsSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'id_relawan' => 2,
+                'id_relawan' => 3,
                 'id_jeniskejadian' => 2,
                 'tanggal_kejadian' => '2023-02-20',
                 'keterangan' => 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',

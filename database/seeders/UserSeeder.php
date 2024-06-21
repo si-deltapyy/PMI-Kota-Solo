@@ -2,42 +2,56 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        User::create([
-            'username' => 'Admin PMI',
-            'password' => bcrypt('12345'),
-            'name' => 'Supriyadi',
-            'email' => 'test@admin',
-            'email_verified_at' => null,
+        // Membuat admin
+        $admin = User::create([
+            'name' => 'Admin',
+            'username'=>'admin1',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
             'remember_token' => Str::random(10),
+            'is_approved' => true, // admin langsung disetujui
         ])->assignRole('admin');
 
-        User::create([
-            'username' => 'Relawan',
-            'password' => bcrypt('12345'),
-            'name' => 'Hartanto',
-            'email' => 'test@relawan',
-            'email_verified_at' => null,
-            'remember_token' => Str::random(10),
-        ])->assignRole('relawan');
 
-        User::create([
-            'username' => 'Pengelola Profil',
-            'password' => bcrypt('12345'),
-            'name' => 'Budiyono',
-            'email' => 'test@pengelola',
-            'email_verified_at' => null,
-            'remember_token' => Str::random(10),
+        // Membuat pengelola profil
+        $pengelolaProfil = User::create([
+            'name' => 'Pengelola Profil',
+            'username'=>'Pengelola1',
+            'email' => 'pengelola@example.com',
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+            'is_approved' => true, // pengelola profil langsung disetujui
         ])->assignRole('pengelola_profil');
+
+        // Membuat beberapa relawan
+        $relawan1 = User::create([
+            'name' => 'Relawan 1',
+            'username'=>'relawan1',
+            'email' => 'relawan1@example.com',
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+            'is_approved' => false, // relawan perlu menunggu persetujuan
+        ])->assignRole('relawan');;
+
+        // Membuat relawan lainnya
+        $relawan2 = User::create([
+            'name' => 'Relawan 2',
+            'username'=>'relawan2',
+            'email' => 'relawan2@example.com',
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+            'is_approved' => false, // relawan perlu menunggu persetujuan
+        ])->assignRole('relawan');
     }
 }

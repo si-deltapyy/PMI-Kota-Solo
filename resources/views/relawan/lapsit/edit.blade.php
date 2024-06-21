@@ -1,7 +1,6 @@
 @extends('layouts-relawan.default')
 
 @section('content')
-    <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
 
@@ -9,53 +8,45 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Laporan Situasi</h4>
-                            <form class="forms-sample" action="{{ route('edit-lapsit.update', $kejadianBencana->id_kejadian) }}" method="POST">
+                            <h4 class="card-title">Laporan Assessment</h4>
+                            @if($kejadian->giatPmi)
+                                <p>{{ $kejadian->giatPmi->evakuasiKorban }}</p>
+                            @else
+                                <p>Data Giat PMI tidak tersedia.</p>
+                            @endif
+
+                            @if($kejadian->dampak)
+                                <p>{{ $kejadian->dampak->korban_terdampak }}</p>
+                            @else
+                                <p>Data Dampak tidak tersedia.</p>
+                            @endif
+                            <form class="forms-sample" action="{{ route('edit-lapsit.update', $kejadian->id_kejadian ) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
                                     <label for="kejadian_musibah">Jenis Kejadian Bencana</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" value = "{{ $kejadianBencana->lokasi }}">
+                                    <input type="text" class="form-control" id="kejadian_musibah" value = "{{ $kejadian->id_jeniskejadian }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="lokasi">Lokasi</label>
-                                    <input type="email" class="form-control" id="lokasi" value="{{ $kejadianBencana->lokasi }}">
+                                    <input type="email" class="form-control" id="lokasi" value="{{ $kejadian->lokasi }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="waktu_kejadian">Tanggal Kejadian</label>
-                                    <input type="date" class="form-control" id="waktu_kejadian" value="{{ $kejadianBencana->tanggal_kejadian }}">
+                                    <input type="date" class="form-control" id="waktu_kejadian" value="{{ $kejadian->tanggal_kejadian }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="update">Update</label>
-                                    <input type="date" class="form-control" id="update" value="{{ $kejadianBencana->update }}">
-                                </div>
-                                <div class="form-group">
-                                    <label>File upload</label>
-                                    <input type="file" name="img[]" class="file-upload-default">
-                                    <div class="input-group col-xs-12">
-                                        <input type="text" class="form-control file-upload-info" disabled
-                                            placeholder="Upload Image">
-                                        <span class="input-group-append">
-                                            <button class="file-upload-browse btn btn-primary"
-                                                type="button">Upload</button>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Pemerintah membutuhkan Dukungan Internasional</label>
-                                    <select class="js-example-basic-single w-100" name="dukungan_internasional">
-                                        <option value="Ya" {{ $kejadianBencana->dukungan_internasional == "Ya" ? 'selected' : '' }}>Ya</option>
-                                        <option value="Tidak" {{ $kejadianBencana->dukungan_internasional == "Tidak" ? 'selected' : '' }}>Tidak</option>
-                                    </select>
+                                    <input type="date" class="form-control" id="update" value="{{ $kejadian->update }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label>Keterangan Akses Menuju Lokasi</label>
                                     <select class="js-example-basic-single w-100" id="akses_ke_lokasi" name="akses_ke_lokasi">
-                                        <option value="Aman" {{ $kejadianBencana->akses_ke_lokasi == "Aman" ? 'selected' : '' }}>Aman</option>
-                                        <option value="Tidak Aman" {{ $kejadianBencana->akses_ke_lokasi == "Tidak Aman" ? 'selected' : '' }}>Tidak Aman</option>
+                                        <option value="Aman" {{ $kejadian->akses_ke_lokasi == "Accessible" ? 'selected' : '' }}>Aman</option>
+                                        <option value="Tidak Aman" {{ $kejadian->akses_ke_lokasi == "Not Accessible" ? 'selected' : '' }}>Tidak Aman</option>
                                     </select>
-                                </div>
+                                </div> 
 
                                 {{-- Input Dampak --}}
                                 <div class="form-group">
@@ -67,69 +58,84 @@
                                         Korban Terdampak
                                     </p>
                                     <div class="form-group">
-                                        <label for="jumlah_kk">Jumlah KK</label>
-                                        <input type="number" class="form-control" id="jumlah_kk" value="{{ $kejadianBencana->kk }}">
+                                        <label for="kk">Jumlah KK</label>
+                                        <input type="number" class="form-control" id="kk" value="{{ $kejadian->dampak?->korbanTerdampak?->kk ?? '' }}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="jumlah_orang">Jumlah Orang</label>
-                                        <input type="number" class="form-control" id="jumlah_orang" value="{{ $kejadianBencana->update }}">
+                                        <label for="jiwa">Jumlah Orang</label>
+                                        <input type="number" class="form-control" id="jiwa" value="{{ $kejadian->dampak?->korbanTerdampak?->jiwa ?? '' }}">                                    
                                     </div>
+                                    <p class="card-description" id="subtitle">
+                                        Korban Jiwa/Luka/Mengungsi
+                                    </p>
                                     <div class="form-group">
                                         <label for="luka_berat">Luka Berat</label>
-                                        <input type="number" class="form-control" id="luka_berat" value="{{ $kejadianBencana->update }}">
+                                        <input type="number" class="form-control" id="luka_berat" value="{{ $kejadian->dampak?->korbanTerdampak?->luka_berat ?? '' }}">                                    
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="luka_ringan">Luka Berat</label>
+                                        <input type="number" class="form-control" id="luka_ringan" value="{{ $kejadian->dampak?->korban_jlw?->luka_ringan ?? '' }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="meninggal">Meninggal</label>
-                                        <input type="number" class="form-control" id="meninggal" value="{{ $kejadianBencana->update }}">
+                                        <input type="number" class="form-control" id="meninggal" value="{{ $kejadian->dampak?->korban_jlw?->meninggal ?? ''}}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="hidup">Hidup</label>
-                                        <input type="number" class="form-control" id="hidup" value="{{ $kejadianBencana->update }}">
+                                        <label for="hilang">Hilang</label>
+                                        <input type="number" class="form-control" id="hilang" value="{{ $kejadian->dampak?->korban_jlw?->hilang ?? '' }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="mengungsi">Mengungsi</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
+                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadian->dampak?->korban_jlw?->mengungsi ?? '' }}">
                                     </div>
 
                                     <p class="card-description" id="subtitle">
-                                        Fasilitas/Rumah Terdampak
+                                        Kerusakan Rumah
                                     </p>
                                     <div class="form-group">
-                                        <label for="jumlah_kk">Kerusakan Rumah Berat</label>
-                                        <input type="number" class="form-control" id="jumlah_kk" value="{{ $kejadianBencana->update }}">
+                                        <label for="rusak_berat">Kerusakan Rumah Berat</label>
+                                        <input type="number" class="form-control" id="rusak_berat" value="{{ $kejadian->dampak?->kerusakan_rumah?->rusak_berat ?? ''}}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="jumlah_orang">Kerusakan Rumah Sedang</label>
-                                        <input type="number" class="form-control" id="jumlah_orang" value="{{ $kejadianBencana->update }}">
+                                        <label for="rusak_sedang">Kerusakan Rumah Sedang</label>
+                                        <input type="number" class="form-control" id="rusak_sedang" value="{{ $kejadian->dampak?->kerusakan_rumah?->rusak_sedang ?? '' }}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="luka_berat">Kerusakan Sekolah</label>
-                                        <input type="number" class="form-control" id="luka_berat" value="{{ $kejadianBencana->update }}">
+                                        <label for="rusak_ringan">Kerusakan Rumah Ringan</label>
+                                        <input type="number" class="form-control" id="rusak_ringan" value="{{ $kejadian->dampak?->kerusakan_rumah?->rusak_ringan ?? '' }}">
+                                    </div>
+
+                                    <p class="card-description" id="subtitle">
+                                        Kerusakan Fasilitas Sosial & Infrastruktur
+                                    </p>
+                                    <div class="form-group">
+                                        <label for="sekolah">Kerusakan Sekolah</label>
+                                        <input type="number" class="form-control" id="sekolah" value="{{ $kejadian->dampak?->kerusakan_fasil_sosial?->sekolah ?? '' }}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="meninggal">Kerusakan Tempat Ibadah</label>
-                                        <input type="number" class="form-control" id="meninggal" value="1" value="{{ $kejadianBencana->update }}">
+                                        <label for="tempat_ibadah">Kerusakan Tempat Ibadah</label>
+                                        <input type="number" class="form-control" id="tempat_ibadah" value="1" value="{{ $kejadian->dampak?->kerusakan_fasil_sosial?->tempat_ibadah ?? '' }}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="hidup">Kerusakan Rumah Sakit</label>
-                                        <input type="number" class="form-control" id="hidup" value="{{ $kejadianBencana->update }}">
+                                        <label for="rumah_sakit">Kerusakan Rumah Sakit</label>
+                                        <input type="number" class="form-control" id="rumah_sakit" value="{{ $kejadian->dampak?->kerusakan_fasil_sosial?->rumah_sakit ?? '' }}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="mengungsi">Kerusakan Pasar</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
+                                        <label for="pasar">Kerusakan Pasar</label>
+                                        <input type="number" class="form-control" id="pasar" value="{{ $kejadian->dampak?->kerusakan_fasil_sosial?->pasar ?? '' }}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="mengungsi">Kerusakan Gedung Pemerintahan</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
+                                        <label for="gedung_pemerintah">Kerusakan Gedung Pemerintahan</label>
+                                        <input type="number" class="form-control" id="gedung_pemerintah" value="{{ $kejadian->dampak?->kerusakan_fasil_sosial?->gedung_pemerintah ?? '' }}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="mengungsi">Kerusakan Lain Lain</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
+                                        <label for="lain_lain">Kerusakan Lain Lain</label>
+                                        <input type="number" class="form-control" id="lain_lain" value="{{ $kejadian->dampak?->kerusakan_fasil_sosial?->lain_lain ?? '' }}">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="mengungsi">Kerusakan Infrastruktur</label>
-                                        <input type="text" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
+                                        <label for="desc_kerusakan">Kerusakan Infrastruktur</label>
+                                        <input type="text" class="form-control" id="desc_kerusakan" value="{{ $kejadian->dampak?->kerusakan_infrastruktur?->desc_kerusakan ?? '' }}">
                                     </div>
                                 </div>
 
@@ -145,317 +151,78 @@
                                         <p class="card-description" id="subtitle">Pengungsian</p>
                                         <div class="form-group">
                                             <label for="nama_lokasi">Nama Lokasi</label>
-                                            <input type="text" class="form-control" name="nama_lokasi[]" value="{{ $kejadianBencana->update }}">
+                                            <input type="text" class="form-control" name="nama_lokasi" id="nama_lokasi" value="{{ $kejadian->dampak->pengungsian->nama_lokasi }}">
                                         </div>
                                         <div class="form-group">
-                                            <label for="jumlah_kk">KK</label>
-                                            <input type="number" class="form-control" name="jumlah_kk[]" value="{{ $kejadianBencana->update }}">
+                                            <label for="kk">KK</label>
+                                            <input type="number" class="form-control" name="kk" id="kk" value="{{ $kejadian->dampak->pengungsian->kk }}">
                                         </div>
                                         <div class="form-group">
-                                            <label for="jumlah_orang">Jiwa</label> 
-                                            <input type="number" class="form-control" name="jumlah_orang[]" value="{{ $kejadianBencana->update }}">
+                                            <label for="jiwa">Jiwa</label> 
+                                            <input type="number" class="form-control" name="jiwa" id="jiwa" value="{{ $kejadian->dampak->pengungsian->jiwa }}">
                                         </div>
                                         <div class="form-group">
                                             <label for="laki_laki">Laki-Laki</label>
-                                            <input type="number" class="form-control" name="laki_laki[]" value="{{ $kejadianBencana->update }}">
+                                            <input type="number" class="form-control" name="laki_laki" id="laki_laki" value="{{ $kejadian->dampak->pengungsian->laki_laki }}">
                                         </div>
                                         <div class="form-group">
                                             <label for="perempuan">Perempuan</label>
-                                            <input type="number" class="form-control" name="perempuan[]" value="{{ $kejadianBencana->update }}">
+                                            <input type="number" class="form-control" name="perempuan" id="perempuan" value="{{ $kejadian->dampak->pengungsian->perempuan }}">
                                         </div>
                                         <div class="form-group">
                                             <label for="kurang_dari_5">Kurang dari 5 Tahun</label>
-                                            <input type="number" class="form-control" name="kurang_dari_5[]" value="{{ $kejadianBencana->update }}">
+                                            <input type="number" class="form-control" name="kurang_dari_5" id="kurang_dari_5" value="{{ $kejadian->dampak->pengungsian->kurang_dari_5 }}">
                                         </div>
                                         <div class="form-group">
-                                            <label for="antara_5_18">Antara 5-18 Tahun</label>
-                                            <input type="number" class="form-control" name="antara_5_18[]" value="{{ $kejadianBencana->update }}">
+                                            <label for="atr_5_sampai_18">Antara 5-18 Tahun</label>
+                                            <input type="number" class="form-control" name="atr_5_sampai_18" id="atr_5_sampai_18" value="{{ $kejadian->dampak->pengungsian->atr_5_sampai_18 }}">
                                         </div>
                                         <div class="form-group">
                                             <label for="lebih_dari_18">Lebih Dari 18 Tahun</label>
-                                            <input type="number" class="form-control" name="lebih_dari_18[]" value="{{ $kejadianBencana->update }}">
+                                            <input type="number" class="form-control" name="lebih_dari_18" id="lebih_dari_18" value="{{ $kejadian->dampak->pengungsian->lebih_dari_18 }}">
                                         </div>
                                         <div class="form-group">
                                             <label for="jumlah">Jumlah</label>
-                                            <input type="number" class="form-control" name="jumlah[]" value="{{ $kejadianBencana->update }}">
+                                            <input type="number" class="form-control" name="jumlah" id="jumlah" value="{{ $kejadian->dampak->pengungsian->jumlah }}">
                                         </div>
                                     </div>
                                 </div>
 
-                                {{-- Personil --}}
+                                <h4 class="card-title">Evakuasi Korban</h4>
                                 <div class="form-group">
-                                    <button type="button" id="personil" class="btn btn-primary me-2">Input
-                                        Personil</button>
+                                    <label for="luka_ringanberat">Luka Ringan/Berat</label>
+                                    <input type="text" class="form-control" id="luka_ringanberat" name="luka_ringanberat" value="{{ $kejadian->giat_pmi?->evakuasi_korban?->luka_ringanberat ?? '' }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="meninggal">Meninggal</label>
+                                    <input type="text" class="form-control" id="meninggal" name="meninggal" value="{{ $kejadian->giat_pmi?->evakuasi_korban?->meninggal ?? '' }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="keterangan">Keterangan</label>
+                                    <input type="text" class="form-control" id="keterangan" name="keterangan" value="{{ $kejadian->giat_pmi?->evakuasi_korban?->keterangan ?? '' }}">
                                 </div>
 
-                                <div id="form_personil" style="display:none;">
-                                    <p class="card-description" id="subtitle">
-                                        Input Personil
-                                    </p>
-                                    <div class="form-group">
-                                        <label for="jumlah_kk">Pengurus</label>
-                                        <input type="number" class="form-control" id="jumlah_kk" value="2" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="jumlah_orang">Staf Markas Kab/Kota</label>
-                                        <input type="number" class="form-control" id="jumlah_orang" value="4" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="luka_berat">Staf Markas Provinsi</label>
-                                        <input type="number" class="form-control" id="luka_berat" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="meninggal">Staf Markas Pusat</label>
-                                        <input type="number" class="form-control" id="meninggal" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="hidup">Relawan PMI Kab/Kota</label>
-                                        <input type="number" class="form-control" id="hidup" value="{{ $kejadianBencana->update }}" >
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="hidup">Relawan PMI Provinsi</label>
-                                        <input type="number" class="form-control" id="hidup" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mengungsi">Relawan Lintas Provinsi</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
-                                    </div>
-
-                                    <p class="card-description" id="subtitle">
-                                        Spesialis
-                                    </p>
-                                    <div class="form-group">
-                                        <label for="jumlah_kk">Medis</label>
-                                        <input type="number" class="form-control" id="jumlah_kk" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="jumlah_orang">Paramedis</label>
-                                        <input type="number" class="form-control" id="jumlah_orang" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="luka_berat">Relief</label>
-                                        <input type="number" class="form-control" id="luka_berat" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="meninggal">Logistik</label>
-                                        <input type="number" class="form-control" id="meninggal" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="hidup">Watsan</label>
-                                        <input type="number" class="form-control" id="hidup" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mengungsi">IT Telkom</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mengungsi">Sheltering</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
-                                    </div>
-
-                                    <p class="card-description" id="subtitle">
-                                        Alat Utama
-                                    </p>
-                                    <div class="form-group">
-                                        <label for="jumlah_kk">Kend Ops</label>
-                                        <input type="number" class="form-control" id="jumlah_kk" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="jumlah_orang">Truk Angkutan</label>
-                                        <input type="number" class="form-control" id="jumlah_orang" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="luka_berat">Truk Tanki</label>
-                                        <input type="number" class="form-control" id="luka_berat" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="meninggal">Double Cabin</label>
-                                        <input type="number" class="form-control" id="meninggal" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="hidup">Alat DU</label>
-                                        <input type="number" class="form-control" id="hidup" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mengungsi">Ambulans</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mengungsi">Alat Watsan</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mengungsi">RS Lapangan</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mengungsi">Alat PKDD</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mengungsi">Gudang Lapangan</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mengungsi">Posko Aju</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mengungsi">Alat IT/Tel Lapangan</label>
-                                        <input type="number" class="form-control" id="mengungsi" value="{{ $kejadianBencana->update }}">
-                                    </div>
-                                </div>
-
-
-                                <h4 class="card-title">Evakuasi Korban Luka</h4>
+                                <h4 class="card-title">Layanan Korban</h4>
                                 <div class="form-group">
-                                    <label for="kejadian_musibah">Tempat/Lokasi</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name" value="{{ $kejadianBencana->update }}">
-                                </div>
-                                <div>
-                                    <p class="card-description">KK/Orang</p>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
-                                                id="optionsRadios1" value="">
-                                            KK
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
-                                                id="optionsRadios2" value="option2" checked>
-                                            Orang
-                                        </label>
-                                    </div>
+                                    <label for="distribusi">Distribusi</label>
+                                    <input type="text" class="form-control" id="distribusi" name="distribusi" value="{{ $kejadian->giat_pmi?->layanan_korban?->distribusi ?? '' }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="waktu_kejadian">Jumlah</label>
-                                    <input type="number" class="form-control" id="waktu_kejadian"
-                                        placeholder="Password" value="{{ $kejadianBencana->update }}">
-                                </div>
-                                <h4 class="card-title">Distribusi Non-Food Item</h4>
-                                <div class="form-group">
-                                    <label for="kejadian_musibah">Tempat/Lokasi</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name" value="{{ $kejadianBencana->update }}">
-                                </div>
-                                <div>
-                                    <p class="card-description">KK/Orang</p>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
-                                                id="optionsRadios1" value="">
-                                            KK
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
-                                                id="optionsRadios2" value="option2" checked>
-                                            Orang
-                                        </label>
-                                    </div>
+                                    <label for="dapur_umum">Dapur Umum</label>
+                                    <input type="text" class="form-control" id="dapur_umum" name="dapur_umum" value="{{ $kejadian->giat_pmi?->layanan_korban?->dapur_umum ?? '' }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="waktu_kejadian">Jumlah</label>
-                                    <input type="number" class="form-control" id="waktu_kejadian"
-                                        placeholder="Password" value="{{ $kejadianBencana->update }}">
-                                </div>
-                                <h4 class="card-title">Layanan Kesehatan</h4>
-                                <div class="form-group">
-                                    <label for="kejadian_musibah">Tempat/Lokasi</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name" value="{{ $kejadianBencana->update }}">
-                                </div>
-                                <div>
-                                    <p class="card-description">KK/Orang</p>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
-                                                id="optionsRadios1" value="">
-                                            KK
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
-                                                id="optionsRadios2" value="option2" checked>
-                                            Orang
-                                        </label>
-                                    </div>
+                                    <label for="evakuasi">Evakuasi</label>
+                                    <input type="text" class="form-control" id="evakuasi" name="evakuasi" value="{{ $kejadian->giat_pmi?->layanan_korban?->evakuasi ?? '' }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="waktu_kejadian">Jumlah</label>
-                                    <input type="number" class="form-control" id="waktu_kejadian"
-                                        placeholder="Password" value="{{ $kejadianBencana->update }}">
-                                </div>
-                                <h4 class="card-title">Layanan Air Bersih</h4>
-                                <div class="form-group">
-                                    <label for="kejadian_musibah">Tempat/Lokasi</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name" value="{{ $kejadianBencana->update }}">
-                                </div>
-                                <div>
-                                    <p class="card-description">KK/Orang</p>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
-                                                id="optionsRadios1" value="">
-                                            KK
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
-                                                id="optionsRadios2" value="option2" checked>
-                                            Orang
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="waktu_kejadian">Jumlah</label>
-                                    <input type="number" class="form-control" id="waktu_kejadian"
-                                        placeholder="Password" value="{{ $kejadianBencana->update }}">
-                                </div>
-                                <h4 class="card-title">Lain Lain</h4>
-                                <div class="form-group">
-                                    <label for="kejadian_musibah">Tempat/Lokasi</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name" value="{{ $kejadianBencana->update }}">
-                                </div>
-                                <div>
-                                    <p class="card-description">KK/Orang</p>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
-                                                id="optionsRadios1" value="">
-                                            KK
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios"
-                                                id="optionsRadios2" value="option2" checked>
-                                            Orang
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="waktu_kejadian">Jumlah</label>
-                                    <input type="number" class="form-control" id="waktu_kejadian"
-                                        placeholder="Password" value="{{ $kejadianBencana->update }}">
+                                    <label for="layanan_kesehatan">Layanan Kesehatan</label>
+                                    <input type="text" class="form-control" id="layanan_kesehatan" name="layanan_kesehatan" value="{{ $kejadian->giat_pmi?->layanan_korban?->layanan_kesehatan ?? '' }}">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="kejadian_musibah">Giat Pemerintahan</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name" value="{{ $kejadianBencana->update }}">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="kejadian_musibah">Kebutuhan</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name" value="{{ $kejadianBencana->update }}">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="kejadian_musibah">Hambatan</label>
-                                    <input type="text" class="form-control" id="kejadian_musibah" placeholder="Name" value="{{ $kejadianBencana->update }}">
+                                    <label for="kebutuhan">Kebutuhan</label>
+                                    <input type="text" class="form-control" name="kebutuhan" id="kebutuhan" value="{{ $kejadian->kebutuhan }}">
                                 </div>
 
                                 <div class="form-group">
@@ -467,39 +234,35 @@
                                     <div id="form_cp" style="display:none;">
                                         <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
                                         <div class="form-group">
-                                            <label for="nama_lokasi">Nama Lengkap</label>
-                                            <input type="text" class="form-control" name="nama_lokasi[]" value="{{ $kejadianBencana->update }}">
+                                            <label for="nama_lengkap">Nama Lengkap</label>
+                                            <input type="text" class="form-control" name="nama_lengkap" id="nama_lengkap" value="{{ $kejadian->personil_narahubung?->nama_lengkap ?? '' }}">
                                         </div>
                                         <div class="form-group">
-                                            <label for="jumlah_kk">Posisi</label>
-                                            <input type="text" class="form-control" name="jumlah_kk[]" value="{{ $kejadianBencana->update }}">
+                                            <label for="posisi">Posisi</label>
+                                            <input type="text" class="form-control" name="posisi" id="posisi" value="{{ $kejadian->personil_narahubung?->posisi ?? '' }}">
                                         </div>
                                         <div class="form-group">
-                                            <label for="jumlah_orang">Kontak</label>
-                                            <input type="phone" class="form-control" name="jumlah_orang[]" value="{{ $kejadianBencana->update }}">
+                                            <label for="kontak">Kontak</label>
+                                            <input type="phone" class="form-control" name="kontak" id="kontak" value="{{ $kejadian->personil_narahubung?->kontak ?? '' }}">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <button type="button" id="tambah_petugas_posko" class="btn btn-primary me-2">Petugas
-                                        Posko</button>
+                                        Assessment</button>
                                 </div>
 
                                 <div id="form_area_petugas">
                                     <div id="form_petugas" style="display:none;">
                                         <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
                                         <div class="form-group">
-                                            <label for="nama_lokasi">Nama Lengkap</label>
-                                            <input type="text" class="form-control" name="nama_lokasi[]" value="{{ $kejadianBencana->update }}">
+                                            <label for="nama_lengkap">Nama Lengkap</label>
+                                            <input type="text" class="form-control" name="nama_lengkap" id="nama_lengkap" value="{{ $kejadian->personil_narahubung?->nama_lengkap ?? '' }}">
                                         </div>
                                         <div class="form-group">
-                                            <label for="jumlah_kk">Posisi</label>
-                                            <input type="text" class="form-control" name="jumlah_kk[]" value="{{ $kejadianBencana->update }}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="jumlah_orang">Kontak</label>
-                                            <input type="phone" class="form-control" name="jumlah_orang[]" value="{{ $kejadianBencana->update }}">
+                                            <label for="kontak">Kontak</label>
+                                            <input type="phone" class="form-control" name="kontak" id="kontak" value="{{ $kejadian->personil_narahubung?->kontak ?? '' }}">
                                         </div>
                                     </div>
                                 </div>
@@ -510,7 +273,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
         @endsection
 
 
