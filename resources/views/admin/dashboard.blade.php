@@ -2,6 +2,7 @@
 
 @section('content')
 
+
       <!-- partial -->
       <x-notify::notify />
         @notifyJs
@@ -10,7 +11,7 @@
             <div class="col-sm-12">
               <div class="home-tab">
                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                  <ul class="nav nav-tabs" role="tablist">
+                  <!-- <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
                       <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Overview</a>
                     </li>
@@ -23,7 +24,7 @@
                     <li class="nav-item">
                       <a class="nav-link border-0" id="more-tab" data-bs-toggle="tab" href="#more" role="tab" aria-selected="false">More</a>
                     </li>
-                  </ul>
+                  </ul> -->
                   <div>
                     <div class="btn-wrapper">
                       <a href="#" class="btn btn-otline-dark align-items-center"><i class="icon-share"></i> Share</a>
@@ -77,14 +78,13 @@
                             <div class="card card-rounded">
                               <div class="card-body">
                                 <div class="d-sm-flex justify-content-between align-items-start">
-                                  <div>
-                                   <h4 class="card-title card-title-dash">Performance Line Chart</h4>
-                                   <h5 class="card-subtitle card-subtitle-dash">Lorem Ipsum is simply dummy text of the printing</h5>
+                                <div class="container px-4 mx-auto">
+                                  <div class="bg-white">
+                                      {!! $chart->container() !!}
                                   </div>
-                                  <div id="performance-line-legend"></div>
                                 </div>
-                                <div class="chartjs-wrapper mt-5">
-                                  <canvas id="performaneLine"></canvas>
+                                <script src="{{ $chart->cdn() }}"></script>
+                                {{ $chart->script() }}
                                 </div>
                               </div>
                             </div>
@@ -96,11 +96,11 @@
                           <div class="col-md-6 col-lg-12 grid-margin stretch-card">
                             <div class="card bg-primary card-rounded">
                               <div class="card-body pb-0">
-                                <h4 class="card-title card-title-dash text-white mb-4">Status Summary</h4>
+                                <h4 class="card-title card-title-dash text-white mb-4">Dampak Summary</h4>
                                 <div class="row">
                                   <div class="col-sm-4">
-                                    <p class="status-summary-ight-white mb-1">Closed Value</p>
-                                    <h2 class="text-info">357</h2>
+                                    <p class="status-summary-ight-white mb-1">Data Terakhir</p>
+                                    <h2 class="text-info">{{$dampak}}</h2>
                                   </div>
                                   <div class="col-sm-8">
                                     <div class="status-summary-chart-wrapper pb-4">
@@ -115,28 +115,32 @@
                             <div class="card card-rounded">
                               <div class="card-body">
                                 <div class="row">
-                                  <div class="col-sm-6">
-                                    <div class="d-flex justify-content-between align-items-center mb-2 mb-sm-0">
-                                      <div class="circle-progress-width">
-                                        <div id="totalVisitors" class="progressbar-js-circle pr-2"></div>
-                                      </div>
-                                      <div>
-                                        <p class="text-small mb-2">Total Visitors</p>
-                                        <h4 class="mb-0 fw-bold">26.80%</h4>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                      <div class="circle-progress-width">
-                                        <div id="visitperday" class="progressbar-js-circle pr-2"></div>
-                                      </div>
-                                      <div>
-                                        <p class="text-small mb-2">Visits per day</p>
-                                        <h4 class="mb-0 fw-bold">9065</h4>
-                                      </div>
-                                    </div>
-                                  </div>
+                                <div class="table-responsive  mt-1">
+                                  <table class="table select-table">
+                                    <thead>
+                                      <tr>
+                                        <th>Kejadian</th>
+                                        <th>Status</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      @foreach($kejadian as $x)
+                                      <tr>
+                                        <td>
+                                          <h6>{{$x->id_jeniskejadian}}</h6>
+                                        </td>
+                                        <td>
+                                          @if($x->status == 'Valid')
+                                          <div class="badge badge-opacity-success">{{$x->status}}</div>
+                                          @else
+                                          <div class="badge badge-opacity-warning">{{$x->status}}</div>
+                                          @endif
+                                        </td>
+                                      </tr>
+                                      @endforeach
+                                    </tbody>
+                                  </table>
+                                </div>
                                 </div>
                               </div>
                             </div>

@@ -21,6 +21,7 @@
     </div>
 
     @include('layouts.foot')
+    <script src="{{ @asset('vendor/larapex-charts/apexcharts.js') }}"></script>
 
 </body>
 
