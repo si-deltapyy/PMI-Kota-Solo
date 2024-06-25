@@ -43,19 +43,42 @@ class AdminController extends Controller
     {
         return view('admin.executive_summary');
     }
+    // public function assessment_unverif()
+    // {
+    //     return view('admin.assessment.unverified.index');
+    // }
+    // public function assessment_verif()
+    // {
+    //     return view('admin.assessment.verified.index');
+    // }
+
+    // VERIF UNVERIF LAPORAN ASSESSMENT
     public function assessment_unverif()
     {
-        return view('admin.assessment.unverified.index');
+        $reports = Report::with('jenisKejadian')->get(); 
+
+        return view('admin.assessment.unverified.index',compact('reports'));
     }
     public function assessment_verif()
     {
         return view('admin.assessment.verified.index');
     }
 
+    // get modal kejadian bencana 
+
+        public function getDetail($id)
+    {
+        // $kejadian = KejadianBencana::find($id);
+        // return response()->json($kejadian);
+
+        $kejadian = KejadianBencana::find($id);
+    Log::info('Kejadian fetched:', $kejadian->toArray());
+    return response()->json($kejadian);
+    }
     public function index_laporankejadian()
     {
-        //
-        return view('admin.laporan-kejadian.index');
+        $reports = Report::all(); 
+        return view('admin.laporankejadian.index', compact('reports'));
     }
 
         /**
@@ -65,34 +88,37 @@ class AdminController extends Controller
     public function create_laporankejadian()
     {
         $jeniskejadian = JenisKejadian::all();
-        return view('admin.laporan-kejadian.create', compact('jeniskejadian'));
+        return view('admin.laporankejadian.create', compact('jeniskejadian'));
     }
     public function store_laporankejadian(Request $request)
     {
         $validatedData = $request->validate([
             'id_jeniskejadian' => 'required',
-            'tanggal_kejadian' => 'required|date_format:Y-m-d H:i:s',
+            'tanggal_kejadian' => 'required|date',
+            'timestamp_report' => 'required|date',
             'keterangan' => 'required|string',
             'lokasi_longitude' => 'nullable|numeric',
             'lokasi_latitude' => 'nullable|numeric',
-            'status' => 'required|in:On Process,Selesai,Belum Diverifikasi',
+            'status' => 'required|in:On Process,Valid,Invalid',
         ]);
-    
+
+        $tanggalKejadian = \Carbon\Carbon::parse($request->tanggal_kejadian)->format('Y-m-d H:i:s');
+        $timestampReport = \Carbon\Carbon::parse($request->timestamp_report)->format('Y-m-d H:i:s');
+
         $laporanKejadian = new Report();
-        $laporanKejadian->id_user = auth()->id(); // Assuming authenticated user ID
+        $laporanKejadian->id_relawan = auth()->user()->id;
         $laporanKejadian->id_jeniskejadian = $request->id_jeniskejadian;
-        $laporanKejadian->tanggal_kejadian = $request->tanggal_kejadian;
+        $laporanKejadian->tanggal_kejadian = $tanggalKejadian;
+        $laporanKejadian->timestamp_report = $timestampReport;
         $laporanKejadian->keterangan = $request->keterangan;
-        $laporanKejadian->lokasi_longitude = $request->lokasi_longitude;
-        $laporanKejadian->lokasi_latitude = $request->lokasi_latitude;
-        $laporanKejadian->status = $request->status;
-        $laporanKejadian->timestamp_report = Carbon::now();
+        // $laporanKejadian->lokasi_longitude = $request->lokasi_longitude;
+        // $laporanKejadian->lokasi_latitude = $request->lokasi_latitude;
+        $laporanKejadian->locationName = $this->getLocationName($request->lokasi_latitude, $request->lokasi_longitude);
+        $laporanKejadian->googleMapsLink = $this->getGoogleMapsLink($request->lokasi_latitude, $request->lokasi_longitude);
         $laporanKejadian->save();
-    
-        return redirect('/admin/laporan-kejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
-        // return redirect()->route('relawan-laporankejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
+
+        return redirect()->route('admin-laporankejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
     }
-    
 
     public function view_laporankejadian($id)
     {

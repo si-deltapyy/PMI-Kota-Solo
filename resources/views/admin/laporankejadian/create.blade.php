@@ -53,11 +53,7 @@
                                 <option value="Invalid">Invalid</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <button type="button" class="btn btn-primary text-white" id="btnUseCurrentLocation">
-                                Gunakan Lokasi Saat Ini
-                            </button>
-                        </div>
+                        
 
                         <!-- Lokasi Longitude -->
                         <div class="form-group">
@@ -70,13 +66,18 @@
                             <label for="lokasi_latitude">Lokasi Latitude</label>
                             <input type="number" step="any" class="form-control form-control-sm" id="lokasi_latitude" name="lokasi_latitude" placeholder="Latitude">
                         </div>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary text-white" id="btnUseCurrentLocation">
+                                Gunakan Lokasi Saat Ini
+                            </button>
+                        </div>
                         <!-- Lokasi Longitude -->
                         <!-- <div class="form-group">
                             <label for="lokasi_longitude">Lokasi Longitude</label>
                             <input type="number" step="any" class="form-control form-control-sm" id="lokasi_longitude" name="lokasi_longitude" placeholder="Longitude">
-                        </div>
-                        Lokasi Latitude
-                        <div class="form-group">
+                        </div> -->
+                        <!-- Lokasi Latitude -->
+                        <!-- <div class="form-group">
                             <label for="lokasi_latitude">Lokasi Latitude</label>
                             <input type="number" step="any" class="form-control form-control-sm" id="lokasi_latitude" name="lokasi_latitude" placeholder="Latitude">
                         </div> -->
@@ -94,22 +95,20 @@
     </div>
     </div>
     </div>
-    
+    <script>
+    document.getElementById('btnUseCurrentLocation').addEventListener('click', function() {
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(function(position) {
+                  var latitude = position.coords.latitude;
+                  var longitude = position.coords.longitude;
+
+                  document.getElementById('lokasi_latitude').value = latitude;
+                  document.getElementById('lokasi_longitude').value = longitude;
+              });
+          } else {
+              alert('Geolocation is not supported by this browser.');
+          }
+      });
+  </script>
 @endsection
 
-
-<script>
-    document.getElementById('btnUseCurrentLocation').addEventListener('click', function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var latitude = position.coords.latitude;
-                var longitude = position.coords.longitude;
-
-                document.getElementById('lokasi_latitude').value = latitude;
-                document.getElementById('lokasi_longitude').value = longitude;
-            });
-        } else {
-            alert('Geolocation is not supported by this browser.');
-        }
-    });
-</script>
