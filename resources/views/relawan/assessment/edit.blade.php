@@ -256,10 +256,12 @@
                                     </div>
                                 </div>  --}}
 
+                                {{-- petugas assessment
+                                  
                                 <div class="form-group">
                                     <button type="button" id="tambah_petugas_posko" class="btn btn-primary me-2">Petugas
                                         Assessment</button>
-                                </div>
+                                </div>  --}}
 
                                 {{--  <div id="form_area_petugas">
                                     <div id="form_petugas" style="display:none;">

@@ -66,7 +66,7 @@ class KejadianBencana extends Model
         return $this->belongsTo(GiatPmi::class, 'id_giat_pmi');
     }
 
-    public function personilNarahubung()
+    public function narahubung()
     {
         return $this->hasMany(PersonilNarahubung::class, 'id_kejadian');
     }
@@ -76,7 +76,7 @@ class KejadianBencana extends Model
         return $this->hasMany(PetugasPosko::class, 'id_kejadian');
     }
 
-    public function lampiranDokumentasi()
+    public function dokumentasi()
     {
         return $this->hasMany(LampiranDokumentasi::class, 'id_kejadian');
     }
