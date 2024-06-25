@@ -265,17 +265,12 @@ class RelawanController extends Controller
             'dampak.korbanJlw',
             'dampak.kerusakanRumah',
             'dampak.kerusakanFasilitasSosial',
-            'dampak.kerusakanInfrastruktur',
-            'dampak.pengungsian',
-            'narahubung'
+            'dampak.kerusakanInfrastruktur'
         ])->firstOrFail();
-
-        // Mengambil data petugas posko yang terkait dengan kejadian bencana
-        $narahubung = PersonilNarahubung::where('id_kejadian', $kejadian->id_kejadian)->get();
-        
         $jenisKejadian = JenisKejadian::all();
 
-        return view('relawan.assessment.edit', compact('kejadian', 'jenisKejadian', 'narahubung'));
+
+        return view('relawan.assessment.edit', compact('kejadian','jenisKejadian'));
     }
 
     public function update_assessment(Request $request, $id)

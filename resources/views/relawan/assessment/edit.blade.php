@@ -149,7 +149,7 @@
 
                                 {{-- Tambah Pengungsian --}}
 
-                                <div class="form-group">
+                                {{--  <div class="form-group">
                                     <button type="button" id="tambah_pengungsian" class="btn btn-primary me-2">Tambah
                                         Pengungsian</button>
                                 </div>
@@ -194,7 +194,7 @@
                                             <input type="number" class="form-control" name="jumlah" id="jumlah" value="{{ $kejadian->dampak->pengungsian->jumlah }}">
                                         </div>
                                     </div>
-                                </div>
+                                </div>  --}}
 
                                 <h4 class="card-title">Evakuasi Korban</h4>
                                 <div class="form-group">
@@ -237,26 +237,9 @@
                                     <button type="button" id="tambah_cp" class="btn btn-primary me-2">Tambah
                                         CP Personil</button>
                                 </div>
-
-                                <div id="form_area_cp">
-                                @foreach($narahubung as $narahubung)
-                                    <div>
-                                        <label for="nama_lengkap_{{ $narahubung->id_narahubung }}">Nama Lengkap:</label>
-                                        <input type="text" id="nama_lengkap_{{ $narahubung->id_narahubung }}" name="narahubung[{{ $loop->index }}][nama_lengkap]" value="{{ old('narahubung.' . $loop->index . '.nama_lengkap', $narahubung->nama_lengkap) }}" required>
-                                    </div>
-                                    <div>
-                                        <label for="posisi_{{ $narahubung->id_narahubung }}">Nama Lengkap:</label>
-                                        <input type="text" id="posisi_{{ $narahubung->id_narahubung }}" name="narahubung[{{ $loop->index }}][posisi]" value="{{ old('narahubung.' . $loop->index . '.posisi', $narahubung->posisi) }}" required>
-                                    </div>
-                                    <div>
-                                        <label for="kontak_{{ $narahubung->id_narahubung }}">Nama Lengkap:</label>
-                                        <input type="text" id="kontak_{{ $narahubung->id_narahubung }}" name="narahubung[{{ $loop->index }}][kontak]" value="{{ old('narahubung.' . $loop->index . '.kontak', $narahubung->kontak) }}" required>
-                                    </div>
-
-                                    <input type="hidden" name="petugas[{{ $loop->index }}][id_petugas_posko]" value="{{ $narahubung->id_narahubung }}">
-                                @endforeach
-
-                                    {{--  <div id="form_cp" style="display:none;">
+                                {{-- narahubung --}} 
+                                {{--  <div id="form_area_cp">
+                                    <div id="form_cp" style="display:none;">
                                         <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
                                         <div class="form-group">
                                             <label for="nama_lengkap">Nama Lengkap</label>
@@ -270,13 +253,13 @@
                                             <label for="kontak">Kontak</label>
                                             <input type="phone" class="form-control" name="kontak" id="kontak" value="{{ $kejadian->narahubung?->kontak ?? '' }}">
                                         </div>
-                                    </div>  --}}
-                                </div>
-{{--  
+                                    </div>
+                                </div>  --}}
+
                                 <div class="form-group">
                                     <button type="button" id="tambah_petugas_posko" class="btn btn-primary me-2">Petugas
                                         Assessment</button>
-                                </div>  --}}
+                                </div>
 
                                 {{--  <div id="form_area_petugas">
                                     <div id="form_petugas" style="display:none;">
@@ -288,8 +271,8 @@
                                     </div>
                                 </div>  --}}
 
-                                <button type="submit" class="btn btn-primary me-2">Submit</button>
-<a href="{{ route('relawan-assessment') }}" class="btn btn-light">Cancel</a>
+                                {{--  <button type="submit" class="btn btn-primary me-2">Submit</button>
+<a href="{{ route('relawan-assessment') }}" class="btn btn-light">Cancel</a>  --}}
                             </form>
                         </div>
                     </div>

@@ -65,7 +65,7 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::get('/relawan/assessment', [RelawanController::class, 'index_assessment'])->name('relawan-assessment');
     Route::get('/relawan/assessment/view/{id}', [RelawanController::class, 'view_assessment'])->name('relawan-view-assessment');
     Route::get('/relawan/assessment/create', [RelawanController::class, 'create_assessment'])->name('create-assessment');
-    Route::get('/relawan/assessment/edit/{id}', [RelawanController::class, 'edit_assessment'])->name('edit-assessment'); //edit
+    Route::get('/relawan/assessment/{id}/edit', [RelawanController::class, 'edit_assessment'])->name('edit-assessment'); //edit
     Route::put('/relawan/assessment/{id}', [RelawanController::class, 'update_assessment'])->name('edit-assessment.update');//edit
     Route::delete('/relawan/assessment/delete/{id}', [RelawanController::class, 'delete_assessment'])->name('delete-assessment'); //edit
 });
