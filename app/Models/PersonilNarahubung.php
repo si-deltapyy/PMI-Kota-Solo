@@ -20,10 +20,7 @@ class PersonilNarahubung extends Model
         'id_kejadian'
     ];
 
-    public function kejadianBencana()
-    {
-        return $this->hasMany(KejadianBencana::class, 'id_narahubung');
-    }
+    
 
     public function kejadianBencana()
     {

@@ -19,8 +19,6 @@ class PetugasPosko extends Model
         'id_kejadian'
     ];
 
-    
-
     public function kejadianBencana()
     {
         return $this->belongsTo(KejadianBencana::class, 'id_kejadian');

@@ -257,10 +257,8 @@ class RelawanController extends Controller
     }
     public function edit_assessment($id)
     {
-        $assessment = Assessment::where('id_assessment',$id)->first();
-        $id_kejadian = $assessment->id_kejadian;
-        $kejadian = KejadianBencana::where('id_kejadian',$id_kejadian)
-        ->with([
+        // Mengambil data kejadian bencana berdasarkan id_assessment
+        $kejadian = KejadianBencana::where('id_assessment', $id)->with([
             'giatPmi.evakuasiKorban',
             'giatPmi.layananKorban',
             'dampak.korbanTerdampak',
@@ -269,11 +267,15 @@ class RelawanController extends Controller
             'dampak.kerusakanFasilitasSosial',
             'dampak.kerusakanInfrastruktur',
             'dampak.pengungsian',
-            'narahubung',
-            'petugasPosko'
-        ])->first();
+            'narahubung'
+        ])->firstOrFail();
 
-        return view('relawan.assessment.edit', compact('kejadian'));
+        // Mengambil data petugas posko yang terkait dengan kejadian bencana
+        $narahubung = PersonilNarahubung::where('id_kejadian', $kejadian->id_kejadian)->get();
+        
+        $jenisKejadian = JenisKejadian::all();
+
+        return view('relawan.assessment.edit', compact('kejadian', 'jenisKejadian', 'narahubung'));
     }
 
     public function update_assessment(Request $request, $id)
