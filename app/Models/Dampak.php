@@ -49,7 +49,7 @@ class Dampak extends Model
 
     public function pengungsian()
     {
-        return $this->belongsTo(Pengungsian::class, 'id_pengungsian');
+        return $this->hasMany(Pengungsian::class, 'id_dampak');
     }
 
 }
