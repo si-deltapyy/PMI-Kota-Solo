@@ -3593,16 +3593,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "6.7.0",
+            "version": "6.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "17607924aa0aa89bc0153c2ce45ed7c55083367b"
+                "reference": "fe973a58b44380d0e8620107259b7bda22f70408"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/17607924aa0aa89bc0153c2ce45ed7c55083367b",
-                "reference": "17607924aa0aa89bc0153c2ce45ed7c55083367b",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/fe973a58b44380d0e8620107259b7bda22f70408",
+                "reference": "fe973a58b44380d0e8620107259b7bda22f70408",
                 "shasum": ""
             },
             "require": {
@@ -3663,7 +3663,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
-                "source": "https://github.com/spatie/laravel-permission/tree/6.7.0"
+                "source": "https://github.com/spatie/laravel-permission/tree/6.9.0"
             },
             "funding": [
                 {
@@ -3671,7 +3671,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-19T12:35:28+00:00"
+            "time": "2024-06-22T23:04:52+00:00"
         },
         {
             "name": "symfony/clock",
@@ -8390,16 +8390,16 @@
         },
         {
             "name": "spatie/error-solutions",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/error-solutions.git",
-                "reference": "202108314a6988ede156fba1b3ea80a784c1734a"
+                "reference": "d60d4d2ef4b7701c86134ded959667cac6215233"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/error-solutions/zipball/202108314a6988ede156fba1b3ea80a784c1734a",
-                "reference": "202108314a6988ede156fba1b3ea80a784c1734a",
+                "url": "https://api.github.com/repos/spatie/error-solutions/zipball/d60d4d2ef4b7701c86134ded959667cac6215233",
+                "reference": "d60d4d2ef4b7701c86134ded959667cac6215233",
                 "shasum": ""
             },
             "require": {
@@ -8452,7 +8452,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/error-solutions/issues",
-                "source": "https://github.com/spatie/error-solutions/tree/1.0.0"
+                "source": "https://github.com/spatie/error-solutions/tree/1.0.1"
             },
             "funding": [
                 {
@@ -8460,7 +8460,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-12T14:49:54+00:00"
+            "time": "2024-06-21T10:09:00+00:00"
         },
         {
             "name": "spatie/flare-client-php",
