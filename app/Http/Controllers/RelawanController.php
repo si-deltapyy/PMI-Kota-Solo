@@ -49,9 +49,17 @@ class RelawanController extends Controller
         //
         return view('relawan.laporankejadian.index');
     }
+    //index lapsit asli
     public function index_lapsit()
     {
         return view('relawan.lapsit.index');
+    }
+    //index lapsit cek delete
+    public function index_lapsit2()
+    {
+        $kejadianBencanaList = KejadianBencana::with('jenisKejadian')->get();
+
+        return view('relawan.lapsit.indexdelete', compact('kejadianBencanaList'));
     }
     public function index_assessment()
     {
@@ -256,149 +264,76 @@ class RelawanController extends Controller
         return view('relawan.assessment.create'); //
     }
     public function edit_assessment($id)
-    {
-        // Mengambil data kejadian bencana berdasarkan id_assessment
-        $kejadian = KejadianBencana::where('id_assessment', $id)->with([
-            'giatPmi.evakuasiKorban',
-            'giatPmi.layananKorban',
-            'dampak.korbanTerdampak',
-            'dampak.korbanJlw',
-            'dampak.kerusakanRumah',
-            'dampak.kerusakanFasilitasSosial',
-            'dampak.kerusakanInfrastruktur'
-        ])->firstOrFail();
-        $jenisKejadian = JenisKejadian::all();
+{
+    // Mengambil data kejadian bencana berdasarkan id_assessment
+    $kejadian = KejadianBencana::where('id_assessment', $id)->with([
+        'giatPmi.evakuasiKorban',
+        'giatPmi.layananKorban',
+        'dampak.korbanTerdampak',
+        'dampak.korbanJlw',
+        'dampak.kerusakanRumah',
+        'dampak.kerusakanFasilitasSosial',
+        'dampak.kerusakanInfrastruktur',
+        'dampak.pengungsian', // Menambahkan relasi pengungsian
+        'narahubung'
+    ])->firstOrFail();
+    $jenisKejadian = JenisKejadian::all();
 
+    return view('relawan.assessment.edit', compact('kejadian', 'jenisKejadian'));
+}
 
-        return view('relawan.assessment.edit', compact('kejadian','jenisKejadian'));
+public function update_assessment(Request $request, $id)
+{
+    $kejadian = Kejadian::findOrFail($id);
+
+    // Update Kejadian
+    $kejadian->update([
+        'akses_ke_lokasi' => $request->akses_ke_lokasi,
+        'update' => $request->update,
+        'kebutuhan' => $request->kebutuhan,
+    ]);
+
+    // Update Dampak jika ada
+    if ($kejadian->dampak) {
+        $kejadian->dampak->update($request->only([
+            'kk', 'jiwa', // KorbanTerdampak
+            'luka_berat', 'luka_ringan', 'meninggal', 'hilang', 'mengungsi', // KorbanJlw
+            'rusak_berat', 'rusak_sedang', 'rusak_ringan', // KerusakanRumah
+            'sekolah', 'tempat_ibadah', 'rumah_sakit', 'pasar', 'gedung_pemerintah', 'lain_lain', // KerusakanFasilitasSosial
+            'desc_kerusakan', // KerusakanInfrastruktur
+        ]));
     }
 
-    public function update_assessment(Request $request, $id)
-    {
-        $validatedData = $request->validate([
-            'id_jeniskejadian' => 'required',
-            'lokasi' => 'required|string',
-            'tanggal_kejadian' => 'required|date',
-            'update' => 'required|date',
-            'akses_ke_lokasi' => 'required|in:Aman,Tidak Aman',
-            'kebutuhan' => 'required|string',
-            // Dampak
-            'kk' => 'required|integer',
-            'jiwa' => 'required|integer',
-            'luka_berat' => 'required|integer',
-            'luka_ringan' => 'required|integer',
-            'meninggal' => 'required|integer',
-            'hilang' => 'required|integer',
-            'mengungsi' => 'required|integer',
-            'rusak_berat' => 'required|integer',
-            'rusak_sedang' => 'required|integer',
-            'rusak_ringan' => 'required|integer',
-            'sekolah' => 'required|integer',
-            'tempat_ibadah' => 'required|integer',
-            'rumah_sakit' => 'required|integer',
-            'pasar' => 'required|integer',
-            'gedung_pemerintah' => 'required|integer',
-            'lain_lain' => 'required|integer',
-            'desc_kerusakan' => 'required|string',
-            // Pengungsian
-            'nama_lokasi' => 'required|string',
-            'laki_laki' => 'required|integer',
-            'perempuan' => 'required|integer',
-            'kurang_dari_5' => 'required|integer',
-            'atr_5_sampai_18' => 'required|integer',
-            'lebih_dari_18' => 'required|integer',
-            'jumlah' => 'required|integer',
-            // Evakuasi Korban
-            'luka_ringanberat' => 'required|string',
-            'meninggal' => 'required|string',
-            'keterangan' => 'required|string',
-            // Layanan Korban
-            'distribusi' => 'required|string',
-            'dapur_umum' => 'required|string',
-            'evakuasi' => 'required|string',
-            'layanan_kesehatan' => 'required|string',
-            // Personil Narahubung
-            'nama_lengkap' => 'required|string',
-            'posisi' => 'required|string',
-            'kontak' => 'required|string',
-            // Petugas Posko
-            'nama_lengkap_petugas' => 'required|string',
-            'kontak_petugas' => 'required|string',
-        ]);
-
-        $kejadian = KejadianBencana::findOrFail($id);
-        $kejadian->update($validatedData);
-
-        $kejadian->dampak->korbanTerdampak->update([
-            'kk' => $validatedData['kk'],
-            'jiwa' => $validatedData['jiwa'],
-        ]);
-
-        $kejadian->dampak->korbanJlw->update([
-            'luka_berat' => $validatedData['luka_berat'],
-            'luka_ringan' => $validatedData['luka_ringan'],
-            'meninggal' => $validatedData['meninggal'],
-            'hilang' => $validatedData['hilang'],
-            'mengungsi' => $validatedData['mengungsi'],
-        ]);
-
-        $kejadian->dampak->kerusakanRumah->update([
-            'rusak_berat' => $validatedData['rusak_berat'],
-            'rusak_sedang' => $validatedData['rusak_sedang'],
-            'rusak_ringan' => $validatedData['rusak_ringan'],
-        ]);
-
-        $kejadian->dampak->kerusakanFasilSosial->update([
-            'sekolah' => $validatedData['sekolah'],
-            'tempat_ibadah' => $validatedData['tempat_ibadah'],
-            'rumah_sakit' => $validatedData['rumah_sakit'],
-            'pasar' => $validatedData['pasar'],
-            'gedung_pemerintah' => $validatedData['gedung_pemerintah'],
-            'lain_lain' => $validatedData['lain_lain'],
-        ]);
-
-        $kejadian->dampak->kerusakanInfrastruktur->update([
-            'desc_kerusakan' => $validatedData['desc_kerusakan'],
-        ]);
-
-        $kejadian->dampak->pengungsian->update([
-            'nama_lokasi' => $validatedData['nama_lokasi'],
-            'laki_laki' => $validatedData['laki_laki'],
-            'perempuan' => $validatedData['perempuan'],
-            'kurang_dari_5' => $validatedData['kurang_dari_5'],
-            'atr_5_sampai_18' => $validatedData['atr_5_sampai_18'],
-            'lebih_dari_18' => $validatedData['lebih_dari_18'],
-            'jumlah' => $validatedData['jumlah'],
-            'kk' => $validatedData['kk'],
-            'jiwa' => $validatedData['jiwa'],
-        ]);
-
-        $kejadian->giatPmi->evakuasiKorban->update([
-            'luka_ringanberat' => $validatedData['luka_ringanberat'],
-            'meninggal' => $validatedData['meninggal'],
-            'keterangan' => $validatedData['keterangan'],
-        ]);
-
-        $kejadian->giatPmi->layananKorban->update([
-            'distribusi' => $validatedData['distribusi'],
-            'dapur_umum' => $validatedData['dapur_umum'],
-            'evakuasi' => $validatedData['evakuasi'],
-            'layanan_kesehatan' => $validatedData['layanan_kesehatan'],
-        ]);
-
-        $kejadian->personilNarahubung->update([
-            'nama_lengkap' => $validatedData['nama_lengkap'],
-            'posisi' => $validatedData['posisi'],
-            'kontak' => $validatedData['kontak'],
-        ]);
-
-        $kejadian->petugasPosko->update([
-            'nama_lengkap' => $validatedData['nama_lengkap_petugas'],
-            'kontak' => $validatedData['kontak_petugas'],
-        ]);
-
-        return redirect()->route('relawan.assessment.index')->with('success', 'Data berhasil diperbarui.');
+    // Update Pengungsian
+    if ($request->has('pengungsian')) {
+        foreach ($request->pengungsian as $index => $pengungsianData) {
+            $kejadian->dampak->pengungsian()->updateOrCreate(
+                ['id' => $pengungsianData['id'] ?? null],
+                $pengungsianData
+            );
+        }
     }
+
+    // Update GiatPmi jika ada
+    if ($kejadian->giatPmi) {
+        $kejadian->giatPmi->update($request->only([
+            'luka_ringanberat', 'meninggal', 'keterangan', // EvakuasiKorban
+            'distribusi', 'dapur_umum', 'evakuasi', 'layanan_kesehatan', // LayananKorban
+        ]));
+    }
+
+    // Update Narahubung
+    if ($request->has('narahubung')) {
+        foreach ($request->narahubung as $index => $narahubungData) {
+            $kejadian->narahubung()->updateOrCreate(
+                ['id' => $narahubungData['id'] ?? null],
+                $narahubungData
+            );
+        }
+    }
+
+    return redirect()->route('relawan.assessment.index')->with('success', 'Assessment updated successfully');
+}
 
     public function delete_assessment(string $id)
     {
@@ -837,8 +772,19 @@ class RelawanController extends Controller
     }
     public function delete_lapsit(string $id)
     {
+        // Mengambil data kejadian bencana berdasarkan id
+        $kejadianBencana = KejadianBencana::findOrFail($id);
 
-        return redirect('relawan.lapsit.index')->with('success', 'Laporan berhasil dihapus');
+        // Menghapus data yang terkait di tabel lain
+        $kejadianBencana->narahubung()->delete();
+        $kejadianBencana->petugasPosko()->delete();
+        $kejadianBencana->dokumentasi()->delete();
+
+        // Menghapus data kejadian bencana itu sendiri
+        $kejadianBencana->delete();
+
+        // Redirect atau kembalikan response
+        return redirect('relawan/lapsit')->with('success', 'Data Laporan Situasi berhasil dihapus.');
     }
 
     public function detail_lapsit()
