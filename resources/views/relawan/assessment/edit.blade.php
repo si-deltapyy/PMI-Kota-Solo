@@ -33,7 +33,7 @@
                                 @method('PUT')
                                 <div class="form-group">
                                     <label for="kejadian_musibah">Jenis Kejadian Bencana</label>
-                                    <select class="form-control" id="kejadian_musibah" name="id_jeniskejadian" disabled>
+                                    <select class="form-control" id="kejadian_musibah" name="id_jeniskejadian" disabled style="color: black;">
                                         @foreach($jenisKejadian as $jenis)
                                             <option value="{{ $jenis->id_jeniskejadian }}" {{ $jenis->id_jeniskejadian == $kejadian->id_jeniskejadian ? 'selected' : '' }}>
                                                 {{ $jenis->nama_kejadian }}
@@ -57,20 +57,19 @@
 
                                 <div class="form-group">
                                     <label>Keterangan Akses Menuju Lokasi</label>
-                                    <select class="form-control" id="akses_ke_lokasi" name="akses_ke_lokasi">
+                                    <select class="form-control" id="akses_ke_lokasi" name="akses_ke_lokasi" style="background-color: white; color: black;">
                                         <option value="Accessible" {{ $kejadian->akses_ke_lokasi == "Accessible" ? 'selected' : '' }}>Aman</option>
                                         <option value="Not Accessible" {{ $kejadian->akses_ke_lokasi == "Not Accessible" ? 'selected' : '' }}>Tidak Aman</option>
                                     </select>
                                 </div>
                                 {{-- Input Dampak --}}
-                               <div class="form-group">
+                               {{--  <div class="form-group">
                                     <button type="button" id="dampak" class="btn btn-primary me-2">Input Dampak</button>
-                                </div>
+                                </div>  --}}
+                                <h4 class="card-title">Data Dampak Kejadian</h4>
 
-                                <div id="form_jumlah_kk" style="display:none;">
-                                    <p class="card-description" id="subtitle">
-                                        Korban Terdampak
-                                    </p>
+                                <div id="form_jumlah_kk">
+                                    <h6><b>Korban Terdampak</b></h6>
                                     <div class="form-group">
                                         <label for="kk">Jumlah KK</label>
                                         <input type="number" class="form-control" name="kk" id="kk" value="{{ $kejadian->dampak?->korbanTerdampak?->kk ?? '' }}">
@@ -79,9 +78,7 @@
                                         <label for="jiwa">Jumlah Orang</label>
                                         <input type="number" class="form-control" name="jiwa" id="jiwa" value="{{ $kejadian->dampak?->korbanTerdampak?->jiwa ?? '' }}">                                    
                                     </div>
-                                    <p class="card-description" id="subtitle">
-                                        Korban Jiwa/Luka/Mengungsi
-                                    </p>
+                                    <h6><b>Korban Jiwa/Luka/Mengungsi</b></h6>
                                     <div class="form-group">
                                         <label for="luka_berat">Luka Berat</label>
                                         <input type="number" class="form-control" name="luka_berat" id="luka_berat" value="{{ $kejadian->dampak?->korbanJlw?->luka_berat ?? '' }}">                                    
@@ -103,9 +100,8 @@
                                         <input type="number" class="form-control" name="mengungsi" id="mengungsi" value="{{ $kejadian->dampak?->korbanJlw?->mengungsi ?? '' }}">
                                     </div>
 
-                                    <p class="card-description" id="subtitle">
-                                        Kerusakan Rumah
-                                    </p>
+                                    <h6><b>Kerusakan Rumah</b></h6>
+
                                     <div class="form-group">
                                         <label for="rusak_berat">Kerusakan Rumah Berat</label>
                                         <input type="number" class="form-control" name="rusak_berat" id="rusak_berat" value="{{ $kejadian->dampak?->kerusakanRumah?->rusak_berat ?? ''}}">
@@ -119,9 +115,7 @@
                                         <input type="number" class="form-control" name="rusak_ringan" id="rusak_ringan" value="{{ $kejadian->dampak?->kerusakanRumah?->rusak_ringan ?? '' }}">
                                     </div>
 
-                                    <p class="card-description" id="subtitle">
-                                        Kerusakan Fasilitas Sosial & Infrastruktur
-                                    </p>
+                                    <h6><b>Kerusakan Fasilitas Sosial & Infrastruktur</b></h6>
                                     <div class="form-group">
                                         <label for="sekolah">Kerusakan Sekolah</label>
                                         <input type="number" class="form-control" name="sekolah" id="sekolah" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->sekolah ?? '' }}">
@@ -147,8 +141,10 @@
                                         <input type="number" class="form-control" name="lain_lain" id="lain_lain" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->lain_lain ?? '' }}">
                                     </div>
 
+                                    <h6><b>Kerusakan Infrastruktur</b></h6>
+
                                     <div class="form-group">
-                                        <label for="desc_kerusakan">Kerusakan Infrastruktur</label>
+                                        <label for="desc_kerusakan">Deskripsi Kerusakan</label>
                                         <input type="text" class="form-control" name="desc_kerusakan" id="desc_kerusakan" value="{{ $kejadian->dampak?->kerusakanInfrastruktur?->desc_kerusakan ?? '' }}">
                                     </div>
                                 </div> 
@@ -156,7 +152,8 @@
                                 {{-- Tambah Pengungsian --}}
                                 <div id="form_area">
                                 <button type="button" id="add-pengungsian" class="btn btn-primary me-2">Input Pengungsian</button>
-
+                                <br>
+                                <p class="card-description" id="subtitle">Tambah, Edit, dan Hapus Data Pengungsian</p>
                                 <div id="pengungsian-container">
                                     @if($kejadian->dampak && $kejadian->dampak->pengungsian)
                                         @foreach($kejadian->dampak->pengungsian as $index => $pengungsian)
@@ -307,7 +304,7 @@
 
                                 <div id="form_area_cp">
                                     <button type="button" class="btn btn-primary" id="add-narahubung">Input Personil Narahubung</button>
-
+                                    <br>
                                     <p class="card-description" id="subtitle">Personil yang dapat dihubungi</p>
                                     
                                     <div id="narahubung-container">
