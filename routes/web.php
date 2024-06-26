@@ -56,16 +56,18 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     // Route::post('relawan/laporan-kejadian/store', [RelawanController::class, 'store_laporankejadian'])->name('store-laporankejadian');
     Route::delete('/relawan/laporan-kejadian/delete/{id}', [RelawanController::class, 'delete_laporankejadian'])->name('delete-laporankejadian'); //edit
     Route::get('/relawan/lapsit', [RelawanController::class, 'index_lapsit'])->name('relawan-lapsit');
+    Route::get('/relawan/lapsit2', [RelawanController::class, 'index_lapsit2'])->name('relawan-lapsit2'); //buat cek delete lapsit
     Route::get('/relawan/lapsit/create', [RelawanController::class, 'create_lapsit'])->name('create-lapsit');
     Route::post('/relawan/lapsit/store', [RelawanController::class, 'store_lapsit'])->name('store-lapsit'); //store
     Route::get('/relawan/lapsit/edit/{id}', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit
     Route::put('/relawan/lapsit/{id}', [RelawanController::class, 'update_lapsit'])->name('edit-lapsit.update'); //edit
+    Route::delete('/relawan/lapsit/delete/{id}', [RelawanController::class, 'delete_lapsit'])->name('delete-lapsit'); //edit
     // Route::post('/relawan/lapsit/{id}/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit
     Route::get('/relawan/lapsit/view/{id}', [RelawanController::class, 'view_lapsit'])->name('relawan-view-lapsit');
     Route::get('/relawan/assessment', [RelawanController::class, 'index_assessment'])->name('relawan-assessment');
     Route::get('/relawan/assessment/view/{id}', [RelawanController::class, 'view_assessment'])->name('relawan-view-assessment');
     Route::get('/relawan/assessment/create', [RelawanController::class, 'create_assessment'])->name('create-assessment');
-    Route::get('/relawan/assessment/edit/{id}', [RelawanController::class, 'edit_assessment'])->name('edit-assessment'); //edit
+    Route::get('/relawan/assessment/{id}/edit', [RelawanController::class, 'edit_assessment'])->name('edit-assessment'); //edit
     Route::put('/relawan/assessment/{id}', [RelawanController::class, 'update_assessment'])->name('edit-assessment.update');//edit
     Route::delete('/relawan/assessment/delete/{id}', [RelawanController::class, 'delete_assessment'])->name('delete-assessment'); //edit
 });

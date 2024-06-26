@@ -30,9 +30,6 @@ class KejadianBencana extends Model
         'id_dampak',
         'id_mobilisasi_sd',
         'id_giat_pmi',
-        'id_dokumentasi',
-        'id_narahubung',
-        'id_petugas_posko',
         'timestamp_input',
         'timestamp_update'
     ];
@@ -69,21 +66,20 @@ class KejadianBencana extends Model
         return $this->belongsTo(GiatPmi::class, 'id_giat_pmi');
     }
 
-    public function dokumentasi()
-    {
-        return $this->belongsTo(LampiranDokumentasi::class, 'id_dokumentasi');
-    }
-
     public function narahubung()
     {
-        return $this->belongsTo(PersonilNarahubung::class, 'id_narahubung');
+        return $this->hasMany(PersonilNarahubung::class, 'id_kejadian');
     }
 
     public function petugasPosko()
     {
-        return $this->belongsTo(PetugasPosko::class, 'id_petugas_posko');
+        return $this->hasMany(PetugasPosko::class, 'id_kejadian');
     }
 
+    public function dokumentasi()
+    {
+        return $this->hasMany(LampiranDokumentasi::class, 'id_kejadian');
+    }
     public function dampak()
     {
         return $this->belongsTo(Dampak::class, 'id_dampak');

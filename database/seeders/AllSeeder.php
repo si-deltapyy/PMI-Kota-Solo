@@ -39,8 +39,6 @@ class AllSeeder extends Seeder
             UserSeeder::class,
             JenisKejadianSeeder::class,
             AssessmentSeeder::class,
-            PersonilNarahubungSeeder::class,
-            PetugasPoskoSeeder::class,
             PersonilSeeder::class,
             TsrSeeder::class,
             AlatTdbSeeder::class,
@@ -52,12 +50,14 @@ class AllSeeder extends Seeder
             KerusakanInfrastrukturSeeder::class,
             KorbanTerdampakSeeder::class,
             KerusakanRumahSeeder::class,
-            PengungsianSeeder::class,
-            LampiranDokumentasiSeeder::class,
             ReportsSeeder::class,
             KorbanJlwSeeder::class,
             DampakSeeder::class,
+            PengungsianSeeder::class,
             KejadianBencanaSeeder::class,
+            LampiranDokumentasiSeeder::class,
+            PersonilNarahubungSeeder::class,
+            PetugasPoskoSeeder::class,
         ]);
     }
 }

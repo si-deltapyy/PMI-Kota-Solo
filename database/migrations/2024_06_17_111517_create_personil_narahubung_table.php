@@ -16,8 +16,12 @@ return new class extends Migration
             $table->string('nama_lengkap');
             $table->string('posisi');
             $table->string('kontak');
+            $table->unsignedBigInteger('id_kejadian');
             $table->timestamps();
+
+            $table->foreign('id_kejadian')->references('id_kejadian')->on('kejadian_bencana')->onDelete('CASCADE');
         });
+        
     }
 
     /**
