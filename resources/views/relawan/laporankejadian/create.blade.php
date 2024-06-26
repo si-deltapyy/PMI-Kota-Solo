@@ -9,66 +9,123 @@
                 <div class="card-body">
                 <h4 class="card-title">Laporan Kejadian</h4>
                   <p class="card-description">
-                    Tambahkan laporan kejadian 
+                    Tambahkan laporan kejadian
                   </p> 
                   <div class="home-tab">
                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                        <!-- <div class="btn-wrapper ms-auto">
+                            <a href="{{ route('relawan-laporankejadian') }}" class="btn btn-primary text-white me-0">
+                                <i class="mdi mdi-table-edit"></i> Edit Data
+                            </a>
+                        </div> -->
                     </div>
-                    @php
-                        $defaultDateTime = now()->format('Y-m-d');
-                    @endphp
-                    <form action="{{ route('store-laporankejadian') }}" method="POST">
-                      @csrf
-                        <!-- Jenis Kejadian -->
-                        <div class="form-group">
-                            <label for="id_jeniskejadian">Jenis Kejadian</label>
-                            <select name="id_jeniskejadian" id="id_jeniskejadian" class="form-control form-control-sm" placeholder="- Pilih Jenis Kejadian -" required>
-                                <option value="">- Pilih Jenis Kejadian -</option>
-                                @foreach ($jeniskejadian as $jenis)
-                                <option value="{{ $jenis->id_jeniskejadian }}">{{ $jenis->nama_kejadian }}</option>
-                                @endforeach
-                              </select>
+                  <div class="form-group">
+                      <label for="exampleSelectGender">Kategori Bencana</label>
+                        <select class="form-control form-control-sm" id="exampleSelectGender">
+                          <option>Banjir</option>
+                          <option>Gempa Bumi</option>
+                          <option>Kecelakaan</option>
+                          <option>Kebakaran</option>
+                          <option>Longsor</option>
+                        </select>
+                      </div>
+                    <div class="form-group">
+                        <label for="exampleInputCity1">Lokasi</label>
+                        <input type="text" class="form-control form-control-sm" id="exampleInputCity1" placeholder="Location">
+                    </div>
+                  <!-- <form class="forms-sample">
+                    <div class="form-group">
+                      <label for="exampleInputName1">Nama Bencana</label>
+                      <input type="text" class="form-control form-control-sm" id="exampleInputName1" placeholder="Name">
+                    </div> -->
+                    <!-- <div class="form-group">
+                        <label for="exampleInputDate">Nama Bencana</label>
+                        <input type="date" class="form-control form-control-sm" id="exampleInputDate" placeholder="dd/mm/yyyy">
+                      </div> -->
+                    <div class="form-group">
+                        <label class="exampleInputDate">Waktu Kejadian</label>
+                        <input type="datetime-local" class="form-control form-control-sm" id="waktu-kejadian" placeholder="dd/mm/yyyy hh:mm"/>
+                    </div>
+                    <!-- <div class="form-group">
+                      <label for="exampleInputPassword4">Password</label>
+                      <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
+                    </div>  -->
+                    <!-- <div class="form-group">
+                      <label for="exampleSelectGender">Kategori Bencana</label>
+                        <select class="form-control form-control-sm" id="exampleSelectGender">
+                          <option>Banjir</option>
+                          <option>Gempa Bumi</option>
+                          <option>Kecelakaan</option>
+                          <option>Kebakaran</option>
+                          <option>Longsor</option>
+                        </select>
+                      </div> -->
+                    <!-- <div class="form-group">
+                        <label>Lampiran</label>
+                        <input id="fileInput" type="file" class="file-upload-default">
+                        <div class="input-group col-xs-12">
+                            {{-- <input type="file" name="file" id="fileInput"> --}}
+                            <input type="file" class="form-control form-control-sm" placeholder="Upload Image">
+                            <span class="input-group-append">
+                                <button class="file-upload-browse btn btn-primary btn-sm" type="button">Upload</button>
+                            </span>
                         </div>
-                        <!-- Tanggal Kejadian -->
-                        <div class="form-group">
-                            <label for="tanggal_kejadian">Waktu Kejadian</label>
-                            <input type="datetime" class="form-control form-control-sm" id="tanggal_kejadian" name="tanggal_kejadian" value="{{ $defaultDateTime }}" required>
+                    </div> -->
+                    <div class="form-group">
+                      <label for="exampleTextarea1">Keterangan</label>
+                      <textarea class="form-control form-control-sm" id="exampleTextarea1" rows="4"></textarea>
+                    </div>
+                    <div class="btn-wrapper">
+                      {{--  <a href="#" class="btn btn-otline-dark align-items-center"><i class="icon-share"></i> Share</a>
+                      <a href="#" class="btn btn-otline-dark"><i class="icon-printer"></i> Print</a>  --}}
+                      <a href="#" class="btn btn-primary text-white me-0" data-bs-toggle="modal" data-bs-target="#generateModal"><i class="icon-download"></i> Submit</a>
+
+                        <!-- Submit Modal-->
+                        <div class="modal fade" id="generateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Apakah anda yakin ingin mensubmit laporan kejadian?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">Klik "Submit" dibawah ini jika ingin mensubmit Laporan Kejadian</div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-black" data-bs-dismiss="modal">Cancel</button>
+                                        <a class="btn btn-primary text-white me-0" href="{{ route('relawan-laporankejadian') }}">Submit</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <!-- Keterangan -->
-                        <div class="form-group">
-                            <label for="keterangan">Keterangan</label>
-                            <textarea class="form-control form-control-sm" id="keterangan" name="keterangan" rows="4" required></textarea>
-                        </div>
-                        <!-- Status -->
-                        <div class="form-group">
-                            <label for="status">Status</label>
-                            <select class="form-control form-control-sm" id="status" name="status" required>
-                                <option value="On Process">On Process</option>
-                                <option value="Selesai">Selesai</option>
-                                <option value="Belum Diverifikasi">Belum Diverifikasi</option>
-                            </select>
-                        </div>
-                        <!-- Lokasi Longitude -->
-                        <div class="form-group">
-                            <label for="lokasi_longitude">Lokasi Longitude</label>
-                            <input type="number" step="any" class="form-control form-control-sm" id="lokasi_longitude" name="lokasi_longitude" placeholder="Longitude">
-                        </div>
-                        <!-- Lokasi Latitude -->
-                        <div class="form-group">
-                            <label for="lokasi_latitude">Lokasi Latitude</label>
-                            <input type="number" step="any" class="form-control form-control-sm" id="lokasi_latitude" name="lokasi_latitude" placeholder="Latitude">
-                        </div>
-                        <div class="form-group">
-                          <button type="submit" class="btn btn-primary text-white me-0"><i class="icon-download"></i> Submit</a></button>
-                          <button class="btn btn-light">Cancel</button>
-                        </div>
-                    </form>
+                         <!-- end of Logout Modal-->
+
+                        <button class="btn btn-light">Cancel</button>
+                    </div>
+                    <!-- <a href="{{ route('relawan-laporankejadian') }}" class="btn btn-primary text-white me-2" role="button"></i>Submit</a> -->
+                    <!-- Submit Modal -->
+                    
+                  </form>
                 </div>
               </div>
             </div>
             </div>
           </div>
         </div>
+        <!-- {{-- <form action="{{ route('submit-bencana') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="nama_bencana">Nama Bencana</label>
+                <input type="text" class="form-control" id="nama_bencana" name="nama_bencana" required>
+            </div>
+            <div class="form-group">
+                <label for="lokasi">Lokasi</label>
+                <input type="text" class="form-control" id="lokasi" name="lokasi" required>
+            </div>
+            <div class="form-group">
+                <label for="deskripsi">Deskripsi</label>
+                <textarea class="form-control" id="deskripsi" name="deskripsi" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Laporkan Kejadian</button>
+        </form> --}} -->
     </div>
     </div>
     </div>
