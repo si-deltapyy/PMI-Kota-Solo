@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_relawan');
             $table->date('tanggal_kejadian');
             $table->string('lokasi');
-            $table->string('update');
+            $table->date('update');
             $table->string('dukungan_internasional');
             $table->text('keterangan');
             $table->enum('akses_ke_lokasi', ['Accessible', 'Not Accessible']);
