@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\UserApproved;
+use Illuminate\Support\Facades\Mail;
 
 class PengelolaProfilController extends Controller
 {
@@ -327,6 +329,7 @@ class PengelolaProfilController extends Controller
             $user->update(['is_approved' => true]);
 
             // Optional: Memberikan notifikasi atau pesan sukses
+            Mail::to($user->email)->send(new UserApproved($user));
             return redirect()->back()->with('success', 'User telah berhasil disetujui.');
         }
 

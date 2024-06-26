@@ -86,20 +86,22 @@
                                                             {{ $role->name }}
                                                         @endforeach
                                                     </td>
-                                                    <td>{{ $user->is_approved ? 'Approved' : 'Not Approved' }}</td>
+                                                    <td>{{ $user->is_approved ? 'Approved' : 'Need Approval' }}</td>
                                                     <td>
+                                                    @if ($user->is_approved)
                                                         <a href="{{ route('pengelolaProfiledit_relawan', $user->id) }}" class="btn btn-info btn-sm">
                                                             <i class="mdi mdi-pencil"></i>
                                                         </a>
                                                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $user->id }}">
                                                             <i class="mdi mdi-delete-forever"></i>
                                                         </button>
-                                                        @if (!$user->is_approved && $user->roles->contains('name', 'relawan'))
+                                                    @endif
+                                                        <!-- @if (!$user->is_approved && $user->roles->contains('name', 'relawan'))
                                                             <form method="POST" action="{{ route('approve.user', $user->id) }}" class="d-inline">
                                                                 @csrf
                                                                 <button type="submit" class="btn btn-success btn-sm">Approve</button>
                                                             </form>
-                                                        @endif
+                                                        @endif -->
                                                     </td>
                                                 </tr>
 
