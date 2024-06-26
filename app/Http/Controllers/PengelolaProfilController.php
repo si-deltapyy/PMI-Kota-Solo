@@ -49,16 +49,19 @@ class PengelolaProfilController extends Controller
             $query->whereHas('roles', function($q) use ($filterRole) {
                 $q->where('name', $filterRole);
             });
-    
-            // Apply is_approved filter for relawan role
+        
+            // Apply is_approved filter for 'relawan' role
             if ($filterRole == 'relawan') {
-                $query->where('is_approved', true);
+                $query->where(function ($query) {
+                    $query->where('is_approved', true)
+                          ->orWhere('is_approved', false);
+                });
             }
-        }
     
         $users = $query->get();
     
         return view('pengelola_profil.user_management', compact('users', 'roles', 'search', 'filterRole'));
+    }
     }
 
 
@@ -257,7 +260,7 @@ class PengelolaProfilController extends Controller
             $user->assignRole('admin');
 
             // Redirect atau tampilkan pesan sukses
-            return redirect()->route('pengelola-admin')->with('success', 'Admin account created successfully.');
+            return redirect()->route('pengelola-admin')->with('success', 'Pembuatan akun Admin berhasil.');
                 // return view('pengelola_profil.add-admin');
     }
 
@@ -286,7 +289,7 @@ class PengelolaProfilController extends Controller
 
         $user->save();
 
-        return redirect()->route('pengelola-admin')->with('success', 'Akun Relawan berhasil diedit.');
+        return redirect()->route('pengelola-admin')->with('success', 'Akun Admin berhasil diedit.');
     }
 
     public function destroy_admin(string $id)
@@ -294,7 +297,7 @@ class PengelolaProfilController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('pengelola-admin')->with('success', 'Akun Relawan berhasil dihapus.');
+        return redirect()->route('pengelola-admin')->with('success', 'Akun Admin berhasil dihapus.');
     }
 
     public function show_admin($id)
@@ -330,7 +333,7 @@ class PengelolaProfilController extends Controller
 
             // Optional: Memberikan notifikasi atau pesan sukses
             Mail::to($user->email)->send(new UserApproved($user));
-            return redirect()->back()->with('success', 'User telah berhasil disetujui.');
+            return redirect()->back()->with('success', 'Relawan telah berhasil disetujui.');
         }
 
 }

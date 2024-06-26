@@ -22,16 +22,37 @@
         
             
             @section('content')
+
+           
+
             <div class="content-wrapper">
             <div class="row flex-grow">
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card card-rounded">
                         <div class="card-body">
                         <div class="d-sm-flex justify-content-between align-items-center">
+
                             <div class="w-100 text-center">
                                 <h1 class="card-title card-title-dash">LIST ADMIN</h1>
                             </div>
                         </div>
+
+                        <!-- alert -->
+                        @if (session('error'))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong> {{ session('error') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            @if (session('success'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Success!</strong> {{ session('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+                            <!-- end alert  -->
+                             
                         <br>
                         <div class="d-sm-flex justify-content-between align-items-start">
                         <a href="{{ url('/pengelolaProfil/add-admin') }}" class="btn btn-primary btn-sm me-2" type="button">
@@ -70,8 +91,8 @@
 <!-- end modal -->
 
 
-                        
-                            <div class="table-responsive  ">
+                    
+
                             <table class="table ">
                                 <thead>
                                 <tr>
