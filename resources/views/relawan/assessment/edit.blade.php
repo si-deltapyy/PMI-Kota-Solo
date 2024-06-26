@@ -150,6 +150,8 @@
                                 </div> 
 
                                 {{-- Tambah Pengungsian --}}
+                                <h6><b>Pengungsian</b></h6>
+
                                 <div id="form_area">
                                 <button type="button" id="add-pengungsian" class="btn btn-primary me-2">Input Pengungsian</button>
                                 <br>
@@ -264,8 +266,11 @@
                                 });
                             });
                             </script>
+
+                                <h4 class="card-title">Data Giat PMI</h4>
+
                                 {{--  giat pmi - evakuasi korban layanan korban  --}}
-                                <h4 class="card-title">Evakuasi Korban</h4>
+                                <h6><b>Evakuasi Korban</b></h6>
                                 <div class="form-group">
                                     <label for="luka_ringanberat">Luka Ringan/Berat</label>
                                     <input type="number" class="form-control" id="luka_ringanberat" name="luka_ringanberat" value="{{ $kejadian->giatPmi?->evakuasiKorban?->luka_ringanberat ?? '' }}">
@@ -279,7 +284,7 @@
                                     <input type="text" class="form-control" id="keterangan" name="keterangan" value="{{ $kejadian->giatPmi?->evakuasiKorban?->keterangan ?? '' }}">
                                 </div>
 
-                                <h4 class="card-title">Layanan Korban</h4>
+                                <h6><b>Layanan Korban</b></h6>
                                 <div class="form-group">
                                     <label for="distribusi">Distribusi</label>
                                     <input type="text" class="form-control" id="distribusi" name="distribusi" value="{{ $kejadian->giatPmi?->layananKorban?->distribusi ?? '' }}">
@@ -302,10 +307,12 @@
                                     <input type="text" class="form-control" name="kebutuhan" id="kebutuhan" value="{{ $kejadian->kebutuhan }}">
                                 </div>
 
+                                <h4 class="card-title">Data Personil Narahubung</h4>
+
                                 <div id="form_area_cp">
                                     <button type="button" class="btn btn-primary" id="add-narahubung">Input Personil Narahubung</button>
                                     <br>
-                                    <p class="card-description" id="subtitle">Personil yang dapat dihubungi</p>
+                                    <p class="card-description" id="subtitle">Tambah, Edit, dan Hapus Data Personil yang dapat dihubungi</p>
                                     
                                     <div id="narahubung-container">
                                         @if($kejadian->narahubung->isNotEmpty())
