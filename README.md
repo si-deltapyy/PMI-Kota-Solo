@@ -71,7 +71,8 @@ Sebelum memulai, pastikan perangkat lunak berikut telah terinstal di komputer An
    php artisan db:seed AllSeeder 
    ```
 
-8. **Jalankan Server**: Terakhir, jalankan server pengembangan Laravel dengan perintah:
+8. **Buat Folder Dokumentas** : Buat folder dokumentasi di dalam directory public
+9. **Jalankan Server**: Terakhir, jalankan server pengembangan Laravel dengan perintah:
 
     ```bash
     php artisan serve
