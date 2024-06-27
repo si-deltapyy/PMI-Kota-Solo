@@ -108,8 +108,10 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index_admin'])->name('admin-home');
     Route::get('/admin/kejadian', [AdminController::class, 'kejadian'])->name('admin-kejadian');
     Route::get('/admin/assessment', [AdminController::class, 'index_assessment'])->name('admin-assessment');
-    Route::get('/admin/assessment/unverified', [AdminController::class, 'assessment_unverif'])->name('admin-assessment-unverif');
-    Route::get('/admin/assessment/verified', [AdminController::class, 'assessment_verif'])->name('admin-assessment-verif');
+    Route::get('/admin/assessment/view/{id}', [AdminController::class, 'view_assessment'])->name('admin-view-assessment');
+    // Route::get('/admin/assessment/create/{id}', [AdminController::class, 'create_assessment'])->name('create-assessment');
+    // Route::get('/admin/assessment/unverified', [AdminController::class, 'assessment_unverif'])->name('admin-assessment-unverif');
+    // Route::get('/admin/assessment/verified', [AdminController::class, 'assessment_verif'])->name('admin-assessment-verif');
     // Route::get('/admin/laporan-kejadian', [AdminController::class, 'index_laporan_kejadian'])->name('admin-assessment');
     // laporan kejadian NEW
     Route::get('/admin/laporan-kejadian', [AdminController::class, 'index_laporankejadian'])->name('admin-laporankejadian');
@@ -125,7 +127,9 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/admin/laporan-kejadian/verified/view/{id}', [AdminController::class, 'laporan_kejadian_view'])->name('admin-laporan-kejadian-view-verif');
     Route::get('/admin/laporan-kejadian/unverified/verif/{id}', [AdminController::class, 'laporan_kejadian_verif_view'])->name('admin-laporan-kejadian-verif-view');
     Route::post('/admin/verif/laporan-kejadian', [AdminController::class, 'verif_laporan_kejadian'])->name('verif-laporan-kejadian');
+    
     Route::get('/admin/lapsit', [AdminController::class, 'lapsit'])->name('admin-lapsit');
+    Route::get('/relawan/lapsit/view/{id}', [AdminController::class, 'view_lapsit'])->name('admin-view-lapsit');
     Route::post('/admin/lapsit/{id}/share', [AdminController::class, 'Sharelapsit'])->name('share.lapsit');
     Route::get('/admin/exsum', [AdminController::class, 'index_exsum'])->name('admin-exsum');
 });
