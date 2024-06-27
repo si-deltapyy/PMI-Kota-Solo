@@ -321,7 +321,7 @@ class PDFController extends Controller
     public function exportLaporanSituasi($id)
     {
         $data = $this->prepareDataLapsit($id);
-        $pdf = PDF::loadView('pdf.lapsit2', $data);
+        $pdf = PDF::loadView('pdf.lapsit', $data);
         $pdf->setPaper('A4', 'portrait');
         return $pdf->stream('laporan-situasi.pdf');
     }
