@@ -168,7 +168,7 @@
                                                 @csrf
                                                 <button type="submit" class="btn btn-success">Approve</button>
                                             </form>
-                                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal" onclick="window.history.back()">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
@@ -194,7 +194,7 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">REJECT</button>
                                             </form>
-                                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">CANCEL</button>
+                                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal" onclick="window.history.back()">CANCEL</button>
                                         </div>
                                     </div>
                                 </div>
@@ -220,7 +220,7 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">DELETE</button>
                                             </form>
-                                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">CANCEL</button>
+                                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal" onclick="window.history.back()">CANCEL</button>
                                         </div>
                                     </div>
                                 </div>

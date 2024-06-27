@@ -1,75 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts-pengelolaProfil.default')
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Details</title>
+@section('content')
 
-    <style>
-        table {
-            width: 95%;
-            border-collapse: collapse;
-            margin: 50px auto;
-        }
+@section('content')
 
-        /* Zebra striping */
-        tr:nth-of-type(odd) {
-            background: #eee;
-        }
+<!-- Page Wrapper -->
+<div id="wrapper">
 
-        th {
-            background: #3498db;
-            color: white;
-            font-weight: bold;
-        }
+<!-- Content Wrapper -->
+<div id="content-wrapper">
 
-        td,
-        th {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: left;
-            font-size: 18px;
-        }
+    <!-- Main Content -->
+    <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+            <!-- Sidebar Toggle (Topbar)
+            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                <i class="fa fa-bars"></i>
+            </button> -->
+
+        @section('content')
+        <div class="main-panel">
+          <div class="content-wrapper ">
+            <div class="row flex-grow">
+            <div class="col-20 grid-margin stretch-card">
+                <div class="card card-rounded">
+                  <div class="card-body">
+                    <h4 class="card-title">Edit Akun </h4>
+                    @if ($errors->any())
+                        <div>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <form class="forms-sample" action="{{  route('pengelola-user.update', $user->id) }}" method="POST">
+                      @csrf
+                      @method('PUT')
+                      <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" class="form-control"  placeholder="Name" value="{{ old('name', $user->name) }}" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="{{ old('username', $user->username) }}" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="{{ old('email', $user->email) }}" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="password_confirmation">Confirm Password</label>
+                        <input type="password" class="form-control" id="password_confirmation" placeholder="Password Confirm" name="password_confirmation" required>
+                      </div>
+                      
+                      <button type="submit" class="btn btn-primary me-2">Update</button>
+                      <button class="btn btn-light" onclick="window.history.back()">Cancel</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              </div>
+              </div>
+              </div>
+
+    @endsection     
+</div>
+</div>
+@endsection
 
 
-    </style>
-
-</head>
-
-<body>
-
-    <div style="width: 95%; margin: 0 auto;">
-        <div style="width: 10%; float:left; margin-right: 20px;">
-            <img src="{{ public_path('assets/images/logo.png') }}" width="100%"  alt="">
-        </div>
-        <div style="width: 50%; float: left;">
-            <h1>All User Details</h1>
-        </div>
-    </div>
-
-    <table style="position: relative; top: 50px;">
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Email</th>
-                <th>Date Of Joining</th>
-            </tr>
-        </thead>
-        <tbody>
-                <tr>
-                    <td data-column="Last Name">{{ $user->name }}</td>
-                    <td data-column="Email" style="color: dodgerblue;">
-                        {{ $user->email }}
-                    </td>
-                    <td data-column="Date">
-                        {{ date('F j, Y', strtotime($user->created_at)) }}
-                    </td>
-                </tr>
-        </tbody>
-    </table>
-
-</body>
-
-</html>
+    
