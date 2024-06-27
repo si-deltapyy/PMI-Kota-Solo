@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('petugas_posko', function (Blueprint $table) {
-            $table->id('id_petugas_posko');
-            $table->string('nama_lengkap');
-            $table->string('kontak');
+        Schema::create('lampiran_dokumentasi', function (Blueprint $table) {
+            $table->id('id_dokumentasi');
+            $table->string('file_dokumentasi');
+            $table->unsignedBigInteger('id_kejadian');
             $table->timestamps();
+
+            $table->foreign('id_kejadian')->references('id_kejadian')->on('kejadian_bencana')->onDelete('CASCADE');
         });
     }
 
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('petugas_posko');
+        Schema::dropIfExists('lampiran_dokumentasi');
     }
 };

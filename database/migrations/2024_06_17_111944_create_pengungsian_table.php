@@ -22,7 +22,10 @@ return new class extends Migration
             $table->integer('jumlah');
             $table->integer('kk');
             $table->integer('jiwa');
+            $table->unsignedBigInteger('id_dampak');
             $table->timestamps();
+
+            $table->foreign('id_dampak')->references('id_dampak')->on('dampak')->onDelete('CASCADE');
         });
     }
 

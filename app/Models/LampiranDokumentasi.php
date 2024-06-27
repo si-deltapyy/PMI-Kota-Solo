@@ -14,11 +14,15 @@ class LampiranDokumentasi extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'file_dokumentasi'
+        'file_dokumentasi',
+        'id_kejadian'
     ];
+
+    
 
     public function kejadianBencana()
     {
-        return $this->hasMany(KejadianBencana::class, 'id_dokumentasi');
+        return $this->belongsTo(KejadianBencana::class, 'id_kejadian');
     }
+
 }

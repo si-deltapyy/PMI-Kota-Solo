@@ -23,5 +23,13 @@ class Pengungsian extends Model
         'jumlah',
         'kk',
         'jiwa',
+        'id_dampak'
     ];
+
+    
+    public function dampak()
+    {
+        return $this->belongsTo(Dampak::class, 'id_dampak');
+    }
+
 }

@@ -17,16 +17,19 @@ class LampiranDokumentasiSeeder extends Seeder
         $data = [
             [
                 'file_dokumentasi' => 'document1.pdf',
+                'id_kejadian' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
                 'file_dokumentasi' => 'document2.jpg',
+                'id_kejadian' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
                 'file_dokumentasi' => 'document3.png',
+                'id_kejadian' => 2,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],

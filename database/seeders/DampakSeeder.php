@@ -20,7 +20,6 @@ class DampakSeeder extends Seeder
                 'id_kerusakan_rumah' => 1, // Replace with actual ID from kerusakan_rumah table
                 'id_kerusakan_fasil_sosial' => 1, // Replace with actual ID from kerusakan_fasil_sosial table
                 'id_kerusakan_infrastruktur' => 1, // Replace with actual ID from kerusakan_infrastruktur table
-                'id_pengungsian' => 1, // Replace with actual ID from pengungsian table
                 'id_korban_jlw' => 1,
                 'created_at' => '2024-04-20 16:27:19',
                 'updated_at' => Carbon::now(),
@@ -30,7 +29,6 @@ class DampakSeeder extends Seeder
                 'id_kerusakan_rumah' => 2, // Replace with actual ID from kerusakan_rumah table
                 'id_kerusakan_fasil_sosial' => 2, // Replace with actual ID from kerusakan_fasil_sosial table
                 'id_kerusakan_infrastruktur' => 2, // Replace with actual ID from kerusakan_infrastruktur table
-                'id_pengungsian' => 2, // Replace with actual ID from pengungsian table
                 'id_korban_jlw' => 2,
                 'created_at' => '2024-05-20 16:27:19',
                 'updated_at' => Carbon::now(),
