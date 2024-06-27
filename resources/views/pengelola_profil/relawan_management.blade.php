@@ -131,6 +131,7 @@
                                             <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#approveModal{{ $list->id }}">Approve</button>
                                            
                                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal{{ $list->id }}">Reject </button>
+
                                             @endif
                                         
                                         </td>
@@ -138,8 +139,9 @@
                                         <td>
                                         @if ($list->is_approved)
                                             <a href="{{ route('pengelolaProfiledit_relawan', $list->id) }}" class="btn btn-info btn-sm"><i class="mdi mdi-pencil"></i></a>
-                                        
+                                            <a href="{{ route('pengelolaProfil.show_detail', $list->id) }}" class="btn btn-warning btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                                             <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $list->id }}"><i class="mdi mdi-delete-forever"></i></button>
+                                            
                                             @endif
                                         </td>
                                     </tr>

@@ -195,11 +195,7 @@ class PengelolaProfilController extends Controller
     }
 
   
-    public function show_relawan($id)
-    {
-        $user = User::findOrFail($id);
-        return view('pengelola_profil.detail-volunteer');
-    }
+   
 
     public function destroy_relawan(string $id)
     {
@@ -300,10 +296,10 @@ class PengelolaProfilController extends Controller
         return redirect()->route('pengelola-admin')->with('success', 'Akun Admin berhasil dihapus.');
     }
 
-    public function show_admin($id)
+    public function show_detail($id)
     {
         $user = User::findOrFail($id);
-        return view('pengelola_profil.detail-admin', compact('user'));
+        return view('pengelola_profil.detail-User', compact('user'));
 
     }
 

@@ -85,7 +85,7 @@ Route::group(['middleware' => ['auth',  'role:pengelola_profil']], function () {
     Route::get('/pengelolaProfil/detail-volunteer/{id}/hapus', [PengelolaProfilController::class, 'destroy_relawan'])->name('pengelola-detailRelawan');
     Route::get('/pengelolaProfil/{id}/editRelawan', [PengelolaProfilController::class, 'edit_relawan'])->name('pengelolaProfiledit_relawan');
     Route::put('/pengelolaProfil/{id}/editRelawan', [PengelolaProfilController::class, 'update_relawan'])->name('pengelolaProfil.update_relawan');
-    Route::get('/pengelolaProfil/{id}/relawan',  [PengelolaProfilController::class, 'show_relawan'])->name('pengelolaProfil.show_relawan');
+    Route::get('/pengelolaProfil/detail_relawan/{id}',  [PengelolaProfilController::class, 'show_relawan'])->name('pengelolaProfil.show_relawan');
     Route::delete('/pengelolaProfil/hapus-relawan/{id}/hapusRelawan', [PengelolaProfilController::class, 'destroy_relawan'])->name('pengelola-user-hapusRelawan');
     //admin CRUD
     Route::post('/pengelolaProfil/store-admin', [PengelolaProfilController::class, 'store_admin'])->name('pengelola-user-admin');  
@@ -94,7 +94,9 @@ Route::group(['middleware' => ['auth',  'role:pengelola_profil']], function () {
     Route::put('pengelolaProfil/{id}/edit', [PengelolaProfilController::class, 'update_admin'])->name('pengelolaProfil.update_admin');
     Route::resource('pengelolaProfil', PengelolaProfilController::class);
     Route::delete('/pengelolaProfil/hapus-admin/{id}/hapus', [PengelolaProfilController::class, 'destroy_admin'])->name('pengelola-user-hapusAdmin');
-    Route::get('pengelolaProfil/{id}',  [PengelolaProfilController::class, 'show_admin'])->name('pengelolaProfil.show_admin');
+   
+    // show detail 
+    Route::get('pengelolaProfil/detail/{id}',  [PengelolaProfilController::class, 'show_detail'])->name('pengelolaProfil.show_detail');
 
     // approval 
     Route::get('/pengelolaProfil/approve', [PengelolaProfilController::class, 'show_ApprovalPage'])->name('approval.page');

@@ -122,6 +122,7 @@
 
                                      
                                                 <a href="{{ route('pengelolaProfil.edit_admin', $list->id) }}"><label class="btn btn-info btn-sm"><i class="mdi mdi-pencil"></i></label></a> 
+                                                <a href="{{ route('pengelolaProfil.show_detail', $list->id) }}" class="btn btn-warning btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                                                 <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $list->id }}">
                                                     <i class="mdi mdi-delete-forever"></i>
                                                 </button>
