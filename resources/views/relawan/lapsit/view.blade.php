@@ -8,7 +8,7 @@
         <div class="col-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">Laporan Assessment</h3>
+                    <h3 class="card-title">Laporan Situasi</h3>
 
                     <form class="forms-sample">
                         <h5>Detail Kejadian</h5>
@@ -185,45 +185,47 @@
                         <hr>
 
                         <div id="form_area">
+                            @foreach ($lapsit->pengungsian as $pengungsian)
                             <div id="form_pengungsian" >
                                 <!-- <h4 class="card-title" id="subtitle">Pengungsian</h4> -->
                                 <div class="form-group">
                                     <label for="nama_lokasi">Nama Lokasi</label>
-                                    <input readonly type="text" class="form-control" name="nama_lokasi[]" value="{{ $lapsit->pengungsian->nama_lokasi }}">
+                                    <input readonly type="text" class="form-control" name="nama_lokasi[]" value="{{ $pengungsian->nama_lokasi }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_kk">KK</label>
-                                    <input readonly type="number" class="form-control" name="jumlah_kk[]" value="{{ $lapsit->pengungsian->kk }}">
+                                    <input readonly type="number" class="form-control" name="jumlah_kk[]" value="{{ $pengungsian->kk }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_orang">Jiwa</label>
-                                    <input readonly type="number" class="form-control" name="jumlah_orang[]" value="{{ $lapsit->pengungsian->jiwa }}">
+                                    <input readonly type="number" class="form-control" name="jumlah_orang[]" value="{{ $pengungsian->jiwa }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="laki_laki">Laki-Laki</label>
-                                    <input readonly type="number" class="form-control" name="laki_laki[]" value="{{ $lapsit->pengungsian->laki_laki }}">
+                                    <input readonly type="number" class="form-control" name="laki_laki[]" value="{{ $pengungsian->laki_laki }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="perempuan">Perempuan</label>
-                                    <input readonly type="number" class="form-control" name="perempuan[]" value="{{ $lapsit->pengungsian->perempuan }}">
+                                    <input readonly type="number" class="form-control" name="perempuan[]" value="{{ $pengungsian->perempuan }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="kurang_dari_5">Kurang dari 5 Tahun</label>
-                                    <input readonly type="number" class="form-control" name="kurang_dari_5[]" value="{{ $lapsit->pengungsian->kurang_dari_5 }}">
+                                    <input readonly type="number" class="form-control" name="kurang_dari_5[]" value="{{ $pengungsian->kurang_dari_5 }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="antara_5_18">Antara 5-18 Tahun</label>
-                                    <input readonly type="number" class="form-control" name="antara_5_18[]" value="{{ $lapsit->pengungsian->atr_5_sampai_18 }}">
+                                    <input readonly type="number" class="form-control" name="antara_5_18[]" value="{{ $pengungsian->atr_5_sampai_18 }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="lebih_dari_18">Lebih Dari 18 Tahun</label>
-                                    <input readonly type="number" class="form-control" name="lebih_dari_18[]" value="{{ $lapsit->pengungsian->lebih_dari_18 }}">
+                                    <input readonly type="number" class="form-control" name="lebih_dari_18[]" value="{{ $pengungsian->lebih_dari_18 }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah">Jumlah</label>
-                                    <input readonly type="number" class="form-control" name="jumlah[]" value="{{ $lapsit->pengungsian->jumlah }}">
+                                    <input readonly type="number" class="form-control" name="jumlah[]" value="{{ $pengungsian->jumlah }}">
                                 </div>
                             </div>
+                            @endforeach
                         </div>
 
                         {{-- Personil --}}
@@ -530,21 +532,23 @@
                         <hr>
 
                         <div id="form_area_cp">
+                            @foreach ($lapsit->narahubung as $narahubung)
                             <div id="form_cp">
                                 <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
                                 <div class="form-group">
                                     <label for="nama_lokasi">Nama Lengkap</label>
-                                    <input readonly type="text" class="form-control" name="nama_lokasi[]" value="{{ $lapsit->narahubung->nama_lengkap }}">
+                                    <input readonly type="text" class="form-control" name="nama_lokasi[]" value="{{ $narahubung->nama_lengkap }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_kk">Posisi</label>
-                                    <input readonly type="text" class="form-control" name="jumlah_kk[]" value="{{ $lapsit->narahubung->posisi }}">
+                                    <input readonly type="text" class="form-control" name="jumlah_kk[]" value="{{ $narahubung->posisi }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_orang">Kontak</label>
-                                    <input readonly type="phone" class="form-control" name="jumlah_orang[]" value="{{ $lapsit->narahubung->kontak }}">
+                                    <input readonly type="phone" class="form-control" name="jumlah_orang[]" value="{{ $narahubung->kontak }}">
                                 </div>
                             </div>
+                            @endforeach
                         </div>
 
                         <!-- <div class="form-group">
@@ -556,17 +560,19 @@
                         <hr>
 
                         <div id="form_area_petugas">
+                            @foreach ($lapsit->petugasPosko as $petugasPosko)
                             <div id="form_petugas" >
                                 <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
                                 <div class="form-group">
                                     <label for="nama_lokasi">Nama Lengkap</label>
-                                    <input readonly type="text" class="form-control" name="nama_lokasi[]" value="{{ $lapsit->petugasPosko->nama_lengkap }}">
+                                    <input readonly type="text" class="form-control" name="nama_lokasi[]" value="{{ $petugasPosko->nama_lengkap }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_orang">Kontak</label>
-                                    <input readonly type="phone" class="form-control" name="jumlah_orang[]" value="{{ $lapsit->petugasPosko->kontak }}">
+                                    <input readonly type="phone" class="form-control" name="jumlah_orang[]" value="{{ $petugasPosko->kontak }}">
                                 </div>
                             </div>
+                            @endforeach
                         </div>
 
                         <!-- <button type="submit" class="btn btn-primary me-2">Submit</button> -->
