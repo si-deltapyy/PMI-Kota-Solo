@@ -60,6 +60,8 @@ Route::get('pdf/lapsit/check', [App\Http\Controllers\PDFController::class, 'chec
 //route to pdf export
 Route::post('users/view-pdf/{id}', [PDFController::class, 'viewPDF'])->name('view-pdf');
 Route::post('users/download-pdf', [PDFController::class, 'downloadPDF'])->name('download-pdf');
+//Route::get('users/{id}/preview', [pdfController::class, 'previewAssessmentPdf'])->name('assessment.preview');
+Route::get('users/export-assessment/{id}', [pdfController::class, 'exportLaporanAssessment'])->name('assessment-export');
 
 //test middleware relawan role
 Route::group(['middleware' => ['auth', 'role:relawan']], function () {
@@ -90,13 +92,17 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::get('/relawan/assessment/{id}/edit', [RelawanController::class, 'edit_assessment'])->name('edit-assessment'); //edit
     Route::put('/relawan/assessment/{id}', [RelawanController::class, 'update_assessment'])->name('edit-assessment.update');//edit
     Route::delete('/relawan/assessment/delete/{id}', [RelawanController::class, 'delete_assessment'])->name('delete-assessment'); //edit
+    
 });
 
 //test middleware pengelola profil role
 Route::group(['middleware' => ['auth',  'role:pengelola_profil']], function () {
     Route::get('/pengelolaProfil/dashboard', [PengelolaProfilController::class, 'index'])->name('pengelolaProfil-home');
+    // Route::get('/pengelolaProfil/user_management', [PengelolaProfilController::class, 'user_management'])->name('pengelola-user');
     Route::get('/pengelolaProfil/user_management', [PengelolaProfilController::class, 'user_management'])->name('pengelola-user');
-    Route::get('/pengelolaProfil/user_management/{id}/edit', [PengelolaProfilController::class, 'user_management_edit'])->name('pengelola-user.edit');
+    Route::get('/pengelolaProfil/user_management/edit/{id}', [PengelolaProfilController::class, 'user_management_edit'])->name('pengelola-user.edit');
+    Route::delete('/pengelolaProfil/user_management/delete/{id}', [PengelolaProfilController::class, 'user_management_hapus'])->name('pengelola-user.hapus');
+    Route::put('pengelolaProfil/user_management/update/{id}', [PengelolaProfilController::class, 'user_management_update'])->name('pengelola-user.update');
     Route::get('/pengelolaProfil/relawan_management', [PengelolaProfilController::class, 'relawan_management'])->name('pengelola-relawan');
     Route::get('/pengelolaProfil/admin_management', [PengelolaProfilController::class, 'admin_management'])->name('pengelola-admin');
     //crud relawan
