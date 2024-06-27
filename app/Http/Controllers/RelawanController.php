@@ -1420,7 +1420,7 @@ class RelawanController extends Controller
             foreach ($validatedData['petugasPosko'] as $petugasPoskoData) {
                 if (isset($petugasPoskoData['id_petugas_posko'])) {
                     // Update narahubung yang sudah ada
-                    $kejadian->petugasPosko()->where('id_petugas_posko', $petugasPoskoData['id_narahubung'])
+                    $kejadian->petugasPosko()->where('id_petugas_posko', $petugasPoskoData['id_petugas_posko'])
                         ->update([
                             'nama_lengkap' => $petugasPoskoData['nama_lengkap'],
                             'kontak' => $petugasPoskoData['kontak'],
