@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\UserApproved;
+use Illuminate\Support\Facades\Mail;
 
 class PengelolaProfilController extends Controller
 {
@@ -47,16 +49,19 @@ class PengelolaProfilController extends Controller
             $query->whereHas('roles', function($q) use ($filterRole) {
                 $q->where('name', $filterRole);
             });
-    
-            // Apply is_approved filter for relawan role
+        
+            // Apply is_approved filter for 'relawan' role
             if ($filterRole == 'relawan') {
-                $query->where('is_approved', true);
+                $query->where(function ($query) {
+                    $query->where('is_approved', true)
+                          ->orWhere('is_approved', false);
+                });
             }
-        }
     
         $users = $query->get();
     
         return view('pengelola_profil.user_management', compact('users', 'roles', 'search', 'filterRole'));
+    }
     }
 
 
@@ -190,11 +195,7 @@ class PengelolaProfilController extends Controller
     }
 
   
-    public function show_relawan($id)
-    {
-        $user = User::findOrFail($id);
-        return view('pengelola_profil.detail-volunteer');
-    }
+   
 
     public function destroy_relawan(string $id)
     {
@@ -255,7 +256,7 @@ class PengelolaProfilController extends Controller
             $user->assignRole('admin');
 
             // Redirect atau tampilkan pesan sukses
-            return redirect()->route('pengelola-admin')->with('success', 'Admin account created successfully.');
+            return redirect()->route('pengelola-admin')->with('success', 'Pembuatan akun Admin berhasil.');
                 // return view('pengelola_profil.add-admin');
     }
 
@@ -284,7 +285,7 @@ class PengelolaProfilController extends Controller
 
         $user->save();
 
-        return redirect()->route('pengelola-admin')->with('success', 'Akun Relawan berhasil diedit.');
+        return redirect()->route('pengelola-admin')->with('success', 'Akun Admin berhasil diedit.');
     }
 
     public function destroy_admin(string $id)
@@ -292,13 +293,13 @@ class PengelolaProfilController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('pengelola-admin')->with('success', 'Akun Relawan berhasil dihapus.');
+        return redirect()->route('pengelola-admin')->with('success', 'Akun Admin berhasil dihapus.');
     }
 
-    public function show_admin($id)
+    public function show_detail($id)
     {
         $user = User::findOrFail($id);
-        return view('pengelola_profil.detail-admin', compact('user'));
+        return view('pengelola_profil.detail-User', compact('user'));
 
     }
 
@@ -327,7 +328,8 @@ class PengelolaProfilController extends Controller
             $user->update(['is_approved' => true]);
 
             // Optional: Memberikan notifikasi atau pesan sukses
-            return redirect()->back()->with('success', 'User telah berhasil disetujui.');
+            Mail::to($user->email)->send(new UserApproved($user));
+            return redirect()->back()->with('success', 'Relawan telah berhasil disetujui.');
         }
 
 }
