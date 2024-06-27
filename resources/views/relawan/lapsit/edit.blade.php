@@ -9,9 +9,7 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-
                             <h4 class="card-title">Laporan Situasi</h4>
-
                             <!-- Update Alert-->
                             @if(session('success'))
                             <div class="alert alert-success">
@@ -30,9 +28,7 @@
                             @else
                                 <p>Data Dampak tidak tersedia.</p>
                             @endif  --}}
-
                             <form class="forms-sample" action="{{ route('edit-lapsit.update', $kejadian->id_assessment) }}" method="POST" enctype="multipart/form-data">
-
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
@@ -105,10 +101,8 @@
                                         <input type="number" class="form-control" name="luka_ringan" id="luka_ringan" value="{{ $kejadian->dampak?->korbanJlw?->luka_ringan ?? '' }}">
                                     </div>
                                     <div class="form-group">
-
                                         <label for="meninggaljlw">Meninggal</label>
                                         <input type="number" class="form-control" name="meninggaljlw" id="meninggaljlw" value="{{ $kejadian->dampak?->korbanJlw?->meninggal ?? ''}}">
-
                                     </div>
                                     <div class="form-group">
                                         <label for="hilang">Hilang</label>
