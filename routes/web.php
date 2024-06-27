@@ -45,6 +45,8 @@ Route::get('pdf/check', [App\Http\Controllers\PDFController::class, 'checkExport
 //route to pdf export
 Route::post('users/view-pdf/{id}', [PDFController::class, 'viewPDF'])->name('view-pdf');
 Route::post('users/download-pdf', [PDFController::class, 'downloadPDF'])->name('download-pdf');
+//Route::get('users/{id}/preview', [pdfController::class, 'previewAssessmentPdf'])->name('assessment.preview');
+Route::get('users/export-assessment/{id}', [pdfController::class, 'exportLaporanAssessment'])->name('assessment-export');
 
 //test middleware relawan role
 Route::group(['middleware' => ['auth', 'role:relawan']], function () {
@@ -69,6 +71,7 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::get('/relawan/assessment/edit/{id}', [RelawanController::class, 'edit_assessment'])->name('edit-assessment'); //edit
     Route::put('/relawan/assessment/{id}', [RelawanController::class, 'update_assessment'])->name('edit-assessment.update');//edit
     Route::delete('/relawan/assessment/delete/{id}', [RelawanController::class, 'delete_assessment'])->name('delete-assessment'); //edit
+    
 });
 
 //test middleware pengelola profil role
