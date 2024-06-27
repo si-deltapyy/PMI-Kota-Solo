@@ -10,7 +10,14 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Laporan Assessment</h4>
-                            @if($kejadian->giatPmi)
+                            <!-- Update Alert-->
+                            @if(session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                            @endif
+                            <!-- End of Update Alert-->
+                            {{--  @if($kejadian->giatPmi)
                                 <p>{{ $kejadian->giatPmi->evakuasiKorban }}</p>
                             @else
                                 <p>Data Giat PMI tidak tersedia.</p>
@@ -20,13 +27,13 @@
                                 <p>{{ $kejadian->dampak->korban_terdampak }}</p>
                             @else
                                 <p>Data Dampak tidak tersedia.</p>
-                            @endif
-                            <form class="forms-sample" action="{{ route('edit-lapsit.update', $kejadian->id_kejadian ) }}" method="POST" enctype="multipart/form-data">
+                            @endif  --}}
+                            <form class="forms-sample" action="{{ route('edit-assessment.update', $kejadian->id_assessment) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
                                     <label for="kejadian_musibah">Jenis Kejadian Bencana</label>
-                                    <select class="form-control" id="kejadian_musibah" name="id_jeniskejadian" disabled>
+                                    <select class="form-control" id="kejadian_musibah" name="id_jeniskejadian" disabled style="color: black;">
                                         @foreach($jenisKejadian as $jenis)
                                             <option value="{{ $jenis->id_jeniskejadian }}" {{ $jenis->id_jeniskejadian == $kejadian->id_jeniskejadian ? 'selected' : '' }}>
                                                 {{ $jenis->nama_kejadian }}
@@ -37,34 +44,32 @@
 
                                 <div class="form-group">
                                     <label for="lokasi">Lokasi</label>
-                                    <input type="email" class="form-control" id="lokasi" value="{{ $kejadian->lokasi }}" disabled>
+                                    <input type="text" class="form-control" id="lokasi" name="lokasi" value="{{ $kejadian->lokasi }}" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="waktu_kejadian">Tanggal Kejadian</label>
-                                    <input type="date" class="form-control" id="waktu_kejadian" value="{{ $kejadian->tanggal_kejadian }}" disabled>
+                                    <input type="date" class="form-control" id="waktu_kejadian" name="waktu_kejadian" value="{{ $kejadian->tanggal_kejadian }}" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="update">Update</label>
-                                    <input type="date" class="form-control" id="update" value="{{ $kejadian->update }}">
+                                    <input type="date" class="form-control" id="update" name="update" value="{{ $kejadian->update }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label>Keterangan Akses Menuju Lokasi</label>
-                                    <select class="js-example-basic-single w-100" id="akses_ke_lokasi" name="akses_ke_lokasi">
-                                        <option value="Aman" {{ $kejadian->akses_ke_lokasi == "Accessible" ? 'selected' : '' }}>Aman</option>
-                                        <option value="Tidak Aman" {{ $kejadian->akses_ke_lokasi == "Not Accessible" ? 'selected' : '' }}>Tidak Aman</option>
+                                    <select class="form-control" id="akses_ke_lokasi" name="akses_ke_lokasi" style="background-color: white; color: black;">
+                                        <option value="Accessible" {{ $kejadian->akses_ke_lokasi == "Accessible" ? 'selected' : '' }}>Aman</option>
+                                        <option value="Not Accessible" {{ $kejadian->akses_ke_lokasi == "Not Accessible" ? 'selected' : '' }}>Tidak Aman</option>
                                     </select>
-                                </div> 
-
-                                {{-- Input Dampak --}}
-                                <div class="form-group">
-                                    <button type="button" id="dampak" class="btn btn-primary me-2">Input Dampak</button>
                                 </div>
+                                {{-- Input Dampak --}}
+                               {{--  <div class="form-group">
+                                    <button type="button" id="dampak" class="btn btn-primary me-2">Input Dampak</button>
+                                </div>  --}}
+                                <h4 class="card-title">Data Dampak Kejadian</h4>
 
-                                <div id="form_jumlah_kk" style="display:none;">
-                                    <p class="card-description" id="subtitle">
-                                        Korban Terdampak
-                                    </p>
+                                <div id="form_jumlah_kk">
+                                    <h6><b>Korban Terdampak</b></h6>
                                     <div class="form-group">
                                         <label for="kk">Jumlah KK</label>
                                         <input type="number" class="form-control" name="kk" id="kk" value="{{ $kejadian->dampak?->korbanTerdampak?->kk ?? '' }}">
@@ -73,15 +78,13 @@
                                         <label for="jiwa">Jumlah Orang</label>
                                         <input type="number" class="form-control" name="jiwa" id="jiwa" value="{{ $kejadian->dampak?->korbanTerdampak?->jiwa ?? '' }}">                                    
                                     </div>
-                                    <p class="card-description" id="subtitle">
-                                        Korban Jiwa/Luka/Mengungsi
-                                    </p>
+                                    <h6><b>Korban Jiwa/Luka/Mengungsi</b></h6>
                                     <div class="form-group">
                                         <label for="luka_berat">Luka Berat</label>
                                         <input type="number" class="form-control" name="luka_berat" id="luka_berat" value="{{ $kejadian->dampak?->korbanJlw?->luka_berat ?? '' }}">                                    
                                     </div>
                                     <div class="form-group">
-                                        <label for="luka_ringan">Luka Berat</label>
+                                        <label for="luka_ringan">Luka Ringan</label>
                                         <input type="number" class="form-control" name="luka_ringan" id="luka_ringan" value="{{ $kejadian->dampak?->korbanJlw?->luka_ringan ?? '' }}">
                                     </div>
                                     <div class="form-group">
@@ -97,186 +100,177 @@
                                         <input type="number" class="form-control" name="mengungsi" id="mengungsi" value="{{ $kejadian->dampak?->korbanJlw?->mengungsi ?? '' }}">
                                     </div>
 
-                                    <p class="card-description" id="subtitle">
-                                        Kerusakan Rumah
-                                    </p>
+                                    <h6><b>Kerusakan Rumah</b></h6>
+
                                     <div class="form-group">
                                         <label for="rusak_berat">Kerusakan Rumah Berat</label>
-                                        <input type="text" class="form-control" name="rusak_berat" id="rusak_berat" value="{{ $kejadian->dampak?->kerusakanRumah?->rusak_berat ?? ''}}">
+                                        <input type="number" class="form-control" name="rusak_berat" id="rusak_berat" value="{{ $kejadian->dampak?->kerusakanRumah?->rusak_berat ?? ''}}">
                                     </div>
                                     <div class="form-group">
                                         <label for="rusak_sedang">Kerusakan Rumah Sedang</label>
-                                        <input type="text" class="form-control" name="rusak_sedang" id="rusak_sedang" value="{{ $kejadian->dampak?->kerusakanRumah?->rusak_sedang ?? '' }}">
+                                        <input type="number" class="form-control" name="rusak_sedang" id="rusak_sedang" value="{{ $kejadian->dampak?->kerusakanRumah?->rusak_sedang ?? '' }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="rusak_ringan">Kerusakan Rumah Ringan</label>
-                                        <input type="text" class="form-control" name="rusak_ringan" id="rusak_ringan" value="{{ $kejadian->dampak?->kerusakanRumah?->rusak_ringan ?? '' }}">
+                                        <input type="number" class="form-control" name="rusak_ringan" id="rusak_ringan" value="{{ $kejadian->dampak?->kerusakanRumah?->rusak_ringan ?? '' }}">
                                     </div>
 
-                                    <p class="card-description" id="subtitle">
-                                        Kerusakan Fasilitas Sosial & Infrastruktur
-                                    </p>
+                                    <h6><b>Kerusakan Fasilitas Sosial & Infrastruktur</b></h6>
                                     <div class="form-group">
                                         <label for="sekolah">Kerusakan Sekolah</label>
-                                        <input type="text" class="form-control" name="sekolah" id="sekolah" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->sekolah ?? '' }}">
+                                        <input type="number" class="form-control" name="sekolah" id="sekolah" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->sekolah ?? '' }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="tempat_ibadah">Kerusakan Tempat Ibadah</label>
-                                        <input type="text" class="form-control" name="tempat_ibadah" id="tempat_ibadah" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->tempat_ibadah ?? '' }}">
+                                        <input type="number" class="form-control" name="tempat_ibadah" id="tempat_ibadah" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->tempat_ibadah ?? '' }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="rumah_sakit">Kerusakan Rumah Sakit</label>
-                                        <input type="text" class="form-control"  name="rumah_sakit" id="rumah_sakit" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->rumah_sakit ?? '' }}">
+                                        <input type="number" class="form-control"  name="rumah_sakit" id="rumah_sakit" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->rumah_sakit ?? '' }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="pasar">Kerusakan Pasar</label>
-                                        <input type="text" class="form-control" name="pasar" id="pasar" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->pasar ?? '' }}">
+                                        <input type="number" class="form-control" name="pasar" id="pasar" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->pasar ?? '' }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="gedung_pemerintah">Kerusakan Gedung Pemerintahan</label>
-                                        <input type="text" class="form-control" name="gedung_pemerintah" id="gedung_pemerintah" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->gedung_pemerintah ?? '' }}">
+                                        <input type="number" class="form-control" name="gedung_pemerintah" id="gedung_pemerintah" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->gedung_pemerintah ?? '' }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="lain_lain">Kerusakan Lain Lain</label>
-                                        <input type="text" class="form-control" name="lain_lain" id="lain_lain" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->lain_lain ?? '' }}">
+                                        <input type="number" class="form-control" name="lain_lain" id="lain_lain" value="{{ $kejadian->dampak?->kerusakanFasilitasSosial?->lain_lain ?? '' }}">
                                     </div>
+
+                                    <h6><b>Kerusakan Infrastruktur</b></h6>
 
                                     <div class="form-group">
-                                        <label for="desc_kerusakan">Kerusakan Infrastruktur</label>
+                                        <label for="desc_kerusakan">Deskripsi Kerusakan</label>
                                         <input type="text" class="form-control" name="desc_kerusakan" id="desc_kerusakan" value="{{ $kejadian->dampak?->kerusakanInfrastruktur?->desc_kerusakan ?? '' }}">
                                     </div>
+                                </div> 
+
+                                {{-- Tambah Pengungsian --}}
+                                <h6><b>Pengungsian</b></h6>
+
+                                <div id="form_area">
+                                <button type="button" id="add-pengungsian" class="btn btn-primary me-2">Input Pengungsian</button>
+                                <br>
+                                <p class="card-description" id="subtitle">Tambah, Edit, dan Hapus Data Pengungsian</p>
+                                <div id="pengungsian-container">
+                                    @if($kejadian->dampak && $kejadian->dampak->pengungsian)
+                                        @foreach($kejadian->dampak->pengungsian as $index => $pengungsian)
+                                            <div class="pengungsian-item mb-3">
+                                                <h5>Pengungsian #{{ $index + 1 }}</h5>
+                                                <input type="hidden" name="pengungsian[{{ $index }}][id_pengungsian]" value="{{ $pengungsian->id_pengungsian }}">
+                                                <div class="form-group">
+                                                    <label for="nama_lokasi_{{ $index }}">Nama Lokasi</label>
+                                                    <input type="text" class="form-control" name="pengungsian[{{ $index }}][nama_lokasi]" id="nama_lokasi_{{ $index }}" value="{{ $pengungsian->nama_lokasi }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="kk_{{ $index }}">KK</label>
+                                                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][kk]" id="kk_{{ $index }}" value="{{ $pengungsian->kk }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="jiwa_{{ $index }}">Jiwa</label>
+                                                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][jiwa]" id="jiwa_{{ $index }}" value="{{ $pengungsian->jiwa }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="laki_laki_{{ $index }}">Laki-Laki</label>
+                                                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][laki_laki]" id="laki_laki_{{ $index }}" value="{{ $pengungsian->laki_laki }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="perempuan_{{ $index }}">Perempuan</label>
+                                                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][perempuan]" id="perempuan_{{ $index }}" value="{{ $pengungsian->perempuan }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="kurang_dari_5_{{ $index }}">Kurang dari 5 Tahun</label>
+                                                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][kurang_dari_5]" id="kurang_dari_5_{{ $index }}" value="{{ $pengungsian->kurang_dari_5 }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="atr_5_sampai_18_{{ $index }}">Antara 5-18 Tahun</label>
+                                                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][atr_5_sampai_18]" id="atr_5_sampai_18_{{ $index }}" value="{{ $pengungsian->atr_5_sampai_18 }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="lebih_dari_18_{{ $index }}">Lebih Dari 18 Tahun</label>
+                                                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][lebih_dari_18]" id="lebih_dari_18_{{ $index }}" value="{{ $pengungsian->lebih_dari_18 }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="jumlah_{{ $index }}">Jumlah</label>
+                                                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][jumlah]" id="jumlah_{{ $index }}" value="{{ $pengungsian->jumlah }}">
+                                                </div>
+                                                <button type="button" class="btn btn-danger btn-sm remove-pengungsian">Hapus</button>
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
+                            </div>
 
-                               {{-- Tambah Pengungsian --}}
-<div class="form-group">
-    <button type="button" id="add-pengungsian" class="btn btn-primary me-2">Input Pengungsian</button>
-</div>
+                            <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                let pengungsianCount = {{ $kejadian->dampak && $kejadian->dampak->pengungsian ? $kejadian->dampak->pengungsian->count() : 0 }};
+                                const addPengungsianBtn = document.getElementById('add-pengungsian');
+                                const pengungsianContainer = document.getElementById('pengungsian-container');
 
-<div id="form_area">
-    @if($kejadian->dampak && $kejadian->dampak->pengungsian)
-        @foreach($kejadian->dampak->pengungsian as $index => $pengungsian)
-            <div class="pengungsian-item mb-3">
-                <h5>Pengungsian #{{ $index + 1 }}</h5>
-                <div class="form-group">
-                    <label for="nama_lokasi_{{ $index }}">Nama Lokasi</label>
-                    <input type="text" class="form-control" name="pengungsian[{{ $index }}][nama_lokasi]" id="nama_lokasi_{{ $index }}" value="{{ $pengungsian->nama_lokasi }}">
-                </div>
-                <div class="form-group">
-                    <label for="kk_{{ $index }}">KK</label>
-                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][kk]" id="kk_{{ $index }}" value="{{ $pengungsian->kk }}">
-                </div>
-                <div class="form-group">
-                    <label for="jiwa_{{ $index }}">Jiwa</label>
-                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][jiwa]" id="jiwa_{{ $index }}" value="{{ $pengungsian->jiwa }}">
-                </div>
-                <div class="form-group">
-                    <label for="laki_laki_{{ $index }}">Laki-Laki</label>
-                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][laki_laki]" id="laki_laki_{{ $index }}" value="{{ $pengungsian->laki_laki }}">
-                </div>
-                <div class="form-group">
-                    <label for="perempuan_{{ $index }}">Perempuan</label>
-                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][perempuan]" id="perempuan_{{ $index }}" value="{{ $pengungsian->perempuan }}">
-                </div>
-                <div class="form-group">
-                    <label for="kurang_dari_5_{{ $index }}">Kurang dari 5 Tahun</label>
-                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][kurang_dari_5]" id="kurang_dari_5_{{ $index }}" value="{{ $pengungsian->kurang_dari_5 }}">
-                </div>
-                <div class="form-group">
-                    <label for="atr_5_sampai_18_{{ $index }}">Antara 5-18 Tahun</label>
-                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][atr_5_sampai_18]" id="atr_5_sampai_18_{{ $index }}" value="{{ $pengungsian->atr_5_sampai_18 }}">
-                </div>
-                <div class="form-group">
-                    <label for="lebih_dari_18_{{ $index }}">Lebih Dari 18 Tahun</label>
-                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][lebih_dari_18]" id="lebih_dari_18_{{ $index }}" value="{{ $pengungsian->lebih_dari_18 }}">
-                </div>
-                <div class="form-group">
-                    <label for="jumlah_{{ $index }}">Jumlah</label>
-                    <input type="number" class="form-control" name="pengungsian[{{ $index }}][jumlah]" id="jumlah_{{ $index }}" value="{{ $pengungsian->jumlah }}">
-                </div>
-                <button type="button" class="btn btn-danger btn-sm remove-pengungsian">Hapus</button>
-            </div>
-        @endforeach
-    @endif
+                                addPengungsianBtn.addEventListener('click', function() {
+                                    const newPengungsian = document.createElement('div');
+                                    newPengungsian.className = 'pengungsian-item mb-3';
+                                    newPengungsian.innerHTML = `
+                                        <h5>Pengungsian Baru #${pengungsianCount + 1}</h5>
+                                        <div class="form-group">
+                                            <label for="nama_lokasi_${pengungsianCount}">Nama Lokasi</label>
+                                            <input type="text" class="form-control" name="pengungsian[${pengungsianCount}][nama_lokasi]" id="nama_lokasi_${pengungsianCount}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kk_${pengungsianCount}">KK</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][kk]" id="kk_${pengungsianCount}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="jiwa_${pengungsianCount}">Jiwa</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][jiwa]" id="jiwa_${pengungsianCount}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="laki_laki_${pengungsianCount}">Laki-laki</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][laki_laki]" id="laki_laki_${pengungsianCount}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="perempuan_${pengungsianCount}">Perempuan</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][perempuan]" id="perempuan_${pengungsianCount}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kurang_dari_5_${pengungsianCount}">Kurang dari 5 Tahun</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][kurang_dari_5]" id="kurang_dari_5_${pengungsianCount}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="atr_5_sampai_18_${pengungsianCount}">Antara 5-18 Tahun</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][atr_5_sampai_18]" id="atr_5_sampai_18_${pengungsianCount}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lebih_dari_18_${pengungsianCount}">Lebih dari 18 Tahun</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][lebih_dari_18]" id="lebih_dari_18_${pengungsianCount}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="jumlah_${pengungsianCount}">Jumlah</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][jumlah]" id="jumlah_${pengungsianCount}">
+                                        </div>
+                                        <button type="button" class="btn btn-danger btn-sm remove-pengungsian">Hapus</button>
+                                    `;
+                                    
+                                    pengungsianContainer.appendChild(newPengungsian);
+                                    pengungsianCount++;
+                                });
 
-<div id="pengungsian-container"></div>
+                                pengungsianContainer.addEventListener('click', function(e) {
+                                    if (e.target && e.target.classList.contains('remove-pengungsian')) {
+                                        e.target.closest('.pengungsian-item').remove();
+                                    }
+                                });
+                            });
+                            </script>
 
-</div>
+                                <h4 class="card-title">Data Giat PMI</h4>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM fully loaded and parsed');
-
-    let pengungsianCount = {{ $kejadian->dampak->pengungsian->count() }};
-    const addPengungsianBtn = document.getElementById('add-pengungsian');
-    const pengungsianContainer = document.getElementById('pengungsian-container');
-
-    console.log('Initial pengungsianCount:', pengungsianCount);
-    console.log('addPengungsianBtn:', addPengungsianBtn);
-    console.log('pengungsianContainer:', pengungsianContainer);
-
-    addPengungsianBtn.addEventListener('click', function() {
-        console.log('Add Pengungsian button clicked');
-        
-        const newPengungsian = document.createElement('div');
-        newPengungsian.className = 'pengungsian-item mb-3';
-        newPengungsian.innerHTML = `
-            <h5>Pengungsian Baru #${pengungsianCount + 1}</h5>
-            <div class="form-group">
-                <label for="nama_lokasi_${pengungsianCount}">Nama Lokasi</label>
-                <input type="text" class="form-control" name="pengungsian[${pengungsianCount}][nama_lokasi]" id="nama_lokasi_${pengungsianCount}">
-            </div>
-            <div class="form-group">
-                <label for="kk_${pengungsianCount}">KK</label>
-                <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][kk]" id="kk_${pengungsianCount}">
-            </div>
-            <div class="form-group">
-                <label for="jiwa_${pengungsianCount}">Jiwa</label>
-                <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][jiwa]" id="jiwa_${pengungsianCount}">
-            </div>
-            <div class="form-group">
-                <label for="laki_laki_${pengungsianCount}">Laki-laki</label>
-                <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][laki_laki]" id="laki_laki_${pengungsianCount}">
-            </div>
-            <div class="form-group">
-                <label for="perempuan_${pengungsianCount}">Perempuan</label>
-                <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][perempuan]" id="perempuan_${pengungsianCount}">
-            </div>
-            <div class="form-group">
-                <label for="kurang_dari_5_${pengungsianCount}">Kurang dari 5 Tahun</label>
-                <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][kurang_dari_5]" id="kurang_dari_5_${pengungsianCount}">
-            </div>
-            <div class="form-group">
-                <label for="atr_5_sampai_18_${pengungsianCount}">Antara 5-18 Tahun</label>
-                <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][atr_5_sampai_18]" id="atr_5_sampai_18_${pengungsianCount}">
-            </div>
-            <div class="form-group">
-                <label for="lebih_dari_18_${pengungsianCount}">Lebih dari 18 Tahun</label>
-                <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][lebih_dari_18]" id="lebih_dari_18_${pengungsianCount}">
-            </div>
-            <div class="form-group">
-                <label for="jumlah_${pengungsianCount}">Jumlah</label>
-                <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][jumlah]" id="jumlah_${pengungsianCount}">
-            </div>
-            <button type="button" class="btn btn-danger btn-sm remove-narahubung">Hapus</button>
-        `;
-        
-        pengungsianContainer.appendChild(newPengungsian);
-        pengungsianCount++;
-        
-        console.log('New pengungsian added. Current count:', pengungsianCount);
-    });
-
-    document.addEventListener('click', function(e) {
-        if (e.target && e.target.classList.contains('remove-pengungsian')) {
-            console.log('Remove button clicked');
-            e.target.closest('.pengungsian-item').remove();
-        }
-    });
-});
-</script>
-
-
-                                <h4 class="card-title">Evakuasi Korban</h4>
+                                {{--  giat pmi - evakuasi korban layanan korban  --}}
+                                <h6><b>Evakuasi Korban</b></h6>
                                 <div class="form-group">
                                     <label for="luka_ringanberat">Luka Ringan/Berat</label>
                                     <input type="number" class="form-control" id="luka_ringanberat" name="luka_ringanberat" value="{{ $kejadian->giatPmi?->evakuasiKorban?->luka_ringanberat ?? '' }}">
@@ -290,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <input type="text" class="form-control" id="keterangan" name="keterangan" value="{{ $kejadian->giatPmi?->evakuasiKorban?->keterangan ?? '' }}">
                                 </div>
 
-                                <h4 class="card-title">Layanan Korban</h4>
+                                <h6><b>Layanan Korban</b></h6>
                                 <div class="form-group">
                                     <label for="distribusi">Distribusi</label>
                                     <input type="text" class="form-control" id="distribusi" name="distribusi" value="{{ $kejadian->giatPmi?->layananKorban?->distribusi ?? '' }}">
@@ -312,95 +306,80 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <label for="kebutuhan">Kebutuhan</label>
                                     <input type="text" class="form-control" name="kebutuhan" id="kebutuhan" value="{{ $kejadian->kebutuhan }}">
                                 </div>
-{{--  
+
+                                <h4 class="card-title">Data Personil Narahubung</h4>
+
+                                <div id="form_area_cp">
+                                    <button type="button" class="btn btn-primary" id="add-narahubung">Input Personil Narahubung</button>
+                                    <br>
+                                    <p class="card-description" id="subtitle">Tambah, Edit, dan Hapus Data Personil yang dapat dihubungi</p>
+                                    
+                                    <div id="narahubung-container">
+                                        @if($kejadian->narahubung->isNotEmpty())
+                                            @foreach($kejadian->narahubung as $index => $narahubung)
+                                                <div class="narahubung-item mb-3">
+                                                    <h5>Narahubung #{{ $index + 1 }}</h5>
+                                                    <input type="hidden" name="narahubung[{{ $index }}][id_narahubung]" value="{{ $narahubung->id_narahubung }}">
+                                                    <div class="form-group">
+                                                        <label for="nama_lengkap_{{ $index }}">Nama Lengkap</label>
+                                                        <input type="text" class="form-control" name="narahubung[{{ $index }}][nama_lengkap]" id="nama_lengkap_{{ $index }}" value="{{ $narahubung->nama_lengkap }}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="posisi_{{ $index }}">Posisi</label>
+                                                        <input type="text" class="form-control" name="narahubung[{{ $index }}][posisi]" id="posisi_{{ $index }}" value="{{ $narahubung->posisi }}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="kontak_{{ $index }}">Kontak</label>
+                                                        <input type="phone" class="form-control" name="narahubung[{{ $index }}][kontak]" id="kontak_{{ $index }}" value="{{ $narahubung->kontak }}">
+                                                    </div>
+                                                    <button type="button" class="btn btn-danger btn-sm remove-narahubung">Hapus</button>
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    let narahubungCount = {{ $kejadian->narahubung->count() }};
+                                    const addNarahubungBtn = document.getElementById('add-narahubung');
+                                    const narahubungContainer = document.getElementById('narahubung-container');
+
+                                    addNarahubungBtn.addEventListener('click', function() {
+                                        const newNarahubung = document.createElement('div');
+                                        newNarahubung.className = 'narahubung-item mb-3';
+                                        newNarahubung.innerHTML = `
+                                            <h5>Narahubung Baru #${narahubungCount + 1}</h5>
+                                            <div class="form-group">
+                                                <label for="nama_lengkap_${narahubungCount}">Nama Lengkap</label>
+                                                <input type="text" class="form-control" name="narahubung[${narahubungCount}][nama_lengkap]" id="nama_lengkap_${narahubungCount}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="posisi_${narahubungCount}">Posisi</label>
+                                                <input type="text" class="form-control" name="narahubung[${narahubungCount}][posisi]" id="posisi_${narahubungCount}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="kontak_${narahubungCount}">Kontak</label>
+                                                <input type="phone" class="form-control" name="narahubung[${narahubungCount}][kontak]" id="kontak_${narahubungCount}">
+                                            </div>
+                                            <button type="button" class="btn btn-danger btn-sm remove-narahubung">Hapus</button>
+                                        `;
+                                        
+                                        narahubungContainer.appendChild(newNarahubung);
+                                        narahubungCount++;
+                                    });
+
+                                    narahubungContainer.addEventListener('click', function(e) {
+                                        if (e.target && e.target.classList.contains('remove-narahubung')) {
+                                            e.target.closest('.narahubung-item').remove();
+                                        }
+                                    });
+                                });
+                                </script>
                                 <div class="form-group">
-                                    <button type="button" id="tambah_cp" class="btn btn-primary me-2">Tambah
-                                        CP Personil</button>
-                                </div>  --}}
-                                {{-- narahubung --}}
-<div id="form_area_cp">
-    <button type="button" class="btn btn-primary" id="add-narahubung">Input Personil Narahubung</button>
-
-    <p class="card-description" id="subtitle">Personil yang dapat dihubungi</p>
-    
-    {{-- Tampilkan daftar narahubung yang sudah ada --}}
-    @if($kejadian->narahubung->isNotEmpty())
-        @foreach($kejadian->narahubung as $index => $narahubung)
-            <div class="narahubung-item mb-3">
-                <h5>Narahubung #{{ $index + 1 }}</h5>
-                <div class="form-group">
-                    <label for="nama_lengkap_{{ $index }}">Nama Lengkap</label>
-                    <input type="text" class="form-control" name="narahubung[{{ $index }}][nama_lengkap]" id="nama_lengkap_{{ $index }}" value="{{ $narahubung->nama_lengkap }}">
-                </div>
-                <div class="form-group">
-                    <label for="posisi_{{ $index }}">Posisi</label>
-                    <input type="text" class="form-control" name="narahubung[{{ $index }}][posisi]" id="posisi_{{ $index }}" value="{{ $narahubung->posisi }}">
-                </div>
-                <div class="form-group">
-                    <label for="kontak_{{ $index }}">Kontak</label>
-                    <input type="phone" class="form-control" name="narahubung[{{ $index }}][kontak]" id="kontak_{{ $index }}" value="{{ $narahubung->kontak }}">
-                </div>
-                <button type="button" class="btn btn-danger btn-sm remove-narahubung">Hapus</button>
-            </div>
-        @endforeach
-    @endif
-
-    <div id="narahubung-container"></div>
-
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM fully loaded and parsed');
-
-    let narahubungCount = {{ $kejadian->narahubung->count() }};
-    const addNarahubungBtn = document.getElementById('add-narahubung');
-    const narahubungContainer = document.getElementById('narahubung-container');
-
-    console.log('Initial narahubungCount:', narahubungCount);
-    console.log('addNarahubungBtn:', addNarahubungBtn);
-    console.log('narahubungContainer:', narahubungContainer);
-
-    addNarahubungBtn.addEventListener('click', function() {
-        console.log('Add Narahubung button clicked');
-        
-        const newNarahubung = document.createElement('div');
-        newNarahubung.className = 'narahubung-item mb-3';
-        newNarahubung.innerHTML = `
-            <h5>Narahubung Baru #${narahubungCount + 1}</h5>
-            <div class="form-group">
-                <label for="nama_lengkap_${narahubungCount}">Nama Lengkap</label>
-                <input type="text" class="form-control" name="narahubung[${narahubungCount}][nama_lengkap]" id="nama_lengkap_${narahubungCount}">
-            </div>
-            <div class="form-group">
-                <label for="posisi_${narahubungCount}">Posisi</label>
-                <input type="text" class="form-control" name="narahubung[${narahubungCount}][posisi]" id="posisi_${narahubungCount}">
-            </div>
-            <div class="form-group">
-                <label for="kontak_${narahubungCount}">Kontak</label>
-                <input type="phone" class="form-control" name="narahubung[${narahubungCount}][kontak]" id="kontak_${narahubungCount}">
-            </div>
-            <button type="button" class="btn btn-danger btn-sm remove-narahubung">Hapus</button>
-        `;
-        
-        narahubungContainer.appendChild(newNarahubung);
-        narahubungCount++;
-        
-        console.log('New narahubung added. Current count:', narahubungCount);
-    });
-
-    document.addEventListener('click', function(e) {
-        if (e.target && e.target.classList.contains('remove-narahubung')) {
-            console.log('Remove button clicked');
-            e.target.closest('.narahubung-item').remove();
-        }
-    });
-});
-</script>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary mr-2">Update Assessment</button>
-        <a href="{{ route('relawan-assessment', $kejadian->id_kejadian) }}" class="btn btn-light">Cancel</a>
-    </div>
+                                    <button type="submit" class="btn btn-primary mr-2">Update Assessment</button>
+                                    <a href="{{ route('relawan-assessment', $kejadian->id_kejadian) }}" class="btn btn-light">Cancel</a>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -438,94 +417,5 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             });
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('tambah_pengungsian').addEventListener('click', function() {
-                    // Ambil elemen form pengungsian
-                    var formPengungsian = document.getElementById('form_pengungsian');
-                    // Klon elemen form pengungsian
-                    var clone = formPengungsian.cloneNode(true);
-                    // Tampilkan form klon
-                    clone.style.display = 'block';
-                    // Hapus atribut id agar tidak duplikat
-                    clone.removeAttribute('id');
-                    // Tambahkan form klon ke dalam form area
-                    document.getElementById('form_area').appendChild(clone);
-                    var cancelBtn = document.createElement('button');
-                    cancelBtn.setAttribute('type', 'button');
-                    cancelBtn.classList.add('btn', 'btn-danger', 'me-2');
-                    cancelBtn.textContent = 'Cancel';
-                    // Tambahkan event listener untuk tombol "Cancel"
-                    cancelBtn.addEventListener('click', function() {
-                        // Hapus form yang baru saja ditambahkan
-                        clone.remove();
-                        // Hapus tombol "Cancel"
-                        cancelBtn.remove();
-                        // Tampilkan kembali tombol "Tambah Pengungsian"
-                        document.getElementById('tambah_personil').style.display = 'block';
-                    });
-                    // Sisipkan tombol "Cancel" setelah tombol "Tambah Pengungsian"
-                    document.getElementById('form_area').appendChild(cancelBtn);
-                    // Sembunyikan tombol "Tambah Pengungsian"
-                    document.getElementById('tambah_personil').style.display = 'none';
-                });
-            });
-
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('tambah_cp').addEventListener('click', function() {
-                    // Ambil elemen form pengungsian
-                    var formPengungsian = document.getElementById('form_cp');
-                    // Klon elemen form pengungsian
-                    var clone = formPengungsian.cloneNode(true);
-                    // Tampilkan form klon
-                    clone.style.display = 'block';
-                    // Hapus atribut id agar tidak duplikat
-                    clone.removeAttribute('id');
-                    // Tambahkan form klon ke dalam form area
-                    document.getElementById('form_area_cp').appendChild(clone);
-                    var cancelBtn = document.createElement('button');
-                    cancelBtn.setAttribute('type', 'button');
-                    cancelBtn.classList.add('btn', 'btn-danger', 'me-2');
-                    cancelBtn.textContent = 'Cancel';
-                    // Tambahkan event listener untuk tombol "Cancel"
-                    cancelBtn.addEventListener('click', function() {
-                        // Hapus form yang baru saja ditambahkan
-                        clone.remove();
-                        // Hapus tombol "Cancel"
-                        cancelBtn.remove();
-                        // Tampilkan kembali tombol "Tambah Pengungsian"
-                        document.getElementById('tambah_cp').style.display = 'block';
-                    });
-                    // Sisipkan tombol "Cancel" setelah tombol "Tambah Pengungsian"
-                    document.getElementById('form_area_cp').appendChild(cancelBtn);
-                });
-            });
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('tambah_petugas_posko').addEventListener('click', function() {
-                    // Ambil elemen form pengungsian
-                    var formPengungsian = document.getElementById('form_petugas');
-                    // Klon elemen form pengungsian
-                    var clone = formPengungsian.cloneNode(true);
-                    // Tampilkan form klon
-                    clone.style.display = 'block';
-                    // Hapus atribut id agar tidak duplikat
-                    clone.removeAttribute('id');
-                    // Tambahkan form klon ke dalam form area
-                    document.getElementById('form_area_petugas').appendChild(clone);
-                    var cancelBtn = document.createElement('button');
-                    cancelBtn.setAttribute('type', 'button');
-                    cancelBtn.classList.add('btn', 'btn-danger', 'me-2');
-                    cancelBtn.textContent = 'Cancel';
-                    // Tambahkan event listener untuk tombol "Cancel"
-                    cancelBtn.addEventListener('click', function() {
-                        // Hapus form yang baru saja ditambahkan
-                        clone.remove();
-                        // Hapus tombol "Cancel"
-                        cancelBtn.remove();
-                        // Tampilkan kembali tombol "Tambah Pengungsian"
-                        document.getElementById('tambah_petugas_posko').style.display = 'block';
-                    });
-                    // Sisipkan tombol "Cancel" setelah tombol "Tambah Pengungsian"
-                    document.getElementById('form_area_petugas').appendChild(cancelBtn);
-                });
-            });
+           
         </script>
