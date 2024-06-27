@@ -44,6 +44,19 @@ Route::get('reports/{id}/view', [App\Http\Controllers\PDFController::class, 'vie
 Route::get('pdf/view', [App\Http\Controllers\PDFController::class, 'checkViewPDF']);
 Route::get('pdf/check', [App\Http\Controllers\PDFController::class, 'checkExportPDF']);
 
+// add pdf assessment
+Route::get('assessment/{id}/pdf', [App\Http\Controllers\PDFController::class, 'exportLaporanAssessment'])->name('assessment.pdf');
+Route::get('assessment/{id}/view', [App\Http\Controllers\PDFController::class, 'viewLaporanAssessment']);
+Route::get('pdf/assessment/view', [App\Http\Controllers\PDFController::class, 'checkViewPDF_assessment']);
+Route::get('pdf/assessment/check', [App\Http\Controllers\PDFController::class, 'checkExportPDF_assessment']);
+
+// add pdf lapsit
+Route::get('lapsit/{id}/pdf', [App\Http\Controllers\PDFController::class, 'exportLaporanSituasi'])->name('lapsit.pdf');
+Route::get('lapsit/{id}/view', [App\Http\Controllers\PDFController::class, 'viewLaporanSituasi']);
+Route::get('pdf/lapsit/view', [App\Http\Controllers\PDFController::class, 'checkViewPDF_lapsit']);
+Route::get('pdf/lapsit/check', [App\Http\Controllers\PDFController::class, 'checkExportPDF_lapsit']);
+
+
 //route to pdf export
 Route::post('users/view-pdf/{id}', [PDFController::class, 'viewPDF'])->name('view-pdf');
 Route::post('users/download-pdf', [PDFController::class, 'downloadPDF'])->name('download-pdf');

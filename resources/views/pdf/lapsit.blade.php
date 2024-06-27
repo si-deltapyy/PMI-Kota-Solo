@@ -1,3 +1,6 @@
+@php
+use Carbon\Carbon;
+@endphp
 <html lang="en">
 
 <head>
@@ -116,44 +119,41 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Kejadian Musibah</th>
-                        <th>Kebakaran Pemukiman</th>
+                        <th>Kejadian Bencana</th>
+                        <th>: {{ $kejadian->jenisKejadian->nama_kejadian ?? '-' }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Lokasi</td>
-                        <td class="columns">Jl blabla</td>
+                        <td>Lokasi Kejadian</td>
+                        <td class="columns">: {{ $kejadian->lokasi ?? '-' }}</td>
                     </tr>
                     <tr>
-                        <td>Waktu Kejadian</td>
-                        <td class="columns">23 Nov</td>
+                        <td>Tanggal Kejadian</td>
+                        <td class="columns">: {{ $kejadian->tanggal_kejadian ? Carbon::parse($kejadian->tanggal_kejadian)->locale('id')->isoFormat('D MMMM YYYY') : '-' }}</td>
                     </tr>
                     <tr>
                         <td>Update</td>
-                        <td class="columns">23 Nov</td>
+                        <td class="columns">: {{ $kejadian->update ? Carbon::parse($kejadian->update)->locale('id')->isoFormat('D MMMM YYYY') : '-' }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="row">
             <div class="field" style=" width: 100% !important;">
-                <p>Pemerintah Membutuhkan Dukungan Internasional : Tidak</p>
+                <p>Pemerintah Membutuhkan Dukungan Internasional : {{ $kejadian->dukungan_internasional ?? 'TIDAK' }}</p>
             </div>
         </div>
         <div class="row">
-            <div id="title" class="title"></div>
+            <div id="title" class="title">Gambaran Umum Situasi</div>
             <div class="column" style="font-size: 0.75rem; padding: 1rem 2rem">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum
-                alias odio et eius non illo officiis dignissimos iusto molestias?
-                Distinctio, perspiciatis repellat? Laboriosam minus possimus, rerum
-                quos omnis delectus quisquam.
+                {{ $kejadian->keterangan ?? '-' }}
             </div>
         </div>
         <div class="row">
             <div id="title" class="title">Keterangan Menuju Lokasi</div>
             <div class="column" style="font-size: 2rem; padding: 1rem 2rem">
-                Aman
+                {{ $kejadian->akses_ke_lokasi ?? '-' }}
             </div>
         </div>
         <!-- Dampak Section -->
@@ -163,51 +163,51 @@
                 <div class="card-grid">
                     <div class="item-title">Korban Terdampak</div>
                     <div class="subtitle">KK</div>
-                    <div class="content">20</div>
+                    <div class="content">{{ $kejadian->dampak->korbanTerdampak->kk ?? 0 }}</div>
                     <div class="subtitle">Jiwa</div>
-                    <div class="content">405</div>
+                    <div class="content">{{ $kejadian->dampak->korbanTerdampak->jiwa ?? 0 }}</div>
                 </div>
                 <div class="card-grid">
-                    <div class="item-title">Korban Jiwa/Mengungsi</div>
+                    <div class="item-title">Korban Jiwa/Luka/Mengungsi</div>
                     <div class="subtitle">Luka Berat</div>
-                    <div class="content">20</div>
+                    <div class="content">{{ $kejadian->dampak->korbanJlw>luka_berat ?? 0 }}</div>
                     <div class="subtitle">Luka Ringan</div>
-                    <div class="content">405</div>
+                    <div class="content">{{ $kejadian->dampak->korbanJlw>luka_ringan ?? 0 }}</div>
                     <div class="subtitle">Meninggal</div>
-                    <div class="content">405</div>
+                    <div class="content">{{ $kejadian->dampak->korbanJlw>meninggal ?? 0 }}</div>
                     <div class="subtitle">Hilang</div>
-                    <div class="content">405</div>
+                    <div class="content">{{ $kejadian->dampak->korbanJlw>hilang ?? 0 }}</div>
                     <div class="subtitle">Mengungsi</div>
-                    <div class="content">405</div>
+                    <div class="content">{{ $kejadian->dampak->korbanJlw>mengungsi ?? 0 }}</div>
                 </div>
                 <div class="card-grid">
                     <div class="item-title">Kerusakan Rumah</div>
                     <div class="subtitle">Rusak Berat</div>
-                    <div class="content">20</div>
+                    <div class="content">{{ $kejadian->dampak->kerusakanRumah->rusak_berat ?? 0 }} (rumah)</div>
                     <div class="subtitle">Rusak Sedang</div>
-                    <div class="content">405</div>
+                    <div class="content">{{ $kejadian->dampak->kerusakanRumah->rusak_sedang ?? 0 }} (rumah)</div>
                     <div class="subtitle">Rusak Ringan</div>
-                    <div class="content">405</div>
+                    <div class="content">{{ $kejadian->dampak->kerusakanRumah->rusak_ringan ?? 0 }} (rumah)</div>
                 </div>
                 <div class="card-grid">
-                    <div class="item-title">Kerusakan Fasilitas</div>
+                    <div class="item-title">Kerusakan Fasilitas Sosial/Umum</div>
                     <div class="subtitle">Sekolah</div>
-                    <div class="content">20</div>
+                    <div class="content">{{ $kejadian->dampak->kerusakanFasilitasSosial->sekolah ?? 0 }}</div>
                     <div class="subtitle">Tempat Ibadah</div>
-                    <div class="content">405</div>
+                    <div class="content">{{ $kejadian->dampak->kerusakanFasilitasSosial->tempat_ibadah ?? 0 }}</div>
                     <div class="subtitle">Rumah Sakit</div>
-                    <div class="content">405</div>
+                    <div class="content">{{ $kejadian->dampak->kerusakanFasilitasSosial->rumah_sakit ?? 0 }}</div>
                     <div class="subtitle">Pasar</div>
-                    <div class="content">405</div>
+                    <div class="content">{{ $kejadian->dampak->kerusakanFasilitasSosial->pasar ?? 0 }}</div>
                     <div class="subtitle">Gedung Pemerintah</div>
-                    <div class="content">405</div>
+                    <div class="content">{{ $kejadian->dampak->kerusakanFasilitasSosial->gedung_pemerintah ?? 0 }}</div>
                     <div class="subtitle">Lain Lain</div>
-                    <div class="content">405</div>
+                    <div class="content">{{ $kejadian->dampak->kerusakanFasilitasSosial->lain_lain ?? 0 }}</div>
                 </div>
 
                 <div class="card-grid">
-                    <div class="item-title">Kerusakan Fasilitas</div>
-                    <div class="item-title">6 Tiang</div>
+                    <div class="item-title">Kerusakan Infrastruktur</div>
+                    <div class="item-title">{{ $kejadian->dampak->kerusakanInfrastruktur>desc_kerusakan ?? 0 }}</div>
                 </div>
                 <div class="card-grid-many">
                     <div class="item-titles">Pengungsian</div>
