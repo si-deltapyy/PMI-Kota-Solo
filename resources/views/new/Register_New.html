@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>PMI AidHub</title>
+  <title>Glassmorphism Registration Form Tutorial in HTML CSS</title>
   
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -128,8 +128,7 @@
     <div class="shape"></div>
     <div class="shape"></div>
   </div>
-  <form method="POST" class="login-form" action="{{ route('register') }}">
-    @csrf
+  <form>
     <h3>Register Here</h3>
     
     <label for="full-name">Full Name</label>
@@ -149,7 +148,7 @@
     
     <button type="submit">Register</button>
     <div class="social">
-      <a href="{{ route('login') }}"><div class="go"><i class="fas fa-sign-in-alt"></i> Log In</div></a>
+      <div class="go"><i class="fas fa-sign-in-alt"></i> Log In</div>
     </div>        
   </form>
 </body>

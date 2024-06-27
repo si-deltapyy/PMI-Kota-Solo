@@ -22,7 +22,7 @@ Route::any('/', function()
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing');
     
 });
 

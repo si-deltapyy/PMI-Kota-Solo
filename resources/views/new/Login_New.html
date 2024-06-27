@@ -2,7 +2,7 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>PMI AidHub</title>
+  <title>CodePen - Glassmorphism login Form Tutorial in html css</title>
   
 
 </head>
@@ -12,7 +12,7 @@
 <html lang="en">
 <head>
   <!-- Design by foolishdeveloper.com -->
-    <title>PMI AidHub</title>
+    <title>Glassmorphism login Form Tutorial in html css</title>
  
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -147,34 +147,18 @@ button{
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-    @if (session('error'))
-                    <div class="alert alert-danger" role="alert">
-                        {{ session('error') }}
-                    </div>
-                @endif
-
-                @if ($errors->any())
-                <div class="alert alert-danger" role="alert">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-    <form method="POST" class="login-form" action="{{ route('login') }}">
-        @csrf
+    <form>
         <h3>Login Here</h3>
 
-        <label for="username">Email</label>
-        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+        <label for="username">Username</label>
+        <input type="text" placeholder="Email or Phone" id="username">
 
         <label for="password">Password</label>
-        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+        <input type="password" placeholder="Password" id="password">
 
         <button>Log In</button>
         <div class="social">
-            <a href="{{ route('register') }}"><div class="go"><i class="fas fa-user-plus"></i> Register</div></a>
+            <div class="go"><i class="fas fa-user-plus"></i> Register</div>
         </div>        
     </form>
 </body>
