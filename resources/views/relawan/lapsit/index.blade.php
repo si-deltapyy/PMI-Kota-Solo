@@ -7,7 +7,7 @@
             <x-select-and-table title="Data Laporan Kejadian" description="Daftar laporan kejadian yang telah diunggah"
                 :statuses="['Belum Diverifikasi', 'On Process', 'Selesai']"
                 :table-headers="['No', 'Jenis Kejadian', 'Lokasi', 'Tanggal Kejadian', 'Waktu Kejadian', 'Terakhir Update', 'Status', 'Action']"
-                create-route="{{ route('create-lapsit') }}" 
+                create-route="{{ route('create-lapsit', $kejadian->first()->id_kejadian) }}" 
                 baseUrl="lapsit"/>
         </div>
     </div>
