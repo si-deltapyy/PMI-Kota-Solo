@@ -20,7 +20,6 @@ class PersonilNarahubung extends Model
         'id_kejadian'
     ];
 
-    
 
     public function kejadianBencana()
     {
