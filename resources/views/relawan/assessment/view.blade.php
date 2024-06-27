@@ -9,10 +9,22 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="card-title">Laporan Assessment</h3>
-
+                    <div class="card-description">
+                        <div class="home-tab">
+                            <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                    <div class="btn-wrapper ms-auto">
+                                        <a href="{{ route('assessment.pdf', ['id' => $assessment->id_assessment]) }}" class="btn btn-primary text-white me-0">
+                                            <i class="icon-download"></i> Unduh Laporan PDF
+                                        </a>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
                     <form class="forms-sample">
                         <h5>Detail Kejadian</h5>
+                        <br>
                         <hr>
+                        <br>
                         <div class="form-group">
                             <label for="kejadian_musibah">Kejadian Bencana</label>
                             <input readonly type="text" class="form-control" id="kejadian_musibah"
@@ -90,7 +102,9 @@
                         </div> -->
 
                         <h5>Dampak</h5>
+                        <br>
                         <hr>
+                        <br>
 
                         <div class="form-group">
                             <p class="card-description" id="subtitle">
@@ -182,49 +196,53 @@
                         </div> -->
 
                         <h5>Pengungsian</h5>
+                        <br>
                         <hr>
+                        <br>
 
+                        @foreach ($firstKejadian->pengungsian as $pengungsian)
                         <div id="form_area">
                             <div id="form_pengungsian" >
                                 <!-- <h4 class="card-title" id="subtitle">Pengungsian</h4> -->
                                 <div class="form-group">
                                     <label for="nama_lokasi">Nama Lokasi</label>
-                                    <input readonly type="text" class="form-control" name="nama_lokasi[]" value="{{ $firstKejadian ? $firstKejadian->pengungsian->nama_lokasi : '' }}">
+                                    <input readonly type="text" class="form-control" name="nama_lokasi[]" value="{{ $firstKejadian ? $pengungsian->nama_lokasi : '' }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_kk">KK</label>
-                                    <input readonly type="number" class="form-control" name="jumlah_kk[]" value="{{ $firstKejadian ? $firstKejadian->pengungsian->kk  : ''}}">
+                                    <input readonly type="number" class="form-control" name="jumlah_kk[]" value="{{ $firstKejadian ? $pengungsian->kk  : ''}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_orang">Jiwa</label>
-                                    <input readonly type="number" class="form-control" name="jumlah_orang[]" value="{{ $firstKejadian ? $firstKejadian->pengungsian->jiwa : '' }}">
+                                    <input readonly type="number" class="form-control" name="jumlah_orang[]" value="{{ $firstKejadian ? $pengungsian->jiwa : '' }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="laki_laki">Laki-Laki</label>
-                                    <input readonly type="number" class="form-control" name="laki_laki[]" value="{{ $firstKejadian ? $firstKejadian->pengungsian->laki_laki : '' }}">
+                                    <input readonly type="number" class="form-control" name="laki_laki[]" value="{{ $firstKejadian ? $pengungsian->laki_laki : '' }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="perempuan">Perempuan</label>
-                                    <input readonly type="number" class="form-control" name="perempuan[]" value="{{ $firstKejadian ? $firstKejadian->pengungsian->perempuan : '' }}">
+                                    <input readonly type="number" class="form-control" name="perempuan[]" value="{{ $firstKejadian ? $pengungsian->perempuan : '' }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="kurang_dari_5">Kurang dari 5 Tahun</label>
-                                    <input readonly type="number" class="form-control" name="kurang_dari_5[]" value="{{ $firstKejadian ? $firstKejadian->pengungsian->kurang_dari_5 : '' }}">
+                                    <input readonly type="number" class="form-control" name="kurang_dari_5[]" value="{{ $firstKejadian ? $pengungsian->kurang_dari_5 : '' }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="antara_5_18">Antara 5-18 Tahun</label>
-                                    <input readonly type="number" class="form-control" name="antara_5_18[]" value="{{ $firstKejadian ? $firstKejadian->pengungsian->atr_5_sampai_18 : '' }}">
+                                    <input readonly type="number" class="form-control" name="antara_5_18[]" value="{{ $firstKejadian ? $pengungsian->atr_5_sampai_18 : '' }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="lebih_dari_18">Lebih Dari 18 Tahun</label>
-                                    <input readonly type="number" class="form-control" name="lebih_dari_18[]" value="{{ $firstKejadian ? $firstKejadian->pengungsian->lebih_dari_18 : '' }}">
+                                    <input readonly type="number" class="form-control" name="lebih_dari_18[]" value="{{ $firstKejadian ? $pengungsian->lebih_dari_18 : '' }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah">Jumlah</label>
-                                    <input readonly type="number" class="form-control" name="jumlah[]" value="{{ $firstKejadian ? $firstKejadian->pengungsian->jumlah : '' }}">
+                                    <input readonly type="number" class="form-control" name="jumlah[]" value="{{ $firstKejadian ? $pengungsian->jumlah : '' }}">
                                 </div>
                             </div>
                         </div>
+                        @endforeach
 
                         {{-- Personil --}}
                         {{-- <div class="form-group">
@@ -233,7 +251,9 @@
                         </div> --}}
 
                         <h4>Mobilisasi SDM PMI</h4>
+                        <br>
                         <hr>
+                        <br>
 
                         <div id="form_personil">
                             <p class="card-description" id="subtitle">
@@ -501,7 +521,9 @@
                         </div> --}}
 
                         <h4 >Giat Pemerintah</h4>
+                        <br>
                         <hr>
+                        <br>
 
                         <div class="form-group">
                             <label for="kejadian_musibah">Giat Pemerintah</label>
@@ -509,7 +531,9 @@
                         </div>
 
                         <h4>Kebutuhan</h4>
+                        <br>
                         <hr>
+                        <br>
 
                         <div class="form-group">
                             <label for="kejadian_musibah">Kebutuhan</label>
@@ -527,25 +551,29 @@
                         </div> -->
 
                         <h4>CP Personil</h4>
+                        <br>
                         <hr>
+                        <br>
 
+                        @foreach ($firstKejadian->narahubung as $narahubung)
                         <div id="form_area_cp">
                             <div id="form_cp">
                                 <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
                                 <div class="form-group">
                                     <label for="nama_lokasi">Nama Lengkap</label>
-                                    <input readonly type="text" class="form-control" name="nama_lokasi[]" value="{{ $firstKejadian ? $firstKejadian->narahubung->nama_lengkap : '' }}">
+                                    <input readonly type="text" class="form-control" name="nama_lokasi[]" value="{{ $firstKejadian ? $narahubung->nama_lengkap : '' }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_kk">Posisi</label>
-                                    <input readonly type="text" class="form-control" name="jumlah_kk[]" value="{{ $firstKejadian ? $firstKejadian->narahubung->posisi : '' }}">
+                                    <input readonly type="text" class="form-control" name="jumlah_kk[]" value="{{ $firstKejadian ? $narahubung->posisi : '' }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_orang">Kontak</label>
-                                    <input readonly type="phone" class="form-control" name="jumlah_orang[]" value="{{ $firstKejadian ? $firstKejadian->narahubung->kontak : '' }}">
+                                    <input readonly type="phone" class="form-control" name="jumlah_orang[]" value="{{ $firstKejadian ? $narahubung->kontak : '' }}">
                                 </div>
                             </div>
                         </div>
+                        @endforeach
 
                         <!-- <div class="form-group">
                             <button type="button" id="tambah_petugas_posko" class="btn btn-primary me-2">Petugas
@@ -553,21 +581,25 @@
                         </div> -->
 
                         <h4>Petugas Posko</h4>
+                        <br>
                         <hr>
+                        <br>
 
+                        @foreach ($firstKejadian->petugasPosko as $petugasPosko)
                         <div id="form_area_petugas">
                             <div id="form_petugas" >
                                 <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
                                 <div class="form-group">
                                     <label for="nama_lokasi">Nama Lengkap</label>
-                                    <input readonly type="text" class="form-control" name="nama_lokasi[]" value="{{ $firstKejadian ? $firstKejadian->petugasPosko->nama_lengkap : '' }}">
+                                    <input readonly type="text" class="form-control" name="nama_lokasi[]" value="{{ $firstKejadian ? $petugasPosko->nama_lengkap : '' }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_orang">Kontak</label>
-                                    <input readonly type="phone" class="form-control" name="jumlah_orang[]" value="{{ $firstKejadian ? $firstKejadian->petugasPosko->kontak : '' }}">
+                                    <input readonly type="phone" class="form-control" name="jumlah_orang[]" value="{{ $firstKejadian ? $petugasPosko->kontak : '' }}">
                                 </div>
                             </div>
                         </div>
+                        @endforeach
 
                         <!-- <button type="submit" class="btn btn-primary me-2">Submit</button> -->
                         <a class="btn btn-light" href="{{ route('relawan-assessment') }}">Back</a>
