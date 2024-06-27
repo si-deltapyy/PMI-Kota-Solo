@@ -8,6 +8,32 @@ use Barryvdh\DomPDF\Facade\Pdf; // Alias PDF Facade
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http; // Import Http Facade
 use Spatie\Permission\Models\Role;
+use App\Models\KejadianBencana;
+use App\Models\AlatTdb;
+use App\Models\Assessment;
+use App\Models\Dampak;
+use App\Models\EvakuasiKorban;
+use App\Models\JenisKejadian;
+use App\Models\KerusakanFasilSosial;
+use App\Models\KerusakanInfrastruktur;
+use App\Models\KerusakanRumah;
+use App\Models\KorbanTerdampak;
+use App\Models\KorbanJlw;
+use App\Models\LampiranDokumentasi;
+use App\Models\LayananKorban;
+use App\Models\Pengungsian;
+use App\Models\Personil;
+use App\Models\PersonilNarahubung;
+use App\Models\PetugasPosko;
+use App\Models\Tsr;
+use App\Models\GiatPMI;
+use App\Models\MobilisasiSd;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
+
 
 
 class PDFController extends Controller
@@ -140,5 +166,226 @@ class PDFController extends Controller
         return 'https://www.google.com/maps/search/?api=1&query=' . $latitude . ',' . $longitude;
     }
 
+    // pdf assessment
+    public function exportLaporanAssessment($id)
+    {
+        $data = $this->prepareData($id);
+        $pdf = PDF::loadView('pdf.assessment', $data);
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream('laporan-assessment.pdf');
+    }
+
+    public function viewLaporanAssessment($id)
+    {
+        $data = $this->prepareData($id);
+        return view('pdf.assessment', $data);
+    }
+
+    public function checkViewPDF_assessment()
+    {
+        $data = $this->prepareData(1); // Menggunakan ID dummy
+        return view('pdf.assessment', $data);
+    }
+
+    public function checkExportPDF_assessment()
+    {
+        $data = $this->prepareData(1); // Menggunakan ID dummy
+        $pdf = PDF::loadView('pdf.assessment', $data);
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream('laporan-assessment-preview.pdf');
+    }
+
+    private function prepareData($id)
+    {
+        $kejadian = KejadianBencana::where('id_assessment', $id)->with([
+            'giatPmi.evakuasiKorban',
+            'giatPmi.layananKorban',
+            'dampak.korbanTerdampak',
+            'dampak.korbanJlw',
+            'dampak.kerusakanRumah',
+            'dampak.kerusakanFasilitasSosial',
+            'dampak.kerusakanInfrastruktur',
+            'dampak.pengungsian',
+            'narahubung'
+        ])->firstOrFail();
+
+        $jenisKejadian = JenisKejadian::all();
+
+        return [
+            'kejadian' => $kejadian,
+            'jenisKejadian' => $jenisKejadian,
+            'umum' => [
+                'jenis_kejadian' => $kejadian->jenis_kejadian,
+                'tempat_kejadian' => $kejadian->tempat_kejadian,
+                'tanggal' => $kejadian->tanggal,
+                'lokasi' => $kejadian->lokasi,
+                'petugas_assessment' => $kejadian->petugas_assessment,
+            ],
+            'informasi_umum' => [
+                'meninggal' => $kejadian->dampak->korbanJlw->meninggal ?? 0,
+                'luka_berat' => $kejadian->dampak->korbanJlw->luka_berat ?? 0,
+                'luka_ringan' => $kejadian->dampak->korbanJlw->luka_ringan ?? 0,
+                'hilang' => $kejadian->dampak->korbanJlw->hilang ?? 0,
+                'mengungsi' => $kejadian->dampak->korbanJlw->mengungsi ?? 0,
+                'lokasi_pengungsian' => $kejadian->dampak->pengungsian->pluck('nama_lokasi')->implode(', '),
+                'jumlah_pengungsi' => $kejadian->dampak->pengungsian->sum('jumlah'),
+            ],
+            'dampak_sarana' => [
+                'rusak_berat' => $kejadian->dampak->kerusakanRumah->rusak_berat ?? 0,
+                'rusak_sedang' => $kejadian->dampak->kerusakanRumah->rusak_sedang ?? 0,
+                'rusak_ringan' => $kejadian->dampak->kerusakanRumah->rusak_ringan ?? 0,
+                'akses_ke_lokasi' => $kejadian->akses_ke_lokasi,
+                'fasilitas_umum' => [
+                    'rs_fasilitas_kesehatan' => $kejadian->dampak->kerusakanFasilitasSosial->rumah_sakit ?? 0,
+                    'sekolah' => $kejadian->dampak->kerusakanFasilitasSosial->sekolah ?? 0,
+                    'tempat_ibadah' => $kejadian->dampak->kerusakanFasilitasSosial->tempat_ibadah ?? 0,
+                ],
+            ],
+            'situasi_keamanan' => $kejadian->situasi_keamanan ?? 'Lokasi aman dan terkendali',
+            'tindakan_dilakukan' => $kejadian->giatPmi ? [
+                'evakuasi' => $kejadian->giatPmi->layananKorban->evakuasi ?? '-',
+                'layanan_kesehatan' => $kejadian->giatPmi->layananKorban->layanan_kesehatan ?? '-',
+                'distribusi' => $kejadian->giatPmi->layananKorban->distribusi ?? '-',
+                'dapur_umum' => $kejadian->giatPmi->layananKorban->dapur_umum ?? '-',
+            ] : [],
+            'kebutuhan_mendesak' => $kejadian->kebutuhan ?? '-',
+            'kontak_person' => $kejadian->narahubung->map(function ($item) {
+                return [
+                    'nama' => $item->nama_lengkap,
+                    'posisi' => $item->posisi,
+                    'kontak' => $item->kontak,
+                ];
+            }),
+            'petugas_assessment' => $kejadian->petugas_assessment ?? '-',
+        ];
+    }
+
+    // pdf lapsit
+    public function exportLaporanSituasi($id)
+    {
+        $data = $this->prepareDataLapsit($id);
+        $pdf = PDF::loadView('pdf.lapsit2', $data);
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream('laporan-situasi.pdf');
+    }
+
+    public function viewLaporanSituasi($id)
+    {
+        $data = $this->prepareDataLapsit($id);
+        return view('pdf.lapsit2', $data);
+    }
+
+    public function checkViewPDF_lapsit()
+    {
+        $data = $this->prepareDataLapsit(1); // Menggunakan ID dummy
+        return view('pdf.lapsit2', $data);
+    }
+
+    public function checkExportPDF_lapsit()
+    {
+        $data = $this->prepareDataLapsit(1); // Menggunakan ID dummy
+        $pdf = PDF::loadView('pdf.lapsit2', $data);
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream('laporan-situasi-preview.pdf');
+    }
+
+    private function prepareDataLapsit($id)
+    {
+        $kejadian = KejadianBencana::where('id_kejadian', $id)->with([
+            'giatPmi.evakuasiKorban',
+            'giatPmi.layananKorban',
+            'dampak.korbanTerdampak',
+            'dampak.korbanJlw',
+            'dampak.kerusakanRumah',
+            'dampak.kerusakanFasilitasSosial',
+            'dampak.kerusakanInfrastruktur',
+            'mobilisasiSd.personil',
+            'mobilisasiSd.tsr',
+            'mobilisasiSd.alatTdb',
+            'dampak.pengungsian', // Menambahkan relasi pengungsian
+            'narahubung',
+            'dokumentasi',
+            'petugasPosko'
+        ])->firstOrFail();
+
+        $jenisKejadian = JenisKejadian::all();
+
+        return [
+            'kejadian' => $kejadian,
+            'jenisKejadian' => $jenisKejadian,
+            'umum' => [
+                'jenis_kejadian' => $kejadian->jenis_kejadian,
+                'tempat_kejadian' => $kejadian->tempat_kejadian,
+                'tanggal_kejadian' => $kejadian->tanggal_kejadian,
+                'lokasi' => $kejadian->lokasi,
+                'hambatan' => $kejadian->hambatan,
+                'kebutuhan' => $kejadian->kebutuhan,
+                'update' => $kejadian->update,
+                'dukungan_internasional' => $kejadian->dukungan_internasional,
+                'keterangan' => $kejadian->keterangan,
+                'giat_pemerintah' => $kejadian->giat_pemerintah,
+            ],
+            'informasi_umum' => [
+                'kk' => $kejadian->dampak->korbanTerdampak->kk ?? 0,
+                'jiwa' => $kejadian->dampak->korbanTerdampak->jiwa ?? 0,
+                'meninggal' => $kejadian->dampak->korbanJlw->meninggal ?? 0,
+                'luka_berat' => $kejadian->dampak->korbanJlw->luka_berat ?? 0,
+                'luka_ringan' => $kejadian->dampak->korbanJlw->luka_ringan ?? 0,
+                'hilang' => $kejadian->dampak->korbanJlw->hilang ?? 0,
+                'mengungsi' => $kejadian->dampak->korbanJlw->mengungsi ?? 0,
+            ],
+            'dampak_sarana' => [
+                'rusak_berat' => $kejadian->dampak->kerusakanRumah->rusak_berat ?? 0,
+                'rusak_sedang' => $kejadian->dampak->kerusakanRumah->rusak_sedang ?? 0,
+                'rusak_ringan' => $kejadian->dampak->kerusakanRumah->rusak_ringan ?? 0,
+                'akses_ke_lokasi' => $kejadian->akses_ke_lokasi,
+                'fasilitas_umum' => [
+                    'sekolah' => $kejadian->dampak->kerusakanFasilitasSosial->sekolah ?? 0,
+                    'tempat_ibadah' => $kejadian->dampak->kerusakanFasilitasSosial->tempat_ibadah ?? 0,
+                    'rumah_sakit' => $kejadian->dampak->kerusakanFasilitasSosial->rumah_sakit ?? 0,
+                    'pasar' => $kejadian->dampak->kerusakanFasilitasSosial->pasar ?? 0,
+                    'gedung_pemerintah' => $kejadian->dampak->kerusakanFasilitasSosial->gedung_pemerintah ?? 0,
+                    'lain_lain' => $kejadian->dampak->kerusakanFasilitasSosial->lain_lain ?? 0,
+
+                ],
+            ],
+            'situasi_keamanan' => $kejadian->situasi_keamanan ?? 'Lokasi aman dan terkendali',
+            'tindakan_dilakukan' => $kejadian->giatPmi ? [
+                'evakuasi' => $kejadian->giatPmi->layananKorban->evakuasi ?? '-',
+                'layanan_kesehatan' => $kejadian->giatPmi->layananKorban->layanan_kesehatan ?? '-',
+                'distribusi' => $kejadian->giatPmi->layananKorban->distribusi ?? '-',
+                'dapur_umum' => $kejadian->giatPmi->layananKorban->dapur_umum ?? '-',
+            ] : [],
+            'kebutuhan_mendesak' => $kejadian->kebutuhan ?? '-',
+            'kontak_person' => $kejadian->narahubung->map(function ($item) {
+                return [
+                    'nama' => $item->nama_lengkap,
+                    'posisi' => $item->posisi,
+                    'kontak' => $item->kontak,
+                ];
+            }),
+            'petugasPosko' => $kejadian->petugasPosko->map(function ($item) {
+                return [
+                    'nama' => $item->nama_lengkap,
+                    'kontak' => $item->kontak,
+                ];
+            }),
+            'pengungsian' => $kejadian->dampak->pengungsian->map(function ($item) {
+                return [
+                    'nama_lokasi' => $item->nama_lokasi,
+                    'kk' => $item->kk,
+                    'jiwa' => $item->jiwa,
+                    'laki_laki' => $item->laki_laki,
+                    'perempuan' => $item->perempuan,
+                    'kurang_dari_5' => $item->kurang_dari_5,
+                    'atr_5_sampai_18' => $item->atr_5_sampai_18,
+                    'lebih_dari_18' => $item->lebih_dari_18,
+                    'jumlah' => $item->jumlah,
+
+                ];
+            }),
+            'petugas_assessment' => $kejadian->petugas_assessment ?? '-',
+        ];
+    }
 
 }
