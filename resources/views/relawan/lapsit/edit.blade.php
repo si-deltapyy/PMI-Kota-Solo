@@ -9,7 +9,9 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Laporan Assessment</h4>
+
+                            <h4 class="card-title">Laporan Situasi</h4>
+
                             <!-- Update Alert-->
                             @if(session('success'))
                             <div class="alert alert-success">
@@ -28,7 +30,9 @@
                             @else
                                 <p>Data Dampak tidak tersedia.</p>
                             @endif  --}}
-                            <form class="forms-sample" action="{{ route('edit-lapsit.update', $kejadian->id_kejadian) }}" method="POST" enctype="multipart/form-data">
+
+                            <form class="forms-sample" action="{{ route('edit-lapsit.update', $kejadian->id_assessment) }}" method="POST" enctype="multipart/form-data">
+
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
@@ -101,8 +105,10 @@
                                         <input type="number" class="form-control" name="luka_ringan" id="luka_ringan" value="{{ $kejadian->dampak?->korbanJlw?->luka_ringan ?? '' }}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="meninggal">Meninggal</label>
-                                        <input type="number" class="form-control" name="meninggal" id="meninggal" value="{{ $kejadian->dampak?->korbanJlw?->meninggal ?? ''}}">
+
+                                        <label for="meninggaljlw">Meninggal</label>
+                                        <input type="number" class="form-control" name="meninggaljlw" id="meninggaljlw" value="{{ $kejadian->dampak?->korbanJlw?->meninggal ?? ''}}">
+
                                     </div>
                                     <div class="form-group">
                                         <label for="hilang">Hilang</label>
@@ -287,6 +293,7 @@
                                 <div class="form-group">
                                     <label for="pengurus">Pengurus</label>
                                     <input type="number" class="form-control" id="pengurus" name="pengurus" value="{{ $kejadian->mobilisasiSd?->personil?->pengurus ?? '' }}">
+
                                 </div>
 
                                 <div class="form-group">
@@ -428,15 +435,129 @@
                                 <div class="form-group">
                                     <label for="luka_ringanberat">Luka Ringan/Berat</label>
                                     <input type="number" class="form-control" id="luka_ringanberat" name="luka_ringanberat" value="{{ $kejadian->giatPmi?->evakuasiKorban?->luka_ringanberat ?? '' }}">
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="sukarelawan_sip">Sukarelawan Spesialis</label>
+                                    <input type="number" class="form-control" id="sukarelawan_sip" name="sukarelawan_sip" value="{{ $kejadian->mobilisasiSd?->personil?->sukarelawan_sip ?? '' }}">
+                                </div>
+
+                                <h6><b>Personil Bantuan Teknis/Ahli/Spesialis (TSR)</b></h6>
+                                <div class="form-group">
+                                    <label for="medis">Medis</label>
+                                    <input type="number" class="form-control" id="medis" name="medis" value="{{ $kejadian->mobilisasiSd?->tsr?->medis ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="paramedis">Paramedis</label>
+                                    <input type="number" class="form-control" id="paramedis" name="paramedis" value="{{ $kejadian->mobilisasiSd?->tsr?->paramedis ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="relief">Relief</label>
+                                    <input type="number" class="form-control" id="relief" name="relief" value="{{ $kejadian->mobilisasiSd?->tsr?->relief ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="logistik">Logistik</label>
+                                    <input type="number" class="form-control" id="logistik" name="logistik" value="{{ $kejadian->mobilisasiSd?->tsr?->logistik ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="watsan">Watsan</label>
+                                    <input type="number" class="form-control" id="watsan" name="watsan" value="{{ $kejadian->mobilisasiSd?->tsr?->watsan ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="it_telekom">IT dan Telekomunikasi</label>
+                                    <input type="number" class="form-control" id="it_telekom" name="it_telekom" value="{{ $kejadian->mobilisasiSd?->tsr?->it_telekom ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="sheltering">Sheltering</label>
+                                    <input type="number" class="form-control" id="sheltering" name="sheltering" value="{{ $kejadian->mobilisasiSd?->tsr?->sheltering ?? '' }}">
+                                </div>
+
+                                <h6><b>Alat Utama Sistem TDB</b></h6>
+                                <div class="form-group">
+                                    <label for="kend_ops">Kendaraan Operasional</label>
+                                    <input type="text" class="form-control" id="kend_ops" name="kend_ops" value="{{ $kejadian->mobilisasiSd?->alatTdb?->kend_ops ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="truk_angkut">Truk Angkut</label>
+                                    <input type="text" class="form-control" id="truk_angkut" name="truk_angkut" value="{{ $kejadian->mobilisasiSd?->alatTdb?->truk_angkut ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="truk_tanki">Truk Tanki</label>
+                                    <input type="text" class="form-control" id="truk_tanki" name="truk_tanki" value="{{ $kejadian->mobilisasiSd?->alatTdb?->truk_tanki ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="double_cabin">Double Cabin</label>
+                                    <input type="text" class="form-control" id="double_cabin" name="double_cabin" value="{{ $kejadian->mobilisasiSd?->alatTdb?->double_cabin ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="alat_du">Alat DU</label>
+                                    <input type="text" class="form-control" id="alat_du" name="alat_du" value="{{ $kejadian->mobilisasiSd?->alatTdb?->alat_du ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="ambulans">Ambulans</label>
+                                    <input type="text" class="form-control" id="ambulans" name="ambulans" value="{{ $kejadian->mobilisasiSd?->alatTdb?->ambulans ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="alat_watsan">Alat Watsan</label>
+                                    <input type="text" class="form-control" id="alat_watsan" name="alat_watsan" value="{{ $kejadian->mobilisasiSd?->alatTdb?->alat_watsan ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="rs_lapangan">RS Lapangan</label>
+                                    <input type="text" class="form-control" id="rs_lapangan" name="rs_lapangan" value="{{ $kejadian->mobilisasiSd?->alatTdb?->rs_lapangan ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="alat_pkdd">Alat PKDD</label>
+                                    <input type="text" class="form-control" id="alat_pkdd" name="alat_pkdd" value="{{ $kejadian->mobilisasiSd?->alatTdb?->alat_pkdd ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="gudang_lapangan">Gudang Lapangan</label>
+                                    <input type="text" class="form-control" id="gudang_lapangan" name="gudang_lapangan" value="{{ $kejadian->mobilisasiSd?->alatTdb?->gudang_lapangan ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="posko_aju">Posko Aju</label>
+                                    <input type="text" class="form-control" id="posko_aju" name="posko_aju" value="{{ $kejadian->mobilisasiSd?->alatTdb?->posko_aju ?? '' }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="alat_it_lapangan">Alat IT Lapangan</label>
+                                    <input type="text" class="form-control" id="alat_it_lapangan" name="alat_it_lapangan" value="{{ $kejadian->mobilisasiSd?->alatTdb?->alat_it_lapangan ?? '' }}">
+                                </div>
+
+                                <h4 class="card-title">Data Giat PMI</h4>
+
+                                {{--  giat pmi - evakuasi korban layanan korban  --}}
+                                <h6><b>Evakuasi Korban</b></h6>
+                                <div class="form-group">
+                                    <label for="luka_ringanberat">Luka Ringan/Berat</label>
+                                    <input type="number" class="form-control" id="luka_ringanberat" name="luka_ringanberat" value="{{ $kejadian->giatPmi?->evakuasiKorban?->luka_ringanberat ?? '' }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="meninggal">Meninggal</label>
-                                    <input type="number" class="form-control" id="meninggal" name="meninggal" value="{{ $kejadian->giatPmi?->evakuasiKorban?->meninggal ?? '' }}">
+                                    <label for="meninggalevakuasi">Meninggal</label>
+                                    <input type="number" class="form-control" id="meninggalevakuasi" name="meninggalevakuasi" value="{{ $kejadian->giatPmi?->evakuasiKorban?->meninggal ?? '' }}">
                                 </div>
-                                <div class="form-group">
+                                <!--div class="form-group">
                                     <label for="evakuasi_keterangan">Keterangan</label>
                                     <input type="text" class="form-control" id="evakuasi_keterangan" name="evakuasi_keterangan" value="{{ $kejadian->giatPmi?->evakuasiKorban?->keterangan ?? '' }}">
-                                </div>
+                                </div-->
 
                                 <h6><b>Layanan Korban</b></h6>
                                 <div class="form-group">
@@ -708,5 +829,5 @@
                     }
                 });
             });
-           
         </script>
+
