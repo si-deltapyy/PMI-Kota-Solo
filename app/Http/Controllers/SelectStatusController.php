@@ -136,6 +136,121 @@ class SelectStatusController extends Controller
                 ->get();
         }
 
+
+
+        // Iterate through each report and add 'nama_kejadian' from the related jenisKejadian
+        $assessment->each(function ($assessment) {
+            $assessment->id = $assessment->report->id_report;
+            $assessment->nama_kejadian = $assessment->report->jenisKejadian->nama_kejadian;
+            $assessment->timestamp_report = $assessment->report->timestamp_report;
+            // Fetch location details
+            $assessment->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+            $assessment->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+        });
+
+        return response()->json($assessment);
+    }
+
+    public function admin_assessment(Request $request)
+    {
+
+        $status = $request->query('status');
+
+        if ($status){
+            $assessment = Assessment::where('status', $status)
+            ->with([
+                'report.jenisKejadian',
+                'kejadianBencana.jenisKejadian',
+                'kejadianBencana.admin',
+                'kejadianBencana.relawan',
+                'kejadianBencana.mobilisasiSd',
+                'kejadianBencana.giatPmi',
+                'kejadianBencana.dokumentasi',
+                'kejadianBencana.narahubung',
+                'kejadianBencana.petugasPosko',
+                'kejadianBencana.dampak'
+            ])
+            ->get();
+
+        } else {
+            $assessment = Assessment::with([
+                'report.jenisKejadian',
+                'kejadianBencana.jenisKejadian',
+                'kejadianBencana.admin',
+                'kejadianBencana.relawan',
+                'kejadianBencana.mobilisasiSd',
+                'kejadianBencana.giatPmi',
+                'kejadianBencana.dokumentasi',
+                'kejadianBencana.narahubung',
+                'kejadianBencana.petugasPosko',
+                'kejadianBencana.dampak'
+            ])
+            ->get();
+
+        }
+
+        // Iterate through each report and add 'nama_kejadian' from the related jenisKejadian
+        $assessment->each(function ($assessment) {
+            $assessment->id = $assessment->report->id_report;
+            $assessment->nama_kejadian = $assessment->report->jenisKejadian->nama_kejadian;
+            $assessment->timestamp_report = $assessment->report->timestamp_report;
+            // Fetch location details
+            $assessment->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+            $assessment->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+        });
+
+        return response()->json($assessment);
+    }
+
+    public function admin_assessment_unverif(Request $request)
+    {
+
+        $assessment = Assessment::where('status', 'On Process')
+            ->with([
+                'report.jenisKejadian',
+                'kejadianBencana.jenisKejadian',
+                'kejadianBencana.admin',
+                'kejadianBencana.relawan',
+                'kejadianBencana.mobilisasiSd',
+                'kejadianBencana.giatPmi',
+                'kejadianBencana.dokumentasi',
+                'kejadianBencana.narahubung',
+                'kejadianBencana.petugasPosko',
+                'kejadianBencana.dampak'
+            ])
+            ->get();
+
+        // Iterate through each report and add 'nama_kejadian' from the related jenisKejadian
+        $assessment->each(function ($assessment) {
+            $assessment->id = $assessment->report->id_report;
+            $assessment->nama_kejadian = $assessment->report->jenisKejadian->nama_kejadian;
+            $assessment->timestamp_report = $assessment->report->timestamp_report;
+            // Fetch location details
+            $assessment->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+            $assessment->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+        });
+
+        return response()->json($assessment);
+    }
+
+    public function admin_assessment_verif(Request $request)
+    {
+
+        $assessment = Assessment::whereNot('status', 'On Process')
+            ->with([
+                'report.jenisKejadian',
+                'kejadianBencana.jenisKejadian',
+                'kejadianBencana.admin',
+                'kejadianBencana.relawan',
+                'kejadianBencana.mobilisasiSd',
+                'kejadianBencana.giatPmi',
+                'kejadianBencana.dokumentasi',
+                'kejadianBencana.narahubung',
+                'kejadianBencana.petugasPosko',
+                'kejadianBencana.dampak'
+            ])
+            ->get();
+
         // Iterate through each report and add 'nama_kejadian' from the related jenisKejadian
         $assessment->each(function ($assessment) {
             $assessment->id = $assessment->report->id_report;
@@ -173,6 +288,58 @@ class SelectStatusController extends Controller
         } else {
             $lapsit = KejadianBencana::where('id_relawan', $id_user) // Nama fungsi relasi dalam model Report
                 ->with([
+                    'jenisKejadian',
+                    'assessment',
+                    'relawan',
+                    'admin',
+                    'mobilisasiSd',
+                    'giatPmi',
+                    'dokumentasi',
+                    'narahubung',
+                    'petugasPosko',
+                    'dampak'
+                ])
+                ->get();
+        }
+
+        // Iterate through each report and add 'nama_kejadian' from the related jenisKejadian
+        $lapsit->each(function ($lapsit) {
+            $lapsit->id = $lapsit->assessment->report->id_report;
+            $lapsit->status = $lapsit->assessment->status;
+            $lapsit->nama_kejadian = $lapsit->jenisKejadian->nama_kejadian;
+            $lapsit->timestamp_report = $lapsit->assessment->report->timestamp_report;
+            // Fetch location details
+            $lapsit->locationName = $this->getLocationName($lapsit->assessment->report->lokasi_latitude, $lapsit->assessment->report->lokasi_longitude);
+            $lapsit->googleMapsLink = $this->getGoogleMapsLink($lapsit->assessment->report->lokasi_latitude, $lapsit->assessment->report->lokasi_longitude);
+        });
+
+        return response()->json($lapsit);
+    }
+
+    public function admin_lapsit(Request $request)
+    {
+        $status = $request->query('status');
+        // $id_user = Auth::id(); // Get the authenticated user's ID
+
+        if ($status) {
+            $lapsit = KejadianBencana::whereHas('assessment', function($query) use ($status) {
+                $query->where('status', $status);
+            })
+                ->with([
+                    'jenisKejadian',
+                    'assessment',
+                    'relawan',
+                    'admin',
+                    'mobilisasiSd',
+                    'giatPmi',
+                    'dokumentasi',
+                    'narahubung',
+                    'petugasPosko',
+                    'dampak'
+                ])
+                ->get();
+        } else {
+            $lapsit = KejadianBencana::with([
                     'jenisKejadian',
                     'assessment',
                     'relawan',

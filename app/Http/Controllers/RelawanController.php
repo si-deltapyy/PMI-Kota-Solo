@@ -306,13 +306,19 @@ class RelawanController extends Controller
     }
     public function create_assessment($id)
     {
+        $assessment = Assessment::whereHas('report', function($query) use ($id) {
+            $query->where('id_report', $id);
+        })->first();
+        if($assessment){
+            return redirect()->route('relawan-laporankejadian')->with('failure', 'Laporan Assessment sudah ada');
+        }
         $report = Report::findOrFail($id);
         $jeniskejadian = JenisKejadian::all();
-        return view('relawan.assessment.create', compact('report', 'jeniskejadian'));
+        return view('relawan.assessment.create', compact('report', 'jeniskejadian', 'assessment'));
     }
     public function store_assessment(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         // Validasi data yang diterima dari permintaan
         // $validatedData = $request->validate([
         //     // Umum
@@ -1058,7 +1064,7 @@ class RelawanController extends Controller
         $kejadianBaru->id_relawan = $kejadianLama->id_relawan;
         $kejadianBaru->tanggal_kejadian = $kejadianLama->tanggal_kejadian;
         $kejadianBaru->lokasi = $kejadianLama->lokasi;
-        $kejadianBaru->akses_ke_lokasi = $kejadianLama->akses_ke_lokasi;
+        //$kejadianBaru->akses_ke_lokasi = $kejadianLama->akses_ke_lokasi;
         $kejadianBaru->kebutuhan = $kejadianLama->kebutuhan;
         $kejadianBaru->id_assessment = $kejadianLama->id_assessment;
 
@@ -1067,6 +1073,7 @@ class RelawanController extends Controller
         $kejadianBaru->keterangan = $validatedData['keterangan'];
         $kejadianBaru->giat_pemerintah = $validatedData['giat_pemerintah'];
         $kejadianBaru->hambatan = $validatedData['hambatan'];
+        $kejadianBaru->akses_ke_lokasi = $validatedData['akses_ke_lokasi'];
 
         $kejadianBaru->save();
 

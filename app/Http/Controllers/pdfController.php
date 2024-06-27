@@ -35,7 +35,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Carbon;
 
 
 
@@ -225,13 +224,13 @@ class PDFController extends Controller
     }
 
     // pdf assessment
-    public function exportLaporanAssessment($id)
-    {
-        $data = $this->prepareData($id);
-        $pdf = PDF::loadView('pdf.assessment', $data);
-        $pdf->setPaper('A4', 'portrait');
-        return $pdf->stream('laporan-assessment.pdf');
-    }
+    // public function exportLaporanAssessment($id)
+    // {
+    //     $data = $this->prepareData($id);
+    //     $pdf = PDF::loadView('pdf.assessment', $data);
+    //     $pdf->setPaper('A4', 'portrait');
+    //     return $pdf->stream('laporan-assessment.pdf');
+    // }
 
     public function viewLaporanAssessment($id)
     {

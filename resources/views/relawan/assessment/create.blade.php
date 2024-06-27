@@ -1,5 +1,29 @@
 @extends('layouts-relawan.default')
 
+@if($assessment)
+<!-- Modal -->
+<div class="modal show" id="assessmentModal" tabindex="-1" role="dialog" aria-labelledby="assessmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="assessmentModalLabel">Peringatan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Sudah ada laporan assessment yang dibuat dari laporan kejadian ini. Laporan assessment hanya dapat dibuat satu kali. Silahkan melakukan edit untuk mengubah informasi.
+      </div>
+      <div class="modal-footer">
+        <a href="{{ route('relawan-laporankejadian') }}" class="btn btn-secondary">OK</a>
+        <a href="{{ route('edit-assessment', $assessment->id_assessment) }}" class="btn btn-primary">Edit Assessment</a>
+      </div>
+    </div>
+  </div>
+</div>
+@endif
+
+
 @section('content')
     <!-- <div class="main-panel"> -->
         <div class="content-wrapper">

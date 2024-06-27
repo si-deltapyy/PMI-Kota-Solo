@@ -2,6 +2,11 @@
 <script>
     const userRole = "{{ auth()->user()->getRoleNames()->first() }}";
     const urlBase = "{{ $baseUrl }}"; 
+    window.csrfToken = '{{ csrf_token() }}';
+    window.routes = {
+        adminViewLapsit: '{{ route('admin-view-lapsit', ':id') }}',
+        shareLapsit: '{{ route('share.lapsit', ':id') }}'
+    };
 </script>
 
 <div class="card">
@@ -10,7 +15,6 @@
         <p class="card-description">{{ $description }}</p>
         <div class="home-tab">
             <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                    @if ($baseUrl != "lapsit" && $baseUrl != "assessment/unverified" && $baseUrl != "assessment/verified")
                         <div class="dropdown">
                             <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuSizeButton3"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -23,8 +27,7 @@
                                 @endforeach
                             </div>
                         </div>
-                    @endif
-                    @if ($baseUrl != "assessment/unverified" && $baseUrl != "assessment/verified" && $baseUrl != "lapsit" || auth()->user()->getRoleNames()->first() != "admin")
+                    @if ($baseUrl == "laporan-kejadian" && auth()->user()->getRoleNames()->first() == "admin")
                     <div class="btn-wrapper ms-auto">
                         <a href="{{ $createRoute }}" class="btn btn-primary text-white me-0">
                             <i class="icon-download"></i> Tambah Data

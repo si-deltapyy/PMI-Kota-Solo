@@ -84,8 +84,5 @@ class KejadianBencana extends Model
     {
         return $this->hasMany(LampiranDokumentasi::class, 'id_kejadian');
     }
-    public function dampak()
-    {
-        return $this->belongsTo(Dampak::class, 'id_dampak');
-    }
+
 }

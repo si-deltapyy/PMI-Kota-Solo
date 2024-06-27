@@ -77,16 +77,23 @@ class AdminController extends Controller
     public function index_laporankejadian()
     {
         $reports = Report::all(); 
-        return view('admin.laporankejadian.index', compact('reports'));
+        return view('admin.laporan-kejadian.index', compact('reports'));
     }
 
     public function index_assessment()
     {
-        $assessments = KejadianBencana::all();
+        $assessments = Assessment::all();
         return view('admin.assessment.index', compact('assessments'));
     }
 
-        /**
+    public function index_lapsit()
+    {
+        $kejadian = KejadianBencana::all();
+        $jenisKejadian = JenisKejadian::all();
+        return view('admin.lapsit.index', compact('kejadian', 'jenisKejadian'));
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     // CREATE, UPDATE, DELETE LAPORAN KEJADIAN
@@ -110,8 +117,10 @@ class AdminController extends Controller
     $tanggalKejadian = \Carbon\Carbon::parse($request->tanggal_kejadian)->format('Y-m-d H:i:s');
     $timestampReport = \Carbon\Carbon::parse($request->timestamp_report)->format('Y-m-d H:i:s');
 
+    $randomRelawanUser = User::role('relawan')->inRandomOrder()->first();
+
     $laporanKejadian = new Report();
-    $laporanKejadian->id_relawan = auth()->user()->id;
+    $laporanKejadian->id_relawan = $randomRelawanUser->id;
     $laporanKejadian->id_jeniskejadian = $request->id_jeniskejadian;
     $laporanKejadian->tanggal_kejadian = $tanggalKejadian;
     $laporanKejadian->timestamp_report = $timestampReport;
@@ -150,6 +159,27 @@ class AdminController extends Controller
         return view('admin.laporan-kejadian.edit', compact('report'));
     }
 
+    public function update_laporankejadian(Request $request, $id)
+    {
+        
+        
+
+        $tanggalKejadian = \Carbon\Carbon::parse($request->tanggal_kejadian)->format('Y-m-d H:i:s');
+        $timestampReport = \Carbon\Carbon::parse($request->timestamp_report)->format('Y-m-d H:i:s');
+    
+        $laporanKejadian = Report::where('id_report', $id)->firstOrFail();
+
+        $laporanKejadian->tanggal_kejadian = $tanggalKejadian;
+        $laporanKejadian->timestamp_report = $timestampReport;
+        $laporanKejadian->keterangan = $request->keterangan;
+        $laporanKejadian->lokasi_longitude = $request->lokasi_longitude;
+        $laporanKejadian->lokasi_latitude = $request->lokasi_latitude;
+        $laporanKejadian->status = $request->status;
+        $laporanKejadian->save();
+    
+        return redirect()->route('admin-laporankejadian')->with('success', 'Laporan kejadian berhasil diupdate.');;
+    }
+
     /**
      * @Route("/relawan/laporan-kejadian/delete/{id}", name="delete_kejadian", methods={"DELETE"})
      */
@@ -157,7 +187,7 @@ class AdminController extends Controller
     {
         $report = Report::findOrFail($id);
 
-        if ($report->status === 'Belum Diverifikasi') {
+        if ($report->status === 'On Process') {
             $report->delete();
 
             // Check if the request is AJAX
@@ -311,6 +341,134 @@ class AdminController extends Controller
         return view('admin.assessment.view', compact('assessment', 'firstKejadian'));
 
         // return response()->json($assessment);
+    }
+
+    public function verif_assessment($id)
+    {
+        $assessment = Assessment::where('id_assessment', $id) // Nama fungsi relasi dalam model Report
+            ->with([
+                'report.jenisKejadian',
+                'kejadianBencana.jenisKejadian',
+                'kejadianBencana.admin',
+                'kejadianBencana.relawan',
+                'kejadianBencana.mobilisasiSd.personil',
+                'kejadianBencana.mobilisasiSd.tsr',
+                'kejadianBencana.mobilisasiSd.alatTdb',
+                'kejadianBencana.giatPmi.evakuasiKorban',
+                'kejadianBencana.giatPmi.layananKorban',
+                'kejadianBencana.dokumentasi',
+                'kejadianBencana.narahubung',
+                'kejadianBencana.petugasPosko',
+                'kejadianBencana.dampak.korbanTerdampak',
+                'kejadianBencana.dampak.korbanJlw',
+                'kejadianBencana.dampak.kerusakanRumah',
+                'kejadianBencana.dampak.kerusakanFasilitasSosial',
+                'kejadianBencana.dampak.kerusakanInfrastruktur',
+                'kejadianBencana.dampak.pengungsian'
+            ])
+            ->first();
+
+        $assessment->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+        $assessment->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+        $assessment->waktuKejadian = $this->formatDateTime($assessment->report->timestamp_report);
+        $assessment->updateAt = $this->formatDateTime($assessment->report->updated_at);
+
+        // Handle only the first kejadianBencana
+        $firstKejadian = $assessment->kejadianBencana->first();
+
+        if ($firstKejadian) {
+            // You can access the nested properties here
+            $firstKejadian->korbanTerdampak = $firstKejadian->dampak->korbanTerdampak;
+            $firstKejadian->korbanJlw = $firstKejadian->dampak->korbanJlw;
+            $firstKejadian->kerusakanRumah = $firstKejadian->dampak->kerusakanRumah;
+            $firstKejadian->kerusakanFasilitasSosial = $firstKejadian->dampak->kerusakanFasilitasSosial;
+            $firstKejadian->kerusakanInfrastruktur = $firstKejadian->dampak->kerusakanInfrastruktur;
+            $firstKejadian->pengungsian = $firstKejadian->dampak->pengungsian;
+            $firstKejadian->evakuasiKorban = $firstKejadian->giatPmi->evakuasiKorban;
+            $firstKejadian->layananKorban = $firstKejadian->giatPmi->layananKorban;
+            $firstKejadian->personil = $firstKejadian->mobilisasiSd->personil;
+            $firstKejadian->tsr = $firstKejadian->mobilisasiSd->tsr;
+            $firstKejadian->alatTdb = $firstKejadian->mobilisasiSd->alatTdb;
+        }
+
+        return view('admin.assessment.verif', compact('assessment', 'firstKejadian'));
+
+        // return response()->json($assessment);
+    }
+
+    public function selesai_assessment($id)
+    {
+        $assessment = Assessment::where('id_assessment', $id) // Nama fungsi relasi dalam model Report
+            ->with([
+                'report.jenisKejadian',
+                'kejadianBencana.jenisKejadian',
+                'kejadianBencana.admin',
+                'kejadianBencana.relawan',
+                'kejadianBencana.mobilisasiSd.personil',
+                'kejadianBencana.mobilisasiSd.tsr',
+                'kejadianBencana.mobilisasiSd.alatTdb',
+                'kejadianBencana.giatPmi.evakuasiKorban',
+                'kejadianBencana.giatPmi.layananKorban',
+                'kejadianBencana.dokumentasi',
+                'kejadianBencana.narahubung',
+                'kejadianBencana.petugasPosko',
+                'kejadianBencana.dampak.korbanTerdampak',
+                'kejadianBencana.dampak.korbanJlw',
+                'kejadianBencana.dampak.kerusakanRumah',
+                'kejadianBencana.dampak.kerusakanFasilitasSosial',
+                'kejadianBencana.dampak.kerusakanInfrastruktur',
+                'kejadianBencana.dampak.pengungsian'
+            ])
+            ->first();
+
+        $assessment->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+        $assessment->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+        $assessment->waktuKejadian = $this->formatDateTime($assessment->report->timestamp_report);
+        $assessment->updateAt = $this->formatDateTime($assessment->report->updated_at);
+
+        // Handle only the first kejadianBencana
+        $firstKejadian = $assessment->kejadianBencana->first();
+
+        if ($firstKejadian) {
+            // You can access the nested properties here
+            $firstKejadian->korbanTerdampak = $firstKejadian->dampak->korbanTerdampak;
+            $firstKejadian->korbanJlw = $firstKejadian->dampak->korbanJlw;
+            $firstKejadian->kerusakanRumah = $firstKejadian->dampak->kerusakanRumah;
+            $firstKejadian->kerusakanFasilitasSosial = $firstKejadian->dampak->kerusakanFasilitasSosial;
+            $firstKejadian->kerusakanInfrastruktur = $firstKejadian->dampak->kerusakanInfrastruktur;
+            $firstKejadian->pengungsian = $firstKejadian->dampak->pengungsian;
+            $firstKejadian->evakuasiKorban = $firstKejadian->giatPmi->evakuasiKorban;
+            $firstKejadian->layananKorban = $firstKejadian->giatPmi->layananKorban;
+            $firstKejadian->personil = $firstKejadian->mobilisasiSd->personil;
+            $firstKejadian->tsr = $firstKejadian->mobilisasiSd->tsr;
+            $firstKejadian->alatTdb = $firstKejadian->mobilisasiSd->alatTdb;
+        }
+
+        return view('admin.assessment.selesai', compact('assessment', 'firstKejadian'));
+
+        // return response()->json($assessment);
+    }
+
+    public function verify_assessment(Request $request,$id){
+
+        $assessment = Assessment::find($id)->firstOrFail();
+
+        $assessment->status = "Aktif";
+        $assessment->save();
+
+        return redirect()->route('admin-assessment')->with('success', 'Laporan assessment berhasil diverifikasi.');;
+
+    }
+
+    public function done_assessment(Request $request,$id){
+
+        $assessment = Assessment::find($id)->firstOrFail();
+
+        $assessment->status = "Selesai";
+        $assessment->save();
+
+        return redirect()->route('admin-assessment')->with('success', 'Laporan assessment berhasil diselesaikan.');;
+
     }
 
     public function create_assessment($id)
@@ -685,8 +843,8 @@ class AdminController extends Controller
     public function lapsit()
     {
         $user = User::all();
-        notify()->preset('success', ['message' => 'Berhasil Mengirim Pesan Whatsapp']);
-        return view('admin.lapsit.index', compact('user'));
+        // notify()->preset('success', ['message' => 'Berhasil Mengirim Pesan Whatsapp']);
+        return view('admin.lapsit.index', compact('lapsit'));
     }
 
     public function Sharelapsit($id)

@@ -45,7 +45,7 @@
                         <textarea class="form-control form-control-sm" id="keterangan" rows="4" readonly>{{ $report->keterangan }}</textarea>
                     </div>
                     <div class="btn-wrapper">
-                        <a href="{{ route('relawan-laporankejadian') }}" class="btn btn-secondary">Back</a>
+                        <a href="{{ route('admin-laporankejadian') }}" class="btn btn-secondary">Back</a>
                     </div>
                 </div>
             </div>
