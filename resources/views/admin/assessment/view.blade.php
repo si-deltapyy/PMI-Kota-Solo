@@ -9,7 +9,17 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="card-title">Laporan Assessment</h3>
-
+                    <div class="card-description">
+                        <div class="home-tab">
+                            <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                    <div class="btn-wrapper ms-auto">
+                                        <a href="{{ route('assessment.pdf', ['id' => $assessment->id_assessment]) }}" class="btn btn-primary text-white me-0">
+                                            <i class="icon-download"></i> Unduh Laporan PDF
+                                        </a>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
                     <form class="forms-sample">
                     
                         <h5>Detail Kejadian</h5>

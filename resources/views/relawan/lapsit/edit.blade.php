@@ -548,6 +548,10 @@
                                     <label for="meninggalevakuasi">Meninggal</label>
                                     <input type="number" class="form-control" id="meninggalevakuasi" name="meninggalevakuasi" value="{{ $kejadian->giatPmi?->evakuasiKorban?->meninggal ?? '' }}">
                                 </div>
+                                <div class="form-group">
+                                    <label for="evakuasi_keterangan">Keterangan</label>
+                                    <input type="text" class="form-control" id="evakuasi_keterangan" name="evakuasi_keterangan" value="{{ $kejadian->giatPmi?->evakuasiKorban?->keterangan ?? '' }}">
+                                </div>
                                 <!--div class="form-group">
                                     <label for="evakuasi_keterangan">Keterangan</label>
                                     <input type="text" class="form-control" id="evakuasi_keterangan" name="evakuasi_keterangan" value="{{ $kejadian->giatPmi?->evakuasiKorban?->keterangan ?? '' }}">

@@ -140,7 +140,7 @@ class SelectStatusController extends Controller
 
         // Iterate through each report and add 'nama_kejadian' from the related jenisKejadian
         $assessment->each(function ($assessment) {
-            $assessment->id = $assessment->report->id_report;
+            $assessment->id = $assessment->id_assessment;
             $assessment->nama_kejadian = $assessment->report->jenisKejadian->nama_kejadian;
             $assessment->timestamp_report = $assessment->report->timestamp_report;
             // Fetch location details
@@ -304,7 +304,7 @@ class SelectStatusController extends Controller
 
         // Iterate through each report and add 'nama_kejadian' from the related jenisKejadian
         $lapsit->each(function ($lapsit) {
-            $lapsit->id = $lapsit->assessment->report->id_report;
+            $lapsit->id = $lapsit->id_kejadian;
             $lapsit->status = $lapsit->assessment->status;
             $lapsit->nama_kejadian = $lapsit->jenisKejadian->nama_kejadian;
             $lapsit->timestamp_report = $lapsit->assessment->report->timestamp_report;

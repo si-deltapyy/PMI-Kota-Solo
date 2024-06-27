@@ -170,15 +170,15 @@ use Carbon\Carbon;
                 <div class="card-grid">
                     <div class="item-title">Korban Jiwa/Luka/Mengungsi</div>
                     <div class="subtitle">Luka Berat</div>
-                    <div class="content">{{ $kejadian->dampak->korbanJlw>luka_berat ?? 0 }}</div>
+                    <div class="content">{{ $kejadian->dampak->korbanJlw->luka_berat ?? 0 }}</div>
                     <div class="subtitle">Luka Ringan</div>
-                    <div class="content">{{ $kejadian->dampak->korbanJlw>luka_ringan ?? 0 }}</div>
+                    <div class="content">{{ $kejadian->dampak->korbanJlw->luka_ringan ?? 0 }}</div>
                     <div class="subtitle">Meninggal</div>
-                    <div class="content">{{ $kejadian->dampak->korbanJlw>meninggal ?? 0 }}</div>
+                    <div class="content">{{ $kejadian->dampak->korbanJlw->meninggal ?? 0 }}</div>
                     <div class="subtitle">Hilang</div>
-                    <div class="content">{{ $kejadian->dampak->korbanJlw>hilang ?? 0 }}</div>
+                    <div class="content">{{ $kejadian->dampak->korbanJlw->hilang ?? 0 }}</div>
                     <div class="subtitle">Mengungsi</div>
-                    <div class="content">{{ $kejadian->dampak->korbanJlw>mengungsi ?? 0 }}</div>
+                    <div class="content">{{ $kejadian->dampak->korbanJlw->mengungsi ?? 0 }}</div>
                 </div>
                 <div class="card-grid">
                     <div class="item-title">Kerusakan Rumah</div>
@@ -207,7 +207,7 @@ use Carbon\Carbon;
 
                 <div class="card-grid">
                     <div class="item-title">Kerusakan Infrastruktur</div>
-                    <div class="item-title">{{ $kejadian->dampak->kerusakanInfrastruktur>desc_kerusakan ?? 0 }}</div>
+                    <div class="item-title">{{ $kejadian->dampak->kerusakanInfrastruktur->desc_kerusakan ?? 0 }}</div>
                 </div>
                 <div class="card-grid-many">
                     <div class="item-titles">Pengungsian</div>

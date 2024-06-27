@@ -9,7 +9,17 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="card-title">Laporan Situasi</h3>
-
+                    <div class="card-description">
+                        <div class="home-tab">
+                            <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                    <div class="btn-wrapper ms-auto">
+                                        <a href="{{ route('lapsit.pdf', ['id' => $lapsit->id_kejadian]) }}" class="btn btn-primary text-white me-0">
+                                            <i class="icon-download"></i> Unduh Laporan PDF
+                                        </a>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
                     <form class="forms-sample">
                         <h5>Detail Kejadian</h5>
                         <br>

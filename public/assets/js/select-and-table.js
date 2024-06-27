@@ -67,6 +67,30 @@ $(document).ready(function () {
                                     </td>
                                 </tr>
                             `;
+                            } else if(urlBase == "assessment") {
+                                tableRow = `
+                                <tr class="${item.status === 'Selesai' ? 'text-muted' : ''}">
+                                    <td>${index + 1}</td>
+                                    <td>${item.nama_kejadian}</td>
+                                    <td>${item.locationName}</td>
+                                    <td>${formattedTanggal}</td>
+                                    <td>${formattedWaktu}</td>
+                                    <td>${formattedUpdatedAt.date + " - " + formattedUpdatedAt.time}</td>
+                                    <td><p class="btn ${statusClass} btn-sm">${item.status}</p></td>
+                                    <td>
+                                        <a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                                        ${item.status == 'On Process'
+                                        ? `<a href="/${role}/${urlBase}/${item.id}/edit" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
+                                               <button class="btn btn-danger btn-sm delete-item" data-id="${item.id}">
+                                                    <i class="menu-icon mdi mdi-delete"></i>
+                                                </button>`
+                                        : item.status == 'Aktif' 
+                                        ? `<a href="/relawan/lapsit/create/${item.id}" class="btn btn-success btn-sm ">Create Lapsit</i></a>`
+                                        : ``
+                                    }
+                                    </td>
+                                </tr>
+                            `;
                             } else {
                                 tableRow = `
                                 <tr class="${item.status === 'Selesai' ? 'text-muted' : ''}">
@@ -80,12 +104,12 @@ $(document).ready(function () {
                                     <td>
                                         <a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                                         ${item.status == 'Aktif' | item.status == 'On Process'
-                                        ? `<a href="/${role}/${urlBase}/edit/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
+                                        ? `<a href="/${role}/${urlBase}/${item.id}/edit" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
                                                <button class="btn btn-danger btn-sm delete-item" data-id="${item.id}">
                                                     <i class="menu-icon mdi mdi-delete"></i>
                                                 </button>`
-                                        : `<a href="/${role}/${urlBase}/edit/${item.id}" class="btn btn-info btn-sm disabled"><i class="menu-icon mdi mdi-border-color"></i></a>
-                                               <a href="/${role}/${urlBase}/delete/${item.id}" class="btn btn-danger btn-sm disabled"><i class="menu-icon mdi mdi-delete"></i></a>`
+                                        : `<a href="/${role}/${urlBase}/${item.id}/edit" class="btn btn-info btn-sm disabled"><i class="menu-icon mdi mdi-border-color"></i></a>
+                                               <a href="/${role}/${urlBase}/${item.id}/delete" class="btn btn-danger btn-sm disabled"><i class="menu-icon mdi mdi-delete"></i></a>`
                                     }
                                     </td>
                                 </tr>
@@ -136,10 +160,13 @@ $(document).ready(function () {
                                             </a>
                                             <form action="${shareLapsitUrl}" method="post">
                                                 <input type="hidden" name="_token" value="${window.csrfToken}">
-                                                <button class="btn btn-success text-white me-0 btn-sm">
+                                                <button class="btn btn-success text-white me-2 btn-sm">
                                                     <i class="mdi mdi-whatsapp"></i>
                                                 </button>
                                             </form>
+                                            <a href="/lapsit/${item.id}/pdf" class="btn btn-warning btn-icon btn-sm me-2">
+                                                <i class="menu-icon mdi mdi-download"></i>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
