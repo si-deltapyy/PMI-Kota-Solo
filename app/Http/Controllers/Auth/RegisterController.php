@@ -23,20 +23,51 @@ class RegisterController extends Controller
         ]);
     }
 
-    protected function create(Request $request)
+    public function showRegistrationForm()
     {
-        $this->validator($request->all())->validate();
+        return view('auth.register');
+    }
+
+    // protected function create(Request $request)
+    // {
+    //     $this->validator($request->all())->validate();
+
+    //     $user = User::create([
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //         'password' => Hash::make($request->password),
+    //         'role' => 'relawan', // set role sebagai relawan
+    //         'is_approved' => false, // awalnya belum disetujui
+    //     ]);
+
+    //     return $user;
+    // }
+
+    protected function create(array $data)
+    {
+        $this->validator($data)->validate();
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'relawan', // set role sebagai relawan
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'username' => $data['username'],
+            'password' => Hash::make($data['password']),
+            // 'role' => 'relawan', // set role sebagai relawan
             'is_approved' => false, // awalnya belum disetujui
-        ]);
+        ])->assignRole('relawan');
 
         return $user;
     }
+
+    // public function register(Request $request)
+    // {
+    //     $this->validator($request->all())->validate();
+
+    //     event(new Registered($user = $this->create($request->all())));
+
+    //     return $this->registered($request, $user)
+    //         ?: redirect($this->redirectPath())->with('status', 'Registration successful! Please wait for approval.');
+    // }
 
     public function register(Request $request)
     {
@@ -46,5 +77,18 @@ class RegisterController extends Controller
 
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath())->with('status', 'Registration successful! Please wait for approval.');
+    }
+
+
+    protected function registered(Request $request, $user)
+    {
+        // Custom logic after registration, if needed
+        return redirect()->intended($this->redirectPath());
+    }
+
+    protected function redirectPath()
+    {
+        // Define the path to redirect after registration
+        return '/login';
     }
 }

@@ -22,7 +22,9 @@
                     </div>
                     <form class="forms-sample">
                         <h5>Detail Kejadian</h5>
+                        <br>
                         <hr>
+                        <br>
                         <div class="form-group">
                             <label for="kejadian_musibah">Kejadian Bencana</label>
                             <input readonly type="text" class="form-control" id="kejadian_musibah"
@@ -100,7 +102,9 @@
                         </div> -->
 
                         <h5>Dampak</h5>
+                        <br>
                         <hr>
+                        <br>
 
                         <div class="form-group">
                             <p class="card-description" id="subtitle">
@@ -192,10 +196,12 @@
                         </div> -->
 
                         <h5>Pengungsian</h5>
+                        <br>
                         <hr>
+                        <br>
 
+                        @foreach ($lapsit->pengungsian as $pengungsian)
                         <div id="form_area">
-                            @foreach ($lapsit->pengungsian as $pengungsian)
                             <div id="form_pengungsian" >
                                 <!-- <h4 class="card-title" id="subtitle">Pengungsian</h4> -->
                                 <div class="form-group">
@@ -235,8 +241,8 @@
                                     <input readonly type="number" class="form-control" name="jumlah[]" value="{{ $pengungsian->jumlah }}">
                                 </div>
                             </div>
-                            @endforeach
                         </div>
+                        @endforeach
 
                         {{-- Personil --}}
                         {{-- <div class="form-group">
@@ -245,7 +251,9 @@
                         </div> --}}
 
                         <h4>Mobilisasi SDM PMI</h4>
+                        <br>
                         <hr>
+                        <br>
 
                         <div id="form_personil">
                             <p class="card-description" id="subtitle">
@@ -369,7 +377,9 @@
                         <br>
 
                         <h4>Evakuasi Korban Luka</h4>
+                        <br>
                         <hr>
+                        <br>
                         <!-- <div class="form-group">
                             <label for="kejadian_musibah">Tempat/Lokasi</label>
                             <input readonly type="text" class="form-control" id="kejadian_musibah" placeholder="Name">
@@ -521,7 +531,9 @@
                         </div>
 
                         <h4>Kebutuhan</h4>
+                        <br>
                         <hr>
+                        <br>
 
                         <div class="form-group">
                             <label for="kejadian_musibah">Kebutuhan</label>
@@ -539,10 +551,12 @@
                         </div> -->
 
                         <h4>CP Personil</h4>
+                        <br>
                         <hr>
+                        <br>
 
+                        @foreach ($lapsit->narahubung as $narahubung)
                         <div id="form_area_cp">
-                            @foreach ($lapsit->narahubung as $narahubung)
                             <div id="form_cp">
                                 <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
                                 <div class="form-group">
@@ -558,8 +572,8 @@
                                     <input readonly type="phone" class="form-control" name="jumlah_orang[]" value="{{ $narahubung->kontak }}">
                                 </div>
                             </div>
-                            @endforeach
                         </div>
+                        @endforeach
 
                         <!-- <div class="form-group">
                             <button type="button" id="tambah_petugas_posko" class="btn btn-primary me-2">Petugas
@@ -567,10 +581,12 @@
                         </div> -->
 
                         <h4>Petugas Posko</h4>
+                        <br>
                         <hr>
+                        <br>
 
+                        @foreach ($lapsit->petugasPosko as $petugasPosko)
                         <div id="form_area_petugas">
-                            @foreach ($lapsit->petugasPosko as $petugasPosko)
                             <div id="form_petugas" >
                                 <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
                                 <div class="form-group">
@@ -582,11 +598,11 @@
                                     <input readonly type="phone" class="form-control" name="jumlah_orang[]" value="{{ $petugasPosko->kontak }}">
                                 </div>
                             </div>
-                            @endforeach
                         </div>
+                        @endforeach
 
                         <!-- <button type="submit" class="btn btn-primary me-2">Submit</button> -->
-                        <a class="btn btn-light" href="{{ route('relawan-lapsit') }}">Back</a>
+                        <a class="btn btn-light" href="{{ route('admin-lapsit') }}">Back</a>
                     </form>
                 </div>
             </div>

@@ -18,20 +18,17 @@ return new class extends Migration
             $table->unsignedBigInteger('id_relawan');
             $table->date('tanggal_kejadian');
             $table->string('lokasi');
-            $table->string('update');
-            $table->string('dukungan_internasional');
+            $table->date('update');
+            $table->enum('dukungan_internasional', ['Ya', 'Tidak']);
             $table->text('keterangan');
             $table->enum('akses_ke_lokasi', ['Accessible', 'Not Accessible']);
             $table->string('kebutuhan');
-            $table->enum('giat_pemerintah', ['Ya', 'Tidak']);
+            $table->string('giat_pemerintah');
             $table->string('hambatan');
             $table->unsignedBigInteger('id_assessment');
             $table->unsignedBigInteger('id_dampak');
             $table->unsignedBigInteger('id_mobilisasi_sd');
             $table->unsignedBigInteger('id_giat_pmi');
-            $table->unsignedBigInteger('id_dokumentasi');
-            $table->unsignedBigInteger('id_narahubung');
-            $table->unsignedBigInteger('id_petugas_posko');
             $table->timestamp('timestamp_input')->nullable();
             $table->timestamp('timestamp_update')->nullable();
             $table->timestamps();
@@ -43,9 +40,7 @@ return new class extends Migration
             $table->foreign('id_dampak')->references('id_dampak')->on('dampak')->onDelete('CASCADE');
             $table->foreign('id_mobilisasi_sd')->references('id_mobilisasi_sd')->on('mobilisasi_sd')->onDelete('CASCADE');
             $table->foreign('id_giat_pmi')->references('id_giatpmi')->on('giat_pmi')->onDelete('CASCADE');
-            $table->foreign('id_dokumentasi')->references('id_dokumentasi')->on('lampiran_dokumentasi')->onDelete('CASCADE');
-            $table->foreign('id_narahubung')->references('id_narahubung')->on('personil_narahubung')->onDelete('CASCADE');
-            $table->foreign('id_petugas_posko')->references('id_petugas_posko')->on('petugas_posko')->onDelete('CASCADE');
+            
         });
     }
 

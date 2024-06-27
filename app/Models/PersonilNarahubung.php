@@ -16,11 +16,14 @@ class PersonilNarahubung extends Model
     protected $fillable = [
         'nama_lengkap',
         'posisi',
-        'kontak'
+        'kontak',
+        'id_kejadian'
     ];
+
 
     public function kejadianBencana()
     {
-        return $this->hasMany(KejadianBencana::class, 'id_narahubung');
+        return $this->belongsTo(KejadianBencana::class, 'id_kejadian');
     }
+
 }

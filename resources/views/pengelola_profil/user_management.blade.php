@@ -38,6 +38,20 @@
                                     </div>
                                     
                                 <br>
+                                @if (session('error'))
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>Error!</strong> {{ session('error') }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
+
+                                @if (session('success'))
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <strong>Success!</strong> {{ session('success') }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
+
                                 <div class="d-flex justify-content-between align-items-center mb-3 mr-2">
                                     <!-- tambah akun -->
                                 <div>
@@ -52,7 +66,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="confirmationModalLabel">Konfirmasi</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
                                             </div>
                                             <div class="modal-body" id="confirmationMessage">Apakah Anda yakin?</div>
                                             <div class="modal-footer">
@@ -86,20 +100,18 @@
                                                             {{ $role->name }}
                                                         @endforeach
                                                     </td>
-                                                    <td>{{ $user->is_approved ? 'Approved' : 'Not Approved' }}</td>
+                                                    <td>{{ $user->is_approved ? 'Approved' : 'Need Approval' }}</td>
                                                     <td>
-                                                        <a href="{{ route('pengelolaProfiledit_relawan', $user->id) }}" class="btn btn-info btn-sm">
+                                                    @if ($user->is_approved)
+                                                        <a href="{{ route('pengelola-user.edit', $user->id) }}" class="btn btn-info btn-sm">
                                                             <i class="mdi mdi-pencil"></i>
                                                         </a>
+                                                        <a href="{{ route('pengelolaProfil.show_detail', $user->id)}}" class="btn btn-warning btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                                                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $user->id }}">
                                                             <i class="mdi mdi-delete-forever"></i>
                                                         </button>
-                                                        @if (!$user->is_approved && $user->roles->contains('name', 'relawan'))
-                                                            <form method="POST" action="{{ route('approve.user', $user->id) }}" class="d-inline">
-                                                                @csrf
-                                                                <button type="submit" class="btn btn-success btn-sm">Approve</button>
-                                                            </form>
-                                                        @endif
+                                                    @endif
+                                                       
                                                     </td>
                                                 </tr>
 
@@ -113,7 +125,7 @@
                                                             </div>
                                                             <div class="modal-body">Tekan tombol di bawah ini untuk menghapus data.</div>
                                                             <div class="modal-footer">
-                                                                <form action="{{ route('pengelola-user-hapusRelawan', $user->id) }}" method="POST">
+                                                                <form action="{{ route('pengelola-user.hapus', $user->id) }}" method="POST">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="btn btn-danger">DELETE</button>
@@ -128,57 +140,7 @@
                                     </table>
                                 </div>
 
-                                <!-- Success Modal -->
-                                @if(session('success'))
-                                    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="successModalLabel">Success</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    {{ session('success') }}
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
-                                            var successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                                            successModal.show();
-                                        });
-                                    </script>
-                                @endif
-
-                                <!-- Error Modal -->
-                                @if(session('error'))
-                                    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="errorModalLabel">Error</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    {{ session('error') }}
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
-                                            var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-                                            errorModal.show();
-                                        });
-                                    </script>
-                                @endif
+                               
 
                             </div>
                         </div>
