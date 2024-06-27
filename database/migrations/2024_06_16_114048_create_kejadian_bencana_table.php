@@ -19,11 +19,11 @@ return new class extends Migration
             $table->date('tanggal_kejadian');
             $table->string('lokasi');
             $table->date('update');
-            $table->string('dukungan_internasional');
+            $table->enum('dukungan_internasional', ['Ya', 'Tidak']);
             $table->text('keterangan');
             $table->enum('akses_ke_lokasi', ['Accessible', 'Not Accessible']);
             $table->string('kebutuhan');
-            $table->enum('giat_pemerintah', ['Ya', 'Tidak']);
+            $table->string('giat_pemerintah');
             $table->string('hambatan');
             $table->unsignedBigInteger('id_assessment');
             $table->unsignedBigInteger('id_dampak');
