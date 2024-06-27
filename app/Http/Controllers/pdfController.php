@@ -8,6 +8,32 @@ use Barryvdh\DomPDF\Facade\Pdf; // Alias PDF Facade
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http; // Import Http Facade
 use Spatie\Permission\Models\Role;
+use Carbon\Carbon;
+use DateTime;
+use Illuminate\Http\JsonResponse;
+use App\Models\KejadianBencana;
+use App\Models\AlatTdb;
+use App\Models\Assessment;
+use App\Models\Dampak;
+use App\Models\EvakuasiKorban;
+use App\Models\JenisKejadian;
+use App\Models\KerusakanFasilSosial;
+use App\Models\KerusakanInfrastruktur;
+use App\Models\KerusakanRumah;
+use App\Models\KorbanTerdampak;
+use App\Models\KorbanJlw;
+use App\Models\LampiranDokumentasi;
+use App\Models\LayananKorban;
+use App\Models\Pengungsian;
+use App\Models\Personil;
+use App\Models\PersonilNarahubung;
+use App\Models\PetugasPosko;
+use App\Models\Tsr;
+use App\Models\GiatPMI;
+use App\Models\MobilisasiSd;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 
 
 class PDFController extends Controller
@@ -95,6 +121,61 @@ class PDFController extends Controller
         // Stream the PDF for download
         return $pdf->stream('laporan-kejadian.pdf');
     }
+
+    public function exportLaporanAssessment($id)
+    {
+        // Find the report by its ID
+        //$kejadian = KejadianBencana::with('id_assessment')->findOrFail($id);
+        //$kejadian->nama_kejadian = $kejadian->jenisKejadian->nama_kejadian;
+        $kejadian = KejadianBencana::where('id_assessment', $id)->with([
+            'giatPmi.evakuasiKorban',
+            'giatPmi.layananKorban',
+            'dampak.korbanTerdampak',
+            'dampak.korbanJlw',
+            'dampak.kerusakanRumah',
+            'dampak.kerusakanFasilitasSosial',
+            'dampak.kerusakanInfrastruktur',
+            'dampak.pengungsian',
+            'narahubung',
+            'petugasPosko',
+            'relawan',
+            'jenisKejadian'
+        ])->findOrFail($id);
+
+        // Pass data to the PDF view
+        $data = [
+            'kejadian' => $kejadian,
+            'jenisKejadian' => JenisKejadian::all(),
+            'user' => User::all(),
+        ];
+
+        // Load the PDF view with the data
+        $pdf = PDF::loadView('pdf.assessment', $data);
+
+        // Stream the PDF for download
+        return $pdf->stream('assessment.pdf');
+    }
+
+    /*public function previewAssessmentPdf($id)
+    {
+        $kejadian = KejadianBencana::where('id_assessment', $id)->with([
+            'giatPmi.evakuasiKorban',
+            'giatPmi.layananKorban',
+            'dampak.korbanTerdampak',
+            'dampak.korbanJlw',
+            'dampak.kerusakanRumah',
+            'dampak.kerusakanFasilitasSosial',
+            'dampak.kerusakanInfrastruktur',
+            'dampak.pengungsian',
+            'narahubung',
+            'petugasPosko',
+            'relawan',
+        ])->findOrFail($id);
+        $jenisKejadian = JenisKejadian::all();
+        $user = User::all();
+
+        return view('pdf.assessment', compact('kejadian','jenisKejadian', 'user'));
+    }*/
 
     public function viewLaporanKejadian($id)
     {
