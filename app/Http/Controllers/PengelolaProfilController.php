@@ -24,6 +24,46 @@ class PengelolaProfilController extends Controller
     //     return view('pengelola_profil.user_management', compact('user', 'roles'));
     // }
 
+    // public function user_management(Request $request)
+    // {
+    //     $roles = Role::all();
+    
+    //     // Fetch query parameters
+    //     $search = $request->input('search');
+    //     $filterRole = $request->input('role');
+    
+    //     // Initialize the query
+    //     $query = User::query();
+    
+    //     // Apply search filter
+    //     if ($search) {
+    //         $query->where(function ($q) use ($search) {
+    //             $q->where('name', 'like', '%' . $search . '%')
+    //               ->orWhere('email', 'like', '%' . $search . '%')
+    //               ->orWhere('username', 'like', '%' . $search . '%');
+    //         });
+    //     }
+    
+    //     // Apply role filter
+    //     if ($filterRole) {
+    //         $query->whereHas('roles', function($q) use ($filterRole) {
+    //             $q->where('name', $filterRole);
+    //         });
+        
+    //         // Apply is_approved filter for 'relawan' role
+    //         if ($filterRole == 'relawan') {
+    //             $query->where(function ($query) {
+    //                 $query->where('is_approved', true)
+    //                       ->orWhere('is_approved', false);
+    //             });
+    //         }
+    
+    //     $users = $query->get();
+    
+    //     return view('pengelola_profil.user_management', compact('users', 'roles', 'search', 'filterRole'));
+    // }
+    // }
+
     public function user_management(Request $request)
     {
         $roles = Role::all();
@@ -49,20 +89,26 @@ class PengelolaProfilController extends Controller
             $query->whereHas('roles', function ($q) use ($filterRole) {
                 $q->where('name', $filterRole);
             });
+    
+            // Apply is_approved filter for relawan role
+            // if ($filterRole == 'relawan') {
+            //     $query->where('is_approved', true);
+            // }
 
-            // Apply is_approved filter for 'relawan' role
             if ($filterRole == 'relawan') {
-                $query->where(function ($query) {
-                    $query->where('is_approved', true)
-                        ->orWhere('is_approved', false);
-                });
-            }
-
-            $users = $query->get();
-
-            return view('pengelola_profil.user_management', compact('users', 'roles', 'search', 'filterRole'));
+                            $query->where(function ($query) {
+                                $query->where('is_approved', true)
+                                      ->orWhere('is_approved', false);
+                            });
+                        }
         }
+    
+        $users = $query->get();
+    
+        return view('pengelola_profil.user_management', compact('users', 'roles', 'search', 'filterRole'));
     }
+    
+
 
 
     public function user_management_edit($id)
@@ -70,6 +116,39 @@ class PengelolaProfilController extends Controller
 
         $user = User::find($id);
         return view('pengelola_profil.user_management_edit', compact('user'));
+    }
+    public function user_management_hapus($id){
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('pengelola-user')->with('success', 'Akun berhasil dihapus.');
+    }
+
+    public function user_management_update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,'.$id,
+            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        try {
+            $user = User::findOrFail($id);
+            $user->name = $request->name;
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->is_approved = true; // always set is_approved to true
+            if ($request->password) {
+                $user->password = Hash::make($request->password);
+            }
+    
+            $user->save();
+
+        return redirect()->route('pengelola-user')->with('success', 'Akun berhasil diedit.');
+         } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengedit akun.');
+        }
     }
 
     // public function relawan_management(Request $request)

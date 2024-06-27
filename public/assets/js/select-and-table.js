@@ -79,7 +79,7 @@ $(document).ready(function () {
                                     <td><p class="btn ${statusClass} btn-sm">${item.status}</p></td>
                                     <td>
                                         <a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
-                                        ${item.status === 'On Process'
+                                        ${item.status == 'Aktif' | item.status == 'On Process'
                                         ? `<a href="/${role}/${urlBase}/edit/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
                                                <button class="btn btn-danger btn-sm delete-item" data-id="${item.id}">
                                                     <i class="menu-icon mdi mdi-delete"></i>
@@ -116,7 +116,36 @@ $(document).ready(function () {
                                     </td>
                                 </tr>
                             `;
-                            } else {
+                            }
+                            else if (urlBase == "lapsit") {
+                                const adminViewLapsitUrl = window.routes.adminViewLapsit.replace(':id', item.id);
+                                const shareLapsitUrl = window.routes.shareLapsit.replace(':id', item.id);
+                                tableRow = `
+                                <tr class="${item.status === 'Selesai' ? 'text-muted' : ''}">
+                                    <td>${index + 1}</td>
+                                    <td>${item.nama_kejadian}</td>
+                                    <td>${item.locationName}</td>
+                                    <td>${formattedTanggal}</td>
+                                    <td>${formattedWaktu}</td>
+                                    <td>${formattedUpdatedAt.date} - ${formattedUpdatedAt.time}</td>
+                                    <td><p class="btn ${statusClass} btn-sm">${item.status}</p></td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <a href="${adminViewLapsitUrl}" class="btn btn-info btn-sm me-2">
+                                                <i class="menu-icon mdi mdi-information"></i>
+                                            </a>
+                                            <form action="${shareLapsitUrl}" method="post">
+                                                <input type="hidden" name="_token" value="${window.csrfToken}">
+                                                <button class="btn btn-success text-white me-0 btn-sm">
+                                                    <i class="mdi mdi-whatsapp"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                            }
+                            else {
                                 tableRow = `
                                 <tr class="${item.status === 'Selesai' ? 'text-muted' : ''}">
                                     <td>${index + 1}</td>
@@ -127,13 +156,7 @@ $(document).ready(function () {
                                     <td>${formattedUpdatedAt.date + " - " + formattedUpdatedAt.time}</td>
                                     <td><p class="btn ${statusClass} btn-sm">${item.status}</p></td>
                                     <td>
-                                    ${item.status === 'On Process'
-                                        ?
-                                        `<a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
-                                        <a href="/${role}/${urlBase}/verif/${item.id}" class="btn btn-success btn-sm"><i class="menu-icon mdi mdi-checkbox-multiple-marked-circle"></i></a>`
-                                        :
-                                        `<a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>`
-                                    }
+                                    ${getStatusButtons(role, urlBase, item)}
                                     </td>
                                 </tr>
                             `;
@@ -260,3 +283,25 @@ $(document).ready(function () {
     fetchData(userRole, '');
 
 });
+
+// Define a function to return the appropriate HTML based on the status
+function getStatusButtons(role, urlBase, item) {
+    switch (item.status) {
+        case 'On Process':
+            return `<a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                    <a href="/${role}/${urlBase}/verif/${item.id}" class="btn btn-success btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
+                    <a href="/${role}/${urlBase}/selesai/${item.id}" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-checkbox-multiple-marked-circle"></i></a>`
+                ;
+        case 'Aktif':
+            return `
+                <a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                <a href="/${role}/${urlBase}/selesai/${item.id}" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-checkbox-multiple-marked-circle"></i></a>
+            `;
+        case 'Selesai':
+            return `
+                <a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+            `;
+        default:
+            return `<a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>`;
+    }
+}
