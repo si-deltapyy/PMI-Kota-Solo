@@ -18,58 +18,6 @@
                 <i class="fa fa-bars"></i>
             </button>
 
-            <!-- modal sukses-tidak -->
-            <!-- Success Modal -->
-            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="successModalLabel">Success</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            {{ session('success') }}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Error Modal -->
-            <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="errorModalLabel">Error</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            {{ session('error') }}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Check for session messages and trigger modals -->
-            @if(session('success'))
-                <script>
-                    var successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                    successModal.show();
-                </script>
-            @endif
-
-            @if(session('error'))
-                <script>
-                    var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-                    errorModal.show();
-                </script>
-            @endif
-
             <!-- Topbar Search -->
             <form
                 class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="GET" action="{{ route('pengelola-relawan') }}">
@@ -93,6 +41,23 @@
                             <h1 class="card-title card-title-dash">LIST RELAWAN</h1>
                         </div>
                         <br>
+
+                        
+                        <!-- alert sukses-tidak -->
+                        @if (session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Error!</strong> {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+
+                        @if (session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Success!</strong> {{ session('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+                        
                         <!-- <div class="d-sm-flex justify-content-between align-items-center">
                             <div class="w-100 text-center">
                                 <h1 class="card-title card-title-dash">LIST RELAWAN</h1>
@@ -119,7 +84,7 @@
                             <div>
                             <a href="{{ route('pengelola-relawan', ['status' => 'approved'] && ['status' => 'approved']) }}" class="btn btn-outline-primary btn-sm @if(empty(request('status'))) active @endif">All</a>
                                 <a href="{{ route('pengelola-relawan', ['status' => 'approved']) }}" class="btn btn-outline-success btn-sm @if(request('status') == 'approved') active @endif">Approved</a>
-                                <a href="{{ route('pengelola-relawan', ['status' => 'not_approved']) }}" class="btn btn-outline-danger btn-sm @if(request('status') == 'not_approved') active @endif">Not Approved</a>
+                                <a href="{{ route('pengelola-relawan', ['status' => 'Need_Approval']) }}" class="btn btn-outline-danger btn-sm @if(request('status') == 'Need_Approval') active @endif">Need Approval</a>
                             </div>
                             <!-- Add Search Form -->
                             <form class="search-form ms-auto" method="GET" action="{{ route('pengelola-relawan') }}">
@@ -141,27 +106,42 @@
                                         <th>Email</th>
                                         <th>Username</th>
                                         <th>Status</th>
-                                        <th colspan="2" style="text-align: center">Action</th>
+                                        <th>Approval Actions</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($user as $list)
-                                    @if (empty(request('status')) || (request('status') == 'approved' && $list->is_approved) || (request('status') == 'not_approved' && !$list->is_approved))
+                                    @if (empty(request('status')) || (request('status') == 'approved' && $list->is_approved) || (request('status') == 'Need_Approval' && !$list->is_approved))
                                     <tr>
                                         <td>{{$list->name}}</td>
                                         <td>{{$list->email}}</td>
                                         <td>{{$list->username}}</td>
-                                        <td>{{$list->is_approved ? 'Approved' : 'Not Approved' }}</td>
-                                        <td>
+                                        <td>{{$list->is_approved ? 'Approved' : 'Need Approval' }}</td>
+                                        <!-- <td>
+                                        @if ($list->is_approved)
                                             <a href="{{ route('pengelolaProfiledit_relawan', $list->id) }}" class="btn btn-info btn-sm"><i class="mdi mdi-pencil"></i></a>
-                                            
-                                        <!-- </td> -->
-                                        <!-- <td> -->
+                                        
                                             <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $list->id }}"><i class="mdi mdi-delete-forever"></i></button>
-                                        <!-- </td> -->
-                                        <!-- <td> -->
+                                            @endif
+                                        </td> -->
+                                        
+                                        <td>
                                             @if (!$list->is_approved)
-                                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#approveModal{{ $list->id }}" @if ($list->is_approved) disabled @endif>Approve</button>
+                                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#approveModal{{ $list->id }}">Approve</button>
+                                           
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal{{ $list->id }}">Reject </button>
+
+                                            @endif
+                                        
+                                        </td>
+
+                                        <td>
+                                        @if ($list->is_approved)
+                                            <a href="{{ route('pengelolaProfiledit_relawan', $list->id) }}" class="btn btn-info btn-sm"><i class="mdi mdi-pencil"></i></a>
+                                            <a href="{{ route('pengelolaProfil.show_detail', $list->id) }}" class="btn btn-warning btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $list->id }}"><i class="mdi mdi-delete-forever"></i></button>
+                                            
                                             @endif
                                         </td>
                                     </tr>
@@ -195,6 +175,32 @@
                             </div>
                             @endforeach
                             <!-- endmodals -->
+
+                             <!-- Rejected Modals -->
+                             @foreach($user as $list)
+                            <div class="modal fade" id="rejectModal{{ $list->id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $list->id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel{{ $list->id }}">Yakin untuk hapus data?</h5>
+                                            <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Tekan tombol di bawah ini untuk menolak memberikan akses relawan pada akun ini.</div>
+                                        <div class="modal-footer">
+                                            <form action="{{ route('pengelola-user-hapusRelawan', $list->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">REJECT</button>
+                                            </form>
+                                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">CANCEL</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                            <!-- end modal -->
 
                            <!-- Modals -->
                             @foreach($user as $list)

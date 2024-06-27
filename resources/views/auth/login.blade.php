@@ -2,16 +2,25 @@
 
     @section('content')
             <div class="login-page">
-                <div class="form">
-                
-                    <form method="POST" class="login-form" action="{{ route('login') }}">
-                        @csrf
-
-                        @if (session('not_approved'))
-                    <div class="alert alert-warning">
-                        Akun Anda belum disetujui oleh pengelola profil.
+                @if (session('error'))
+                    <div class="alert alert-danger" role="alert">
+                        {{ session('error') }}
                     </div>
                 @endif
+
+                @if ($errors->any())
+                <div class="alert alert-danger" role="alert">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <div class="form">     
+                    <form method="POST" class="login-form" action="{{ route('login') }}">
+                        @csrf
                 
                         <div class="row mb-3">
                             <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
@@ -40,18 +49,6 @@
                                 @enderror
                             </div>
                         </div>
-
-                        <!-- <div class="row mb-3">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div> -->
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
