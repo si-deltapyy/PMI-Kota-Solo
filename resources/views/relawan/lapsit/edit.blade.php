@@ -28,7 +28,7 @@
                             @else
                                 <p>Data Dampak tidak tersedia.</p>
                             @endif  --}}
-                            <form class="forms-sample" action="{{ route('edit-lapsit.update', $kejadian->id_kejadian) }}" method="POST" enctype="multipart/form-data">
+                            <form class="forms-sample" action="{{ route('edit-lapsit.update', $kejadian->id_assessment) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
@@ -101,8 +101,8 @@
                                         <input type="number" class="form-control" name="luka_ringan" id="luka_ringan" value="{{ $kejadian->dampak?->korbanJlw?->luka_ringan ?? '' }}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="meninggal">Meninggal</label>
-                                        <input type="number" class="form-control" name="meninggal" id="meninggal" value="{{ $kejadian->dampak?->korbanJlw?->meninggal ?? ''}}">
+                                        <label for="meninggaljlw">Meninggal</label>
+                                        <input type="number" class="form-control" name="meninggaljlw" id="meninggaljlw" value="{{ $kejadian->dampak?->korbanJlw?->meninggal ?? ''}}">
                                     </div>
                                     <div class="form-group">
                                         <label for="hilang">Hilang</label>
@@ -430,8 +430,8 @@
                                     <input type="number" class="form-control" id="luka_ringanberat" name="luka_ringanberat" value="{{ $kejadian->giatPmi?->evakuasiKorban?->luka_ringanberat ?? '' }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="meninggal">Meninggal</label>
-                                    <input type="number" class="form-control" id="meninggal" name="meninggal" value="{{ $kejadian->giatPmi?->evakuasiKorban?->meninggal ?? '' }}">
+                                    <label for="meninggalevakuasi">Meninggal</label>
+                                    <input type="number" class="form-control" id="meninggalevakuasi" name="meninggalevakuasi" value="{{ $kejadian->giatPmi?->evakuasiKorban?->meninggal ?? '' }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="evakuasi_keterangan">Keterangan</label>

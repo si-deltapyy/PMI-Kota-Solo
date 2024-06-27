@@ -482,7 +482,7 @@ class RelawanController extends Controller
             'jiwa' => 'nullable|integer',
             'luka_berat' => 'nullable|integer',
             'luka_ringan' => 'nullable|integer',
-            'meninggal' => 'nullable|integer',
+            'meninggaljlw' => 'nullable|integer',
             'hilang' => 'nullable|integer',
             'mengungsi' => 'nullable|integer',
             'rusak_berat' => 'nullable|integer',
@@ -497,7 +497,7 @@ class RelawanController extends Controller
             'desc_kerusakan' => 'nullable|string',
             // Validasi untuk data giat pmi
             'luka_ringanberat'=> 'nullable|string',
-            'meninggal'=> 'nullable|string',
+            'meninggalevakuasi'=> 'nullable|string',
             'keterangan'=> 'nullable|string',
             'distribusi'=> 'nullable|string',
             'dapur_umum'=> 'nullable|string',
@@ -554,7 +554,7 @@ class RelawanController extends Controller
         $korbanJlw = $dampak->korbanJlw;
         $korbanJlw->luka_berat = $validatedData['luka_berat'];
         $korbanJlw->luka_ringan = $validatedData['luka_ringan'];
-        $korbanJlw->meninggal = $validatedData['meninggal'];
+        $korbanJlw->meninggal = $validatedData['meninggaljlw'];
         $korbanJlw->hilang = $validatedData['hilang'];
         $korbanJlw->mengungsi = $validatedData['mengungsi'];
         $korbanJlw->save();
@@ -630,7 +630,7 @@ class RelawanController extends Controller
         // Update evakuasi korban
         $evakuasiKorban = $giatPmi->evakuasiKorban;
         $evakuasiKorban->luka_ringanberat = $validatedData['luka_ringanberat'];
-        $evakuasiKorban->meninggal = $validatedData['meninggal'];
+        $evakuasiKorban->meninggal = $validatedData['meninggalevakuasi'];
         $evakuasiKorban->keterangan = $validatedData['keterangan'];
         $evakuasiKorban->save();
 
@@ -1096,7 +1096,7 @@ class RelawanController extends Controller
     public function edit_lapsit($id)
     {
         // Mengambil data kejadian bencana berdasarkan id_assessment
-        $kejadian = KejadianBencana::where('id_kejadian', $id)->with([            
+        $kejadian = KejadianBencana::where('id_kejadian', $id)->with([
             'giatPmi.evakuasiKorban',
             'giatPmi.layananKorban',
             'dampak.korbanTerdampak',
@@ -1132,7 +1132,7 @@ class RelawanController extends Controller
             'jiwa' => 'nullable|integer',
             'luka_berat' => 'nullable|integer',
             'luka_ringan' => 'nullable|integer',
-            'meninggal' => 'nullable|integer',
+            'meninggaljlw' => 'nullable|integer',
             'hilang' => 'nullable|integer',
             'mengungsi' => 'nullable|integer',
             'rusak_berat' => 'nullable|integer',
@@ -1147,7 +1147,7 @@ class RelawanController extends Controller
             'desc_kerusakan' => 'nullable|string',
             // Validasi untuk data giat pmi
             'luka_ringanberat'=> 'nullable|string',
-            'meninggal'=> 'nullable|string',
+            'meninggalevakuasi'=> 'nullable|string',
             'evakuasi_keterangan'=> 'nullable|string',
             'distribusi'=> 'nullable|string',
             'dapur_umum'=> 'nullable|string',
@@ -1248,7 +1248,7 @@ class RelawanController extends Controller
         $korbanJlw = $dampak->korbanJlw;
         $korbanJlw->luka_berat = $validatedData['luka_berat'];
         $korbanJlw->luka_ringan = $validatedData['luka_ringan'];
-        $korbanJlw->meninggal = $validatedData['meninggal'];
+        $korbanJlw->meninggal = $validatedData['meninggaljlw'];
         $korbanJlw->hilang = $validatedData['hilang'];
         $korbanJlw->mengungsi = $validatedData['mengungsi'];
         $korbanJlw->save();
@@ -1324,7 +1324,7 @@ class RelawanController extends Controller
         // Update evakuasi korban
         $evakuasiKorban = $giatPmi->evakuasiKorban;
         $evakuasiKorban->luka_ringanberat = $validatedData['luka_ringanberat'];
-        $evakuasiKorban->meninggal = $validatedData['meninggal'];
+        $evakuasiKorban->meninggal = $validatedData['meninggalevakuasi'];
         $evakuasiKorban->keterangan = $validatedData['evakuasi_keterangan'];
         $evakuasiKorban->save();
 
@@ -1489,8 +1489,6 @@ class RelawanController extends Controller
             }
         }
     }
-
-
         return redirect()->route('relawan-lapsit', $kejadian->id_kejadian)->with('success', 'Laporan Situasi berhasil diperbarui');
     }
 
