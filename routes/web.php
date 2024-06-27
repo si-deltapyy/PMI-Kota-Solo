@@ -11,6 +11,8 @@ use App\Http\Controllers\PengelolaProfilController;
 
 
 Auth::routes();
+
+
 // Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 // Route::post('register', [RegisterController::class, 'register']);
 
@@ -56,14 +58,18 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::patch('/relawan/laporan-kejadian-unverify/{id}', [RelawanController::class, 'unverify'])->name('relawan-unverify');
     Route::post('relawan/laporan-kejadian/store', [RelawanController::class, 'store_laporankejadian'])->name('store-laporankejadian');
     // Route::get('/relawan/laporan-kejadian/create', [RelawanController::class, 'create_laporankejadian'])->name('create-laporankejadian');
+
     Route::get('/relawan/laporan-kejadian/edit/{id}', [RelawanController::class, 'edit_laporankejadian'])->name('edit-laporankejadian');
     Route::get('/relawan/laporan-kejadian/view/{id}', [RelawanController::class, 'view_laporankejadian'])->name('view-laporankejadian'); 
+
     Route::delete('/relawan/laporan-kejadian/delete/{id}', [RelawanController::class, 'delete_laporankejadian'])->name('delete-laporankejadian'); //edit
     Route::get('/relawan/lapsit', [RelawanController::class, 'index_lapsit'])->name('relawan-lapsit');
-    Route::get('/relawan/lapsit2', [RelawanController::class, 'index_lapsit2'])->name('relawan-lapsit2'); //buat cek delete lapsit
-    Route::get('/relawan/lapsit/create', [RelawanController::class, 'create_lapsit'])->name('create-lapsit');
-    Route::post('/relawan/lapsit/store', [RelawanController::class, 'store_lapsit'])->name('store-lapsit'); //store
-    Route::get('/relawan/lapsit/edit/{id}', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit
+
+    Route::get('/relawan/lapsit/create/{id}', [RelawanController::class, 'create_lapsit'])->name('create-lapsit');
+    Route::post('/relawan/lapsit/store/{id}', [RelawanController::class, 'store_lapsit'])->name('store-lapsit'); //store
+    //Route::post('/relawan/lapsit/{id}', [RelawanController::class, 'store_lapsit'])->name('create-lapsit.store');
+
+    Route::get('/relawan/lapsit/{id}/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit
     Route::put('/relawan/lapsit/{id}', [RelawanController::class, 'update_lapsit'])->name('edit-lapsit.update'); //edit
     Route::delete('/relawan/lapsit/delete/{id}', [RelawanController::class, 'delete_lapsit'])->name('delete-lapsit'); //edit
     // Route::post('/relawan/lapsit/{id}/edit', [RelawanController::class, 'edit_lapsit'])->name('edit-lapsit'); //edit
@@ -90,7 +96,7 @@ Route::group(['middleware' => ['auth',  'role:pengelola_profil']], function () {
     Route::get('/pengelolaProfil/detail-volunteer/{id}/hapus', [PengelolaProfilController::class, 'destroy_relawan'])->name('pengelola-detailRelawan');
     Route::get('/pengelolaProfil/{id}/editRelawan', [PengelolaProfilController::class, 'edit_relawan'])->name('pengelolaProfiledit_relawan');
     Route::put('/pengelolaProfil/{id}/editRelawan', [PengelolaProfilController::class, 'update_relawan'])->name('pengelolaProfil.update_relawan');
-    Route::get('/pengelolaProfil/{id}/relawan',  [PengelolaProfilController::class, 'show_relawan'])->name('pengelolaProfil.show_relawan');
+    Route::get('/pengelolaProfil/detail_relawan/{id}',  [PengelolaProfilController::class, 'show_relawan'])->name('pengelolaProfil.show_relawan');
     Route::delete('/pengelolaProfil/hapus-relawan/{id}/hapusRelawan', [PengelolaProfilController::class, 'destroy_relawan'])->name('pengelola-user-hapusRelawan');
     //admin CRUD
     Route::post('/pengelolaProfil/store-admin', [PengelolaProfilController::class, 'store_admin'])->name('pengelola-user-admin');  
@@ -99,7 +105,9 @@ Route::group(['middleware' => ['auth',  'role:pengelola_profil']], function () {
     Route::put('pengelolaProfil/{id}/edit', [PengelolaProfilController::class, 'update_admin'])->name('pengelolaProfil.update_admin');
     Route::resource('pengelolaProfil', PengelolaProfilController::class);
     Route::delete('/pengelolaProfil/hapus-admin/{id}/hapus', [PengelolaProfilController::class, 'destroy_admin'])->name('pengelola-user-hapusAdmin');
-    Route::get('pengelolaProfil/{id}',  [PengelolaProfilController::class, 'show_admin'])->name('pengelolaProfil.show_admin');
+   
+    // show detail 
+    Route::get('pengelolaProfil/detail/{id}',  [PengelolaProfilController::class, 'show_detail'])->name('pengelolaProfil.show_detail');
 
     // approval 
     Route::get('/pengelolaProfil/approve', [PengelolaProfilController::class, 'show_ApprovalPage'])->name('approval.page');

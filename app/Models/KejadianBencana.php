@@ -65,6 +65,10 @@ class KejadianBencana extends Model
     {
         return $this->belongsTo(GiatPmi::class, 'id_giat_pmi');
     }
+    public function dampak()
+    {
+        return $this->belongsTo(Dampak::class, 'id_dampak');
+    }
 
     public function narahubung()
     {

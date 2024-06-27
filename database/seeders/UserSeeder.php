@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
             'email' => 'relawan1@example.com',
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
-            'is_approved' => false, // relawan perlu menunggu persetujuan
+            'is_approved' => true, // relawan perlu menunggu persetujuan
         ])->assignRole('relawan');;
 
         // Membuat relawan lainnya
