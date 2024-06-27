@@ -37,20 +37,20 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($user as $x)
+                  @foreach($kejadian as $x)
                   <tr>
-                    <td>{{$x->id}}</td>
-                    <td>{{$x->name}}</td>
-                    <td>{{$x->username}}</td>
-                    <td>{{$x->created_at}}</td>
-                    <td>{{$x->updated_at}}</td>
+                    <td>{{$x->id_kejadian}}</td>
+                    <td>{{$x->nama_kejadian}}</td>
+                    <td>{{$x->lokasi}}</td>
+                    <td>{{$x->tanggal_kejadian}}</td>
+                    <td>{{$x->up}}</td>
                     <td>
                       <div class="d-flex">
                       <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal"><i
                           class="menu-icon mdi mdi-information"></i></a>
                       <!-- <a href="#" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#shareModal"><i
                           class="menu-icon mdi mdi-share-variant"></i></a> -->
-                          <form action="{{ route('share.lapsit', $x->id) }}" method="post">
+                          <form action="{{ route('share.lapsit', $x->id_kejadian) }}" method="post">
                               @csrf
                               <button  class="btn btn-success text-white me-0 btn-sm">
                                 <i class="mdi mdi-whatsapp"></i>
@@ -141,13 +141,13 @@
                             </div>
                           </form>
                           <div class="d-flex btn-wrapper">
-                            <form action="{{ route('view-pdf', $x->id) }}" method="post" target="_blank">
+                            <form action="{{ route('view-pdf', $x->id_kejadian) }}" method="post" target="_blank">
                               @csrf
                               <button  class="btn btn-info text-white me-0">
                                 <i class="mdi mdi-file-pdf"></i> Download Laporan PDF
                               </button>
                             </form>
-                            <form action="{{ route('share.lapsit', $x->id) }}" method="post">
+                            <form action="{{ route('share.lapsit', $x->id_kejadian) }}" method="post">
                               @csrf
                               <button  class="btn btn-success text-white me-0">
                                 <i class="mdi mdi-whatsapp"></i> Share

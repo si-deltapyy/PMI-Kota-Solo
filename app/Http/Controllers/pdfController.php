@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dampak;
+use App\Models\LayananKorban;
 use App\Models\Report;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf; // Alias PDF Facade
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http; // Import Http Facade
 use Spatie\Permission\Models\Role;
+use App\Charts\ExsumChart;
 
 
 class PDFController extends Controller
@@ -67,6 +70,29 @@ class PDFController extends Controller
         $users = User::all();
 
         $pdf = PDF::loadView('pdf.usersdetails', array('users' => $users))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download('users-details.pdf');
+    }
+
+    public function downloadPDFeksum(ExsumChart $chart)
+    {
+
+        $dampak = Dampak::all()->count();
+        $kejadian = Report::join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')
+        ->select('reports.status', 'jenis_kejadian.nama_kejadian')->get();
+
+        $layanan = LayananKorban::join('assessment', 'layanan_korban.id_assessment', '=', 'assessment.id_assessment' )
+        ->join('reports', 'assessment.id_report', '=', 'reports.id_report')
+        ->join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')
+        ->select('jenis_kejadian.nama_kejadian as nmKejadian', 'reports.tanggal_kejadian as dateKejadian', 
+        'layanan_korban.distribusi as layDis', 'layanan_korban.layanan_kesehatan as layKes', 'assessment.status as stat')->get();
+
+        $pdf = PDF::loadView('admin.executive_summary', array(
+            'chart' => $chart->build(), 
+            'dampak' => $dampak,
+            'kejadian' => $kejadian,
+            'layanan' => $layanan))
             ->setPaper('a4', 'portrait');
 
         return $pdf->download('users-details.pdf');
