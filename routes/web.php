@@ -84,8 +84,11 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
 //test middleware pengelola profil role
 Route::group(['middleware' => ['auth',  'role:pengelola_profil']], function () {
     Route::get('/pengelolaProfil/dashboard', [PengelolaProfilController::class, 'index'])->name('pengelolaProfil-home');
+    // Route::get('/pengelolaProfil/user_management', [PengelolaProfilController::class, 'user_management'])->name('pengelola-user');
     Route::get('/pengelolaProfil/user_management', [PengelolaProfilController::class, 'user_management'])->name('pengelola-user');
-    Route::get('/pengelolaProfil/user_management/{id}/edit', [PengelolaProfilController::class, 'user_management_edit'])->name('pengelola-user.edit');
+    Route::get('/pengelolaProfil/user_management/edit/{id}', [PengelolaProfilController::class, 'user_management_edit'])->name('pengelola-user.edit');
+    Route::delete('/pengelolaProfil/user_management/delete/{id}', [PengelolaProfilController::class, 'user_management_hapus'])->name('pengelola-user.hapus');
+    Route::put('pengelolaProfil/user_management/update/{id}', [PengelolaProfilController::class, 'user_management_update'])->name('pengelola-user.update');
     Route::get('/pengelolaProfil/relawan_management', [PengelolaProfilController::class, 'relawan_management'])->name('pengelola-relawan');
     Route::get('/pengelolaProfil/admin_management', [PengelolaProfilController::class, 'admin_management'])->name('pengelola-admin');
     //crud relawan
