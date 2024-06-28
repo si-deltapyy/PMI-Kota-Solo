@@ -102,10 +102,9 @@ class PDFController extends Controller
 
     public function downloadPDFeksum()
     {
-
+        $datenow = Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-M-d H:i');
         $dampak = Dampak::all()->count();
-        $kejadian = Report::join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')
-        ->select('reports.status', 'jenis_kejadian.nama_kejadian')->get();
+        $kejadian = Report::join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')->get();
 
         $layanan = LayananKorban::join('assessment', 'layanan_korban.id_assessment', '=', 'assessment.id_assessment' )
         ->join('reports', 'assessment.id_report', '=', 'reports.id_report')
@@ -113,13 +112,33 @@ class PDFController extends Controller
         ->select('jenis_kejadian.nama_kejadian as nmKejadian', 'reports.tanggal_kejadian as dateKejadian', 
         'layanan_korban.distribusi as layDis', 'layanan_korban.layanan_kesehatan as layKes', 'assessment.status as stat')->get();
 
-        $pdf = PDF::loadView('admin.executive_summary', array(
+        $kkSum = KorbanTerdampak::sum('kk');
+        $jiwaSum = KorbanTerdampak::sum('jiwa');
+        $lRingan = KorbanJlw::sum('luka_ringan');
+        $Meninggal = KorbanJlw::sum('meninggal');
+        $Mengungsi = KorbanJlw::sum('mengungsi');
+        $Hilang = KorbanJlw::sum('hilang');
+
+        $jumlah = [
+            'kk' => $kkSum,
+            'jiwa' => $jiwaSum,
+            'ringan' => $lRingan,
+            'mati' => $Meninggal,
+            'pengungsi' => $Mengungsi,
+            'hilang' => $Hilang
+
+        ];
+
+        $pdf = PDF::loadView('admin.eksum.file', array(
             'dampak' => $dampak,
             'kejadian' => $kejadian,
-            'layanan' => $layanan))
+            'layanan' => $layanan,
+            'jumlah' => $jumlah,
+            'waktu' => $datenow
+            ))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->download('users-details.pdf');
+        return $pdf->download($datenow . ' || exsum-file.pdf');
     }
 
     public function exportLaporanKejadian($id)
