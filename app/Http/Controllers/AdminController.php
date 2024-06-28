@@ -55,6 +55,7 @@ class AdminController extends Controller
 
     public function index_exsum(ExsumChart $chart)
     {
+        $user = User::role('relawan')->get();
         $dampak = Dampak::all()->count();
         $kejadian = Report::join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')
         ->select('reports.status', 'jenis_kejadian.nama_kejadian')->get();
@@ -94,7 +95,8 @@ class AdminController extends Controller
             'dampak' => $dampak,
             'kejadian' => $kejadian,
             'layanan' => $layanan,
-            'jumlah' => $jumlah
+            'jumlah' => $jumlah,
+            'user' => $user
         ]);
     }
     

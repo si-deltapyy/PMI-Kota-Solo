@@ -504,23 +504,22 @@
                                   <div class="col-lg-12">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                       <div>
-                                        <h4 class="card-title card-title-dash">Top Performer</h4>
+                                        <h4 class="card-title card-title-dash">Relawan List</h4>
                                       </div>
                                     </div>
                                     <div class="mt-3">
+                                      @foreach($user as $x)
                                       <div class="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
                                         <div class="d-flex">
-                                          <img class="img-sm rounded-10" src="images/faces/face1.jpg" alt="profile">
+                                          <img class="img-sm rounded-10" src="{{ asset('assets/images/faces/face1.jpg') }}" alt="profile">
                                           <div class="wrapper ms-3">
-                                            <p class="ms-1 mb-1 fw-bold">Brandon Washington</p>
-                                            <small class="text-muted mb-0">162543</small>
+                                            <p class="ms-1 mb-1 fw-bold">{{$x->name}}</p>
+                                          <small class="text-muted mb-0">{{$x->email}}</small>
                                           </div>
                                         </div>
-                                        <div class="text-muted text-small">
-                                          1h ago
-                                        </div>
                                       </div>
-                                      <div class="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
+                                      @endforeach
+                                      <!-- <div class="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
                                         <div class="d-flex">
                                           <img class="img-sm rounded-10" src="images/faces/face2.jpg" alt="profile">
                                           <div class="wrapper ms-3">
@@ -567,7 +566,7 @@
                                         <div class="text-muted text-small">
                                           1h ago
                                         </div>
-                                      </div>
+                                      </div> -->
                                     </div>
                                   </div>
                                 </div>
