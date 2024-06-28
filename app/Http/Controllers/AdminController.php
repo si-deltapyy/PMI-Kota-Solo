@@ -31,7 +31,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Models\LayananKorban;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -65,13 +64,37 @@ class AdminController extends Controller
         ->join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')
         ->select('jenis_kejadian.nama_kejadian as nmKejadian', 'reports.tanggal_kejadian as dateKejadian', 
         'layanan_korban.distribusi as layDis', 'layanan_korban.layanan_kesehatan as layKes', 'assessment.status as stat')->get();
+        
+        $kkSum = KorbanTerdampak::sum('kk');
+        $jiwaSum = KorbanTerdampak::sum('jiwa');
+        $lRingan = KorbanJlw::sum('luka_ringan');
+        $Meninggal = KorbanJlw::sum('meninggal');
+        $Mengungsi = KorbanJlw::sum('mengungsi');
+        $Hilang = KorbanJlw::sum('hilang');
+
+        $jumlah = [
+            'kk' => $kkSum,
+            'jiwa' => $jiwaSum,
+            'ringan' => $lRingan,
+            'mati' => $Meninggal,
+            'pengungsi' => $Mengungsi,
+            'hilang' => $Hilang
+
+        ];
+
+        // $angkaPenduduk = [
+        //     'keluarga' => $penduduk->groupBy('no_kk')->count(),
+        //     'penduduk' => $penduduk->where('nama')->count(),
+        //     'kematian' => $penduduk->where('status', 'Meninggal')->count()
+        // ];
         // dd($kejadian);
         return view('admin.executive_summary',
         [
             'chart' => $chart->build(), 
             'dampak' => $dampak,
             'kejadian' => $kejadian,
-            'layanan' => $layanan
+            'layanan' => $layanan,
+            'jumlah' => $jumlah
         ]);
     }
     
@@ -83,7 +106,6 @@ class AdminController extends Controller
     {
         return view('admin.assessment.verified.index');
     }
-    */
     public function index_laporankejadian()
     {
         $reports = Report::all(); 

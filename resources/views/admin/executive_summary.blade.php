@@ -46,32 +46,32 @@
                         <div class="statistics-details d-flex align-items-center justify-content-between">
                           <div>
                             <p class="statistics-title">Jumlah KK</p>
-                            <h3 class="rate-percentage">32.53%</h3>
+                            <h3 class="rate-percentage">{{$jumlah['kk']}}</h3>
                             <!-- <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>-0.5%</span></p> -->
                           </div>
                           <div>
                             <p class="statistics-title">Jumlah Jiwa</p>
-                            <h3 class="rate-percentage">7,682</h3>
+                            <h3 class="rate-percentage">{{$jumlah['jiwa']}}</h3>
                             <!-- <p class="text-success d-flex"><i class="mdi mdi-menu-up"></i><span>+0.1%</span></p> -->
                           </div>
                           <div>
                             <p class="statistics-title">Korban Meninggal</p>
-                            <h3 class="rate-percentage">68.8</h3>
+                            <h3 class="rate-percentage">{{$jumlah['mati']}}</h3>
                             <!-- <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>68.8</span></p> -->
                           </div>
                           <div class="d-none d-md-block">
                             <p class="statistics-title">Korban Luka Ringan</p>
-                            <h3 class="rate-percentage">2m:35s</h3>
+                            <h3 class="rate-percentage">{{$jumlah['ringan']}}</h3>
                             <!-- <p class="text-success d-flex"><i class="mdi mdi-menu-down"></i><span>+0.8%</span></p> -->
                           </div>
                           <div class="d-none d-md-block">
                             <p class="statistics-title">Korban Hilang</p>
-                            <h3 class="rate-percentage">68.8</h3>
+                            <h3 class="rate-percentage">{{$jumlah['hilang']}}</h3>
                             <!-- <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>68.8</span></p> -->
                           </div>
                           <div class="d-none d-md-block">
                             <p class="statistics-title">Jumlah Pengungsi</p>
-                            <h3 class="rate-percentage">2m:35s</h3>
+                            <h3 class="rate-percentage">{{$jumlah['pengungsi']}}</h3>
                             <!-- <p class="text-success d-flex"><i class="mdi mdi-menu-down"></i><span>+0.8%</span></p> -->
                           </div>
                         </div>
@@ -318,7 +318,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="row flex-grow">
+                        <!-- <div class="row flex-grow">
                           <div class="col-md-6 col-lg-6 grid-margin stretch-card">
                             <div class="card card-rounded">
                               <div class="card-body card-rounded">
@@ -447,10 +447,10 @@
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                       <div class="col-lg-4 d-flex flex-column">
-                        <div class="row flex-grow">
+                        <!-- <div class="row flex-grow">
                           <div class="col-12 grid-margin stretch-card">
                             <div class="card card-rounded">
                               <div class="card-body">
@@ -466,7 +466,7 @@
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> -->
                         <div class="row flex-grow">
                           <div class="col-12 grid-margin stretch-card">
                             <div class="card card-rounded">

@@ -17,7 +17,6 @@ use Illuminate\Http\JsonResponse;
 use App\Models\KejadianBencana;
 use App\Models\AlatTdb;
 use App\Models\Assessment;
-use App\Models\Dampak;
 use App\Models\EvakuasiKorban;
 use App\Models\JenisKejadian;
 use App\Models\KerusakanFasilSosial;
@@ -26,7 +25,6 @@ use App\Models\KerusakanRumah;
 use App\Models\KorbanTerdampak;
 use App\Models\KorbanJlw;
 use App\Models\LampiranDokumentasi;
-use App\Models\LayananKorban;
 use App\Models\Pengungsian;
 use App\Models\Personil;
 use App\Models\PersonilNarahubung;
@@ -43,7 +41,6 @@ use Illuminate\Support\Facades\Storage;
 
 class PDFController extends Controller
 {
-
 
     public function viewPDF($id)
     {
@@ -103,7 +100,7 @@ class PDFController extends Controller
         return $pdf->download('users-details.pdf');
     }
 
-    public function downloadPDFeksum(ExsumChart $chart)
+    public function downloadPDFeksum()
     {
 
         $dampak = Dampak::all()->count();
@@ -117,7 +114,6 @@ class PDFController extends Controller
         'layanan_korban.distribusi as layDis', 'layanan_korban.layanan_kesehatan as layKes', 'assessment.status as stat')->get();
 
         $pdf = PDF::loadView('admin.executive_summary', array(
-            'chart' => $chart->build(), 
             'dampak' => $dampak,
             'kejadian' => $kejadian,
             'layanan' => $layanan))
