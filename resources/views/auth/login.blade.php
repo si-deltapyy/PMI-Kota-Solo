@@ -140,6 +140,26 @@ button{
   margin-right: 4px;
 }
 
+.alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .alert-danger {
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+        }
+        .alert-danger ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .alert-danger li {
+            margin-bottom: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -147,21 +167,25 @@ button{
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-    @if (session('error'))
-                    <div class="alert alert-danger" role="alert">
-                        {{ session('error') }}
-                    </div>
-                @endif
+   
+    <div class="form">
+    <!-- @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif -->
 
-                @if ($errors->any())
-                <div class="alert alert-danger" role="alert">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+    @if ($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
     <form method="POST" class="login-form" action="{{ route('login') }}">
         @csrf
         <h3>Login Here</h3>
@@ -177,6 +201,8 @@ button{
             <a href="{{ route('register') }}"><div class="go"><i class="fas fa-user-plus"></i> Register</div></a>
         </div>        
     </form>
+    </div>
+   
 </body>
 </html>
 <!-- partial -->
