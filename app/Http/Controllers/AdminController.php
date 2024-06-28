@@ -45,26 +45,61 @@ class AdminController extends Controller
     {
         //
     }
-    public function index_admin(ExsumChart $chart)
+    public function index_admin()
     {
-        $dampak = Dampak::all()->count();
-        $kejadian = Report::all();
-        return view('admin.dashboard',
-        [
-            'chart' => $chart->build(), 
-            'dampak' => $dampak,
-            'kejadian' => $kejadian
-        ]);
+        return view('admin.dashboard');
     }
     /**
      * Show the form for creating a new resource.
      */
 
-    public function index_exsum()
+    public function index_exsum(ExsumChart $chart)
     {
-        return view('admin.executive_summary');
+        $user = User::role('relawan')->get();
+        $dampak = Dampak::all()->count();
+        $kejadian = Report::join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')
+        ->select('reports.status', 'jenis_kejadian.nama_kejadian')->get();
+
+        $layanan = LayananKorban::join('assessment', 'layanan_korban.id_assessment', '=', 'assessment.id_assessment' )
+        ->join('reports', 'assessment.id_report', '=', 'reports.id_report')
+        ->join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')
+        ->select('jenis_kejadian.nama_kejadian as nmKejadian', 'reports.tanggal_kejadian as dateKejadian', 
+        'layanan_korban.distribusi as layDis', 'layanan_korban.layanan_kesehatan as layKes', 'assessment.status as stat')->get();
+        
+        $kkSum = KorbanTerdampak::sum('kk');
+        $jiwaSum = KorbanTerdampak::sum('jiwa');
+        $lRingan = KorbanJlw::sum('luka_ringan');
+        $Meninggal = KorbanJlw::sum('meninggal');
+        $Mengungsi = KorbanJlw::sum('mengungsi');
+        $Hilang = KorbanJlw::sum('hilang');
+
+        $jumlah = [
+            'kk' => $kkSum,
+            'jiwa' => $jiwaSum,
+            'ringan' => $lRingan,
+            'mati' => $Meninggal,
+            'pengungsi' => $Mengungsi,
+            'hilang' => $Hilang
+
+        ];
+
+        // $angkaPenduduk = [
+        //     'keluarga' => $penduduk->groupBy('no_kk')->count(),
+        //     'penduduk' => $penduduk->where('nama')->count(),
+        //     'kematian' => $penduduk->where('status', 'Meninggal')->count()
+        // ];
+        // dd($kejadian);
+        return view('admin.executive_summary',
+        [
+            'chart' => $chart->build(), 
+            'dampak' => $dampak,
+            'kejadian' => $kejadian,
+            'layanan' => $layanan,
+            'jumlah' => $jumlah,
+            'user' => $user
+        ]);
     }
-    /*
+    
     public function assessment_unverif()
     {
         return view('admin.assessment.unverified.index');
@@ -73,7 +108,6 @@ class AdminController extends Controller
     {
         return view('admin.assessment.verified.index');
     }
-    */
     public function index_laporankejadian()
     {
         $reports = Report::all(); 
@@ -843,8 +877,10 @@ class AdminController extends Controller
     public function lapsit()
     {
         $user = User::all();
-        // notify()->preset('success', ['message' => 'Berhasil Mengirim Pesan Whatsapp']);
-        return view('admin.lapsit.index', compact('lapsit'));
+        $kejadian = KejadianBencana::join('jenis_kejadian', 'kejadian_bencana.id_jeniskejadian', '=', 'jenis_kejadian.id_jeniskejadian')
+        ->select('*', 'kejadian_bencana.updated_at as up')->get();
+        notify()->preset('success', ['message' => 'Berhasil Mengirim Pesan Whatsapp']);
+        return view('admin.lapsit.index', compact('user', 'kejadian'));
     }
 
     public function Sharelapsit($id)

@@ -166,4 +166,6 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/admin/lapsit/view/{id}', [AdminController::class, 'view_lapsit'])->name('admin-view-lapsit');
     Route::post('/admin/lapsit/{id}/share', [AdminController::class, 'Sharelapsit'])->name('share.lapsit');
     Route::get('/admin/exsum', [AdminController::class, 'index_exsum'])->name('admin-exsum');
+
+    Route::post('admin/download-pdf', [PDFController::class, 'downloadPDFeksum'])->name('eksum.pdf');
 });

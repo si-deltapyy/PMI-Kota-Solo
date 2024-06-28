@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dampak;
+use App\Models\LayananKorban;
 use App\Models\Report;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf; // Alias PDF Facade
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http; // Import Http Facade
 use Spatie\Permission\Models\Role;
+use App\Charts\ExsumChart;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\JsonResponse;
 use App\Models\KejadianBencana;
 use App\Models\AlatTdb;
 use App\Models\Assessment;
-use App\Models\Dampak;
 use App\Models\EvakuasiKorban;
 use App\Models\JenisKejadian;
 use App\Models\KerusakanFasilSosial;
@@ -23,7 +25,6 @@ use App\Models\KerusakanRumah;
 use App\Models\KorbanTerdampak;
 use App\Models\KorbanJlw;
 use App\Models\LampiranDokumentasi;
-use App\Models\LayananKorban;
 use App\Models\Pengungsian;
 use App\Models\Personil;
 use App\Models\PersonilNarahubung;
@@ -40,7 +41,6 @@ use Illuminate\Support\Facades\Storage;
 
 class PDFController extends Controller
 {
-
 
     public function viewPDF($id)
     {
@@ -98,6 +98,47 @@ class PDFController extends Controller
             ->setPaper('a4', 'portrait');
 
         return $pdf->download('users-details.pdf');
+    }
+
+    public function downloadPDFeksum()
+    {
+        $datenow = Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-M-d H:i');
+        $dampak = Dampak::all()->count();
+        $kejadian = Report::join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')->get();
+
+        $layanan = LayananKorban::join('assessment', 'layanan_korban.id_assessment', '=', 'assessment.id_assessment' )
+        ->join('reports', 'assessment.id_report', '=', 'reports.id_report')
+        ->join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')
+        ->select('jenis_kejadian.nama_kejadian as nmKejadian', 'reports.tanggal_kejadian as dateKejadian', 
+        'layanan_korban.distribusi as layDis', 'layanan_korban.layanan_kesehatan as layKes', 'assessment.status as stat')->get();
+
+        $kkSum = KorbanTerdampak::sum('kk');
+        $jiwaSum = KorbanTerdampak::sum('jiwa');
+        $lRingan = KorbanJlw::sum('luka_ringan');
+        $Meninggal = KorbanJlw::sum('meninggal');
+        $Mengungsi = KorbanJlw::sum('mengungsi');
+        $Hilang = KorbanJlw::sum('hilang');
+
+        $jumlah = [
+            'kk' => $kkSum,
+            'jiwa' => $jiwaSum,
+            'ringan' => $lRingan,
+            'mati' => $Meninggal,
+            'pengungsi' => $Mengungsi,
+            'hilang' => $Hilang
+
+        ];
+
+        $pdf = PDF::loadView('admin.eksum.file', array(
+            'dampak' => $dampak,
+            'kejadian' => $kejadian,
+            'layanan' => $layanan,
+            'jumlah' => $jumlah,
+            'waktu' => $datenow
+            ))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download($datenow . ' || exsum-file.pdf');
     }
 
     public function exportLaporanKejadian($id)
