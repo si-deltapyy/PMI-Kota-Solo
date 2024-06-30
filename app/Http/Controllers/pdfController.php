@@ -102,7 +102,7 @@ class PDFController extends Controller
 
     public function downloadPDFeksum()
     {
-        $datenow = Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-M-d H:i');
+        $datenow = Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-M-d H:i:s');
         $dampak = Dampak::all()->count();
         $kejadian = Report::join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')->get();
 
