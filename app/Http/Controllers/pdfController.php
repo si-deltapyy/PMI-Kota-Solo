@@ -102,7 +102,10 @@ class PDFController extends Controller
 
     public function downloadPDFeksum()
     {
+        $id=1;
         $datenow = Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-M-d H:i:s');
+        $tanggal = Carbon::now()->setTimezone('Asia/Jakarta')->format('d M Y');
+        $jam = Carbon::now()->setTimezone('Asia/Jakarta')->format('H:i:s');
         $dampak = Dampak::all()->count();
         $kejadian = Report::join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')->get();
 
@@ -126,7 +129,6 @@ class PDFController extends Controller
             'mati' => $Meninggal,
             'pengungsi' => $Mengungsi,
             'hilang' => $Hilang
-
         ];
 
         $pdf = PDF::loadView('admin.eksum.file', array(
@@ -134,7 +136,10 @@ class PDFController extends Controller
             'kejadian' => $kejadian,
             'layanan' => $layanan,
             'jumlah' => $jumlah,
-            'waktu' => $datenow
+            'waktu' => $datenow,
+            'tanggal' => $tanggal,
+            'id' => $id,
+            'jam' => $jam
             ))
             ->setPaper('a4', 'portrait');
 
