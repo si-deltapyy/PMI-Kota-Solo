@@ -60,10 +60,12 @@ use Carbon\Carbon;
 <body>
 <div class="container">
     <div class="header">
-        {{--  <img src="logo_pmi.png" alt="Logo PMI">  --}}
+        {{--  <img src="{{ asset('logo/logo-pmi-crop.png') }}" alt="Logo PMI" style="width: 50px; height: 50px;">  --}}
         <div class="header-title">
-            PALANG MERAH INDONESIA<br>Format Assessment Cepat
+            <span class="main-title">PALANG MERAH INDONESIA</span><br>
+            <span class="sub-title">Format Assessment Cepat</span>
         </div>
+        {{--  <img src="{{ asset('logo/logo-pmi-crop.png') }}" alt="Logo PMI" style="width: 50px; height: 50px;">  --}}
     </div>
 
     <!-- Section 1: Umum -->
