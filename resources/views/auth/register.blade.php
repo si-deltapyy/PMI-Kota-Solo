@@ -121,6 +121,26 @@
     .social i {
       margin-right: 4px;
     }
+
+    .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .alert-danger {
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+        }
+        .alert-danger ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .alert-danger li {
+            margin-bottom: 10px;
+        }
   </style>
 </head>
 <body>
@@ -132,22 +152,57 @@
     @csrf
     <h3>Register Here</h3>
     
-    <label for="full-name">Full Name</label>
-    <input type="text" placeholder="Full Name" id="full-name">
+    <div>
+    <label for="name">{{ __('Name') }}</label>
+    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+      @if ($errors->has('name'))
+          <span>{{ $errors->first('name') }}</span>
+      @endif
+    </div>
     
-    <label for="username">Username</label>
-    <input type="text" placeholder="Username" id="username">
+    <div>
+    <label for="username">{{ __('Username') }}</label>
+    <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+      @if ($errors->has('username'))
+          <span>{{ $errors->first('username') }}</span>
+      @endif
+    </div>
     
-    <label for="email">Email</label>
-    <input type="email" placeholder="Email" id="email">
+    <div>
+
+    </div>
+    <label for="email">{{ __('Email Address') }}</label>
+    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+        @error('email')
+          <span class="invalid-feedback" role="alert">
+               <strong>{{ $message }}</strong>
+          </span>
+        @enderror
+    </div>
     
-    <label for="password">Password</label>
-    <input type="password" placeholder="Password" id="password">
-    
-    <label for="confirm-password">Confirm Password</label>
-    <input type="password" placeholder="Confirm Password" id="confirm-password">
-    
-    <button type="submit">Register</button>
+    <div>
+    <label for="password">{{ __('Password') }}</label>
+    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+     @error('password')
+        <span class="invalid-feedback" role="alert">
+      <strong>{{ $message }}</strong>
+      </span>
+     @enderror
+    </div>    
+
+    <div>
+    <label for="password_confirmation">{{ __('Confirm Password') }}</label>
+    <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required autocomplete="current-password">
+       @error('password')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+      @enderror
+    </div>
+   
+
+
+    <button type="submit">{{ __('Register') }}</button>
     <div class="social">
       <a href="{{ route('login') }}"><div class="go"><i class="fas fa-sign-in-alt"></i> Log In</div></a>
     </div>        
