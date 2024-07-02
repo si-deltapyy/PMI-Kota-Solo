@@ -418,7 +418,151 @@ class PDFController extends Controller
         return $pdf->stream('laporan-situasi-preview.pdf');
     }
 
+    // controller baruu blm fix
     private function prepareDataLapsit($id)
+{
+    $kejadian = KejadianBencana::where('id_kejadian', $id)->with([
+        'giatPmi.evakuasiKorban',
+        'giatPmi.layananKorban',
+        'dampak.korbanTerdampak',
+        'dampak.korbanJlw',
+        'dampak.kerusakanRumah',
+        'dampak.kerusakanFasilitasSosial',
+        'dampak.kerusakanInfrastruktur',
+        'mobilisasiSd.personil',
+        'mobilisasiSd.tsr',
+        'mobilisasiSd.alatTdb',
+        'dampak.pengungsian',
+        'narahubung',
+        'dokumentasi',
+        'petugasPosko'
+    ])->firstOrFail();
+
+    $jenisKejadian = JenisKejadian::all();
+
+    // Ambil semua kejadian bencana dengan id_assessment yang sama
+    $semuaKejadian = KejadianBencana::where('id_assessment', $kejadian->id_assessment)
+        ->orderBy('created_at')
+        ->get();
+
+        $dataDampak = [
+            'lapsit_awal' => [
+                'korban_terdampak' => ['kk' => 0, 'jiwa' => 0],
+                'korban_jlw' => ['luka_berat' => 0, 'luka_ringan' => 0, 'meninggal' => 0, 'hilang' => 0, 'mengungsi' => 0],
+                'kerusakan_rumah' => ['rusak_berat' => 0, 'rusak_sedang' => 0, 'rusak_ringan' => 0],
+                'kerusakan_fasilitas' => ['sekolah' => 0, 'tempat_ibadah' => 0, 'rumah_sakit' => 0, 'pasar' => 0],
+            ],
+            'lapsit_1' => [
+                'korban_terdampak' => ['kk' => 0, 'jiwa' => 0],
+                'korban_jlw' => ['luka_berat' => 0, 'luka_ringan' => 0, 'meninggal' => 0, 'hilang' => 0, 'mengungsi' => 0],
+                'kerusakan_rumah' => ['rusak_berat' => 0, 'rusak_sedang' => 0, 'rusak_ringan' => 0],
+                'kerusakan_fasilitas' => ['sekolah' => 0, 'tempat_ibadah' => 0, 'rumah_sakit' => 0, 'pasar' => 0],
+            ],
+            'lapsit_2' => [
+                'korban_terdampak' => ['kk' => 0, 'jiwa' => 0],
+                'korban_jlw' => ['luka_berat' => 0, 'luka_ringan' => 0, 'meninggal' => 0, 'hilang' => 0, 'mengungsi' => 0],
+                'kerusakan_rumah' => ['rusak_berat' => 0, 'rusak_sedang' => 0, 'rusak_ringan' => 0],
+                'kerusakan_fasilitas' => ['sekolah' => 0, 'tempat_ibadah' => 0, 'rumah_sakit' => 0, 'pasar' => 0],
+            ],
+            'lapsit_3' => [
+                'korban_terdampak' => ['kk' => 0, 'jiwa' => 0],
+                'korban_jlw' => ['luka_berat' => 0, 'luka_ringan' => 0, 'meninggal' => 0, 'hilang' => 0, 'mengungsi' => 0],
+                'kerusakan_rumah' => ['rusak_berat' => 0, 'rusak_sedang' => 0, 'rusak_ringan' => 0],
+                'kerusakan_fasilitas' => ['sekolah' => 0, 'tempat_ibadah' => 0, 'rumah_sakit' => 0, 'pasar' => 0],
+            ],
+            'lapsit_4' => [
+                'korban_terdampak' => ['kk' => 0, 'jiwa' => 0],
+                'korban_jlw' => ['luka_berat' => 0, 'luka_ringan' => 0, 'meninggal' => 0, 'hilang' => 0, 'mengungsi' => 0],
+                'kerusakan_rumah' => ['rusak_berat' => 0, 'rusak_sedang' => 0, 'rusak_ringan' => 0],
+                'kerusakan_fasilitas' => ['sekolah' => 0, 'tempat_ibadah' => 0, 'rumah_sakit' => 0, 'pasar' => 0],
+            ],
+        ];
+
+    foreach ($semuaKejadian as $index => $kej) {
+        $key = $index == 0 ? 'lapsit_awal' : 'lapsit_' . $index;
+        if (isset($dataDampak[$key])) {
+            $dataDampak[$key] = [
+                'korban_terdampak' => [
+                    'kk' => $kej->dampak->korbanTerdampak->kk ?? 0,
+                    'jiwa' => $kej->dampak->korbanTerdampak->jiwa ?? 0,
+                ],
+                'korban_jlw' => [
+                    'luka_berat' => $kej->dampak->korbanJlw->luka_berat ?? 0,
+                    'luka_ringan' => $kej->dampak->korbanJlw->luka_ringan ?? 0,
+                    'meninggal' => $kej->dampak->korbanJlw->meninggal ?? 0,
+                    'hilang' => $kej->dampak->korbanJlw->hilang ?? 0,
+                    'mengungsi' => $kej->dampak->korbanJlw->mengungsi ?? 0,
+                ],
+                'kerusakan_rumah' => [
+                    'rusak_berat' => $kej->dampak->kerusakanRumah->rusak_berat ?? 0,
+                    'rusak_sedang' => $kej->dampak->kerusakanRumah->rusak_sedang ?? 0,
+                    'rusak_ringan' => $kej->dampak->kerusakanRumah->rusak_ringan ?? 0,
+                ],
+                'kerusakan_fasilitas' => [
+                    'sekolah' => $kej->dampak->kerusakanFasilitasSosial->sekolah ?? 0,
+                    'tempat_ibadah' => $kej->dampak->kerusakanFasilitasSosial->tempat_ibadah ?? 0,
+                    'rumah_sakit' => $kej->dampak->kerusakanFasilitasSosial->rumah_sakit ?? 0,
+                    'pasar' => $kej->dampak->kerusakanFasilitasSosial->pasar ?? 0,
+                ],
+            ];
+        }
+    }
+
+    return [
+        'kejadian' => $kejadian,
+        'jenisKejadian' => $jenisKejadian,
+        'umum' => [
+            'jenis_kejadian' => $kejadian->jenis_kejadian,
+            'tempat_kejadian' => $kejadian->tempat_kejadian,
+            'tanggal_kejadian' => $kejadian->tanggal_kejadian,
+            'lokasi' => $kejadian->lokasi,
+            'hambatan' => $kejadian->hambatan,
+            'kebutuhan' => $kejadian->kebutuhan,
+            'update' => $kejadian->update,
+            'dukungan_internasional' => $kejadian->dukungan_internasional,
+            'keterangan' => $kejadian->keterangan,
+            'giat_pemerintah' => $kejadian->giat_pemerintah,
+        ],
+        'dampak' => $dataDampak,
+        'situasi_keamanan' => $kejadian->situasi_keamanan ?? 'Lokasi aman dan terkendali',
+        'tindakan_dilakukan' => $kejadian->giatPmi ? [
+            'evakuasi' => $kejadian->giatPmi->layananKorban->evakuasi ?? '-',
+            'layanan_kesehatan' => $kejadian->giatPmi->layananKorban->layanan_kesehatan ?? '-',
+            'distribusi' => $kejadian->giatPmi->layananKorban->distribusi ?? '-',
+            'dapur_umum' => $kejadian->giatPmi->layananKorban->dapur_umum ?? '-',
+        ] : [],
+        'kebutuhan_mendesak' => $kejadian->kebutuhan ?? '-',
+        'kontak_person' => $kejadian->narahubung->map(function ($item) {
+            return [
+                'nama' => $item->nama_lengkap,
+                'posisi' => $item->posisi,
+                'kontak' => $item->kontak,
+            ];
+        }),
+        'petugasPosko' => $kejadian->petugasPosko->map(function ($item) {
+            return [
+                'nama' => $item->nama_lengkap,
+                'kontak' => $item->kontak,
+            ];
+        }),
+        'pengungsian' => $kejadian->dampak->pengungsian->map(function ($item) {
+            return [
+                'nama_lokasi' => $item->nama_lokasi,
+                'kk' => $item->kk,
+                'jiwa' => $item->jiwa,
+                'laki_laki' => $item->laki_laki,
+                'perempuan' => $item->perempuan,
+                'kurang_dari_5' => $item->kurang_dari_5,
+                'atr_5_sampai_18' => $item->atr_5_sampai_18,
+                'lebih_dari_18' => $item->lebih_dari_18,
+                'jumlah' => $item->jumlah,
+            ];
+        }),
+    ];
+}
+
+//controller lama
+    private function prepareDataLapsitold($id)
     {
         $kejadian = KejadianBencana::where('id_kejadian', $id)->with([
             'giatPmi.evakuasiKorban',
