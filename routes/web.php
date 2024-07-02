@@ -27,6 +27,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/cekdata/{id}', [pdfController::class, 'cekdata']);
 
 Route::get('/relawan/assessment/response/{id}', [RelawanController::class, 'response_assessment'])->name('relawan-view-assessment');
 Route::get('/relawan/lapsit/response/{id}', [RelawanController::class, 'response_lapsit'])->name('relawan-view-assessment');

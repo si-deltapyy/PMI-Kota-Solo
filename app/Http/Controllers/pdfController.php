@@ -42,23 +42,41 @@ use Illuminate\Support\Facades\Storage;
 class PDFController extends Controller
 {
 
-    public function viewPDF($id)
+    public function cekdata($id)
     {
-        // $users = User::find($id);
-        // $roles = Role::all();
+        $kejadian = KejadianBencana::where('id_assessment', $id)->with([
+            'giatPmi.evakuasiKorban',
+            'giatPmi.layananKorban',
+            'dampak.korbanTerdampak',
+            'dampak.korbanJlw',
+            'dampak.kerusakanRumah',
+            'dampak.kerusakanFasilitasSosial',
+            'dampak.kerusakanInfrastruktur',
+            'pengungsian',
+            'narahubung',
+            'petugasPosko',
+            'relawan',
+            'jenisKejadian',
+            'mobilisasi',
+            'mobilisasi.tsr',
+            'mobilisasi.alatTdb',
+            'mobilisasi.personil',
+            'assessment',
+            'assessment.report',
+        ])->findOrFail($id);
+       
 
-        // $pdf = PDF::loadView('pdf.lapsit', array('user' =>  $users, 'role' => $roles))
-        // ->setPaper('a4', 'portrait');
-
-        // return $pdf->stream(); 
-
+    if($kejadian){
+        return ["data" => $kejadian, "message" => "berhasil"];
+    }
+    return ["message" => "error"];
     }
 
-    public function test()
-    {
-        notify()->success('Hi Admin , welcome to codelapan');
-        return view('pdf.flash-report');
-    }
+    // public function test()
+    // {
+    //     notify()->success('Hi Admin , welcome to codelapan');
+    //     return view('pdf.flash-report');
+    // }
 
     public function checkExportPDF()
     {
@@ -172,9 +190,10 @@ class PDFController extends Controller
 
     public function exportLaporanAssessment($id)
     {
-        // Find the report by its ID
-        //$kejadian = KejadianBencana::with('id_assessment')->findOrFail($id);
-        //$kejadian->nama_kejadian = $kejadian->jenisKejadian->nama_kejadian;
+        $datenow = Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-M-d H:i:s');
+        $tanggal_now = Carbon::now()->setTimezone('Asia/Jakarta')->format('d M Y');
+        $jam = Carbon::now()->setTimezone('Asia/Jakarta')->format('H:i:s');
+
         $kejadian = KejadianBencana::where('id_assessment', $id)->with([
             'giatPmi.evakuasiKorban',
             'giatPmi.layananKorban',
@@ -183,25 +202,32 @@ class PDFController extends Controller
             'dampak.kerusakanRumah',
             'dampak.kerusakanFasilitasSosial',
             'dampak.kerusakanInfrastruktur',
-            'dampak.pengungsian',
+            'pengungsian',
             'narahubung',
             'petugasPosko',
             'relawan',
-            'jenisKejadian'
+            'jenisKejadian',
+            'mobilisasi',
+            'mobilisasi.tsr',
+            'mobilisasi.alatTdb',
+            'mobilisasi.personil',
+            'assessment',
+            'assessment.report',
         ])->findOrFail($id);
 
-        // Pass data to the PDF view
-        $data = [
-            'kejadian' => $kejadian,
-            'jenisKejadian' => JenisKejadian::all(),
-            'user' => User::all(),
-        ];
-
+        $tanggal = Carbon::parse($kejadian->tanggal_kejadian)->locale('id')->isoFormat('D MMMM YYYY');
         // Load the PDF view with the data
-        $pdf = PDF::loadView('pdf.assessment', $data);
+        $pdf = PDF::loadView('pdf.assessment', array(
+            'kejadian' => $kejadian,
+            'waktu' => $datenow,
+            'tanggal_now' => $tanggal_now,
+            'tanggal' => $tanggal,
+            'id' => $id,
+            'jam' => $jam
+            ))
+            ->setPaper('a4', 'portrait');
 
-        // Stream the PDF for download
-        return $pdf->stream('assessment.pdf');
+        return $pdf->download($datenow . ' || assessment-file.pdf');
     }
 
     /*public function previewAssessmentPdf($id)

@@ -55,16 +55,67 @@ use Carbon\Carbon;
             padding: 8px;
             text-align: left;
         }
+        .logo {
+            width: 60px;
+            margin: -20px 0 ;
+        }
+
+        .head-logo{
+            width: 20%;
+            /* background-image: scr('https://i.ibb.co.com/7t9ghTB/logo-pmi.png'); */
+            background-color: #ffffff;
+            color: #000;
+        }
+        .text-logo{
+            margin: 1px 0;
+            text-align: center;
+        }
+        .text{
+            width: 60%;
+            text-align: center;
+            background-color: #ffffff;
+            color: #000;
+        }
+        .text-side{
+            width: 20%;
+            background-color: #ffffff;
+            color: #000;
+        }
+        .side{
+            margin: 3px 0;
+            font-size: 10px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        {{--  <img src="logo_pmi.png" alt="Logo PMI">  --}}
+        <!-- {{--  <img src="logo_pmi.png" alt="Logo PMI">  --}}
         <div class="header-title">
             PALANG MERAH INDONESIA<br>Format Assessment Cepat
-        </div>
+        </div> -->
+        <table>
+          <tr>
+              <th class="head-logo" rowspan="2">
+                  <h4 class="text-logo">PALANG MERAH INDONESIA</h4>
+                  <h5 class="text-logo">Kota Surakarta</h5>
+              </th>
+              <th class="text">
+                  LEMBARAN<BR>
+              </th>
+              <th class="text-side" rowspan="2">
+                  <p class="side">NO: PMISKA-KR-FAC-{{$id}}</p>
+                  <p class="side">Versi: 001</p>
+                  <p class="side">Tanggal: {{$tanggal_now}}</p>
+              </th>
+          </tr>
+          <tr>
+              <th class="text">Format Assessment Cepat</th>
+          </tr>
+      </table>
     </div>
+
+    
 
     <!-- Section 1: Umum -->
     <div class="section">
@@ -96,7 +147,7 @@ use Carbon\Carbon;
             </tr>
             <tr>
                 <th>Tanggal Kejadian</th>
-                <td colspan="2">{{ $kejadian->tanggal_kejadian ? Carbon::parse($kejadian->tanggal_kejadian)->locale('id')->isoFormat('D MMMM YYYY') : '-' }}</td>
+                <td colspan="2">{{ $tanggal }}</td>
             </tr>
             <tr>
                 <th>Petugas Assessment</th>
