@@ -85,9 +85,9 @@ class KejadianBencana extends Model
         return $this->hasMany(LampiranDokumentasi::class, 'id_dokumentasi');
     }
 
-    public function pengungsian()
-    {
-        return $this->hasMany(Pengungsian::class, 'id_pengungsian');
-    }
+    // public function pengungsian()
+    // {
+    //     return $this->hasMany(Pengungsian::class, 'id_pengungsian');
+    // }
 
 }
