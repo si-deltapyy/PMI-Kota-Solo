@@ -74,7 +74,7 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::get('/relawan/laporan-kejadian', [RelawanController::class, 'index_laporankejadian'])->name('relawan-laporankejadian');
     Route::patch('/relawan/laporan-kejadian/{id}', [RelawanController::class, 'verify'])->name('relawan-verify');
     Route::patch('/relawan/laporan-kejadian-unverify/{id}', [RelawanController::class, 'unverify'])->name('relawan-unverify');
-    Route::post('relawan/laporan-kejadian/store', [RelawanController::class, 'store_laporankejadian'])->name('store-laporankejadian');
+    Route::post('/relawan/laporan-kejadian/store', [RelawanController::class, 'store_laporankejadian'])->name('store-laporankejadian');
     // Route::get('/relawan/laporan-kejadian/create', [RelawanController::class, 'create_laporankejadian'])->name('create-laporankejadian');
     Route::get('/relawan/laporan-kejadian/edit/{id}', [RelawanController::class, 'edit_laporankejadian'])->name('edit-laporankejadian');
     Route::get('/relawan/laporan-kejadian/view/{id}', [RelawanController::class, 'view_laporankejadian'])->name('view-laporankejadian'); 
