@@ -13,8 +13,14 @@ curl_setopt_array($curl, array(
   CURLOPT_CUSTOMREQUEST => 'POST',
   CURLOPT_POSTFIELDS => array(
 'target' => '081546833337,085812796488',
-'message' => $user->name.
-'Contoh Lapsit share wa', 
+'message' => 
+'*Laporan Situasi*
+
+Kejadian: ' . $kejadian->nama_kejadian . '
+Lokasi: ' . $kejadian->lokasi . '
+Tanggal: ' . $kejadian->tanggal_kejadian . '
+Keterangan: ' . $kejadian->keterangan .'
+Waktu Kirim: ' . $datenow, 
 'countryCode' => '62', //optional
 ),
   CURLOPT_HTTPHEADER => array(

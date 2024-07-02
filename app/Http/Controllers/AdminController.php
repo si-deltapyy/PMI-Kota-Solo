@@ -122,9 +122,10 @@ class AdminController extends Controller
 
     public function index_lapsit()
     {
-        $kejadian = KejadianBencana::all();
-        $jenisKejadian = JenisKejadian::all();
-        return view('admin.lapsit.index', compact('kejadian', 'jenisKejadian'));
+        $kejadian = KejadianBencana::join('jenis_kejadian', 'kejadian_bencana.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')
+        ->select('*', 'kejadian_bencana.updated_at as terbaru','jenis_kejadian.nama_kejadian as nmKejadian')
+        ->get();
+        return view('admin.lapsit.index', compact('kejadian'));
     }
 
     /**
@@ -885,8 +886,16 @@ class AdminController extends Controller
 
     public function Sharelapsit($id)
     {
-        $user = User::find($id);
-        return view('admin.lapsit.share', compact('user'));
+        $kejadian = KejadianBencana::join('jenis_kejadian', 'kejadian_bencana.id_jeniskejadian', '=', 'jenis_kejadian.id_jeniskejadian')
+        ->where('id_kejadian', $id)
+        ->select('*', 'kejadian_bencana.updated_at as terbaru', 'jenis_kejadian.nama_kejadian as nmKejadian')
+        ->first();
+
+        $datenow = Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-M-d H:i');
+
+        $as=2;
+        // dd($kejadian);
+        return view('admin.lapsit.share', compact('kejadian', 'as', 'datenow'));
     }
 
     public function create()

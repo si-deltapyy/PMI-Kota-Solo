@@ -101,7 +101,6 @@
                     <p class="side">NO: PMISKA-KR-LA-{{$id}}</p>
                     <p class="side">Versi: 001</p>
                     <p class="side">Tanggal: {{$tanggal}}</p>
-                    <p class="side">Waktu: {{$jam}} WIB</p>
                 </th>
             </tr>
             <tr>
@@ -149,13 +148,7 @@
                     <td>{{$x->nama_kejadian}}</td>
                     <td>{{$x->tanggal_kejadian}}</td>
                     <td>{{$x->keterangan}}</td>
-                    <td>
-                        @if($x->status == 'On Process')
-                        <div class="badge badge-opacity-warning">in progress</div>
-                        @else
-                        <div class="badge badge-opacity-success">Valid</div>
-                        @endif
-                    </td>
+                    <td>{{$x->status}}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -198,7 +191,6 @@
                 @endforeach
             </tbody>
         </table>
-        <br>
         <footer>
             PMI Kota Surakarta, Jl. Kol. Sutarto No. 58 Jebres, Surakarta, Jawa Tengah 57126
         </footer>
