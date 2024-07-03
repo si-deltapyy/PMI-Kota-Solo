@@ -236,15 +236,11 @@ class RelawanController extends Controller
                 'kejadianBencana.mobilisasiSd.alatTdb',
                 'kejadianBencana.giatPmi.evakuasiKorban',
                 'kejadianBencana.giatPmi.layananKorban',
-                'kejadianBencana.dokumentasi',
-                'kejadianBencana.narahubung',
-                'kejadianBencana.petugasPosko',
                 'kejadianBencana.dampak.korbanTerdampak',
                 'kejadianBencana.dampak.korbanJlw',
                 'kejadianBencana.dampak.kerusakanRumah',
                 'kejadianBencana.dampak.kerusakanFasilitasSosial',
                 'kejadianBencana.dampak.kerusakanInfrastruktur',
-                'kejadianBencana.dampak.pengungsian'
             ])
             ->first();
         ;
@@ -253,6 +249,20 @@ class RelawanController extends Controller
         $assessment->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
         $assessment->waktuKejadian = $this->formatDateTime($assessment->report->timestamp_report);
         $assessment->updateAt = $this->formatDateTime($assessment->report->updated_at);
+
+        // Handle only the first kejadianBencana
+        $firstKejadian = $assessment->kejadianBencana->first();
+
+        $narahubung = PersonilNarahubung::where('id_kejadian', $firstKejadian->id)->get();
+        $petugas_posko = PetugasPosko::where('id_kejadian', $firstKejadian->id)->get();
+        $dokumentasi = LampiranDokumentasi::where('id_kejadian', $firstKejadian->id)->get();
+        $id_dampak = $firstKejadian->dampak->id_dampak;
+        $pengungsian = Pengungsian::where('id_dampak', $id_dampak)->get();
+
+        $firstKejadian->narahubung = $narahubung;
+        $firstKejadian->petugas_posko = $petugas_posko;
+        $firstKejadian->dokumentasi = $dokumentasi;
+        $firstKejadian->pengungsian = $pengungsian;
 
         return response()->json($assessment);
         // return view('relawan.assessment.view', compact('assessment'));
@@ -271,15 +281,11 @@ class RelawanController extends Controller
                 'kejadianBencana.mobilisasiSd.alatTdb',
                 'kejadianBencana.giatPmi.evakuasiKorban',
                 'kejadianBencana.giatPmi.layananKorban',
-                'kejadianBencana.dokumentasi',
-                'kejadianBencana.narahubung',
-                'kejadianBencana.petugasPosko',
                 'kejadianBencana.dampak.korbanTerdampak',
                 'kejadianBencana.dampak.korbanJlw',
                 'kejadianBencana.dampak.kerusakanRumah',
                 'kejadianBencana.dampak.kerusakanFasilitasSosial',
                 'kejadianBencana.dampak.kerusakanInfrastruktur',
-                'kejadianBencana.dampak.pengungsian'
             ])
             ->first();
         ;
@@ -305,6 +311,17 @@ class RelawanController extends Controller
             $firstKejadian->personil = $firstKejadian->mobilisasiSd->personil;
             $firstKejadian->tsr = $firstKejadian->mobilisasiSd->tsr;
             $firstKejadian->alatTdb = $firstKejadian->mobilisasiSd->alatTdb;
+
+            $narahubung = PersonilNarahubung::where('id_kejadian', $firstKejadian->id_kejadian)->get();
+            $petugas_posko = PetugasPosko::where('id_kejadian', $firstKejadian->id_kejadian)->get();
+            $dokumentasi = LampiranDokumentasi::where('id_kejadian', $firstKejadian->id_kejadian)->get();
+            $id_dampak = $firstKejadian->dampak->id_dampak;
+            $pengungsian = Pengungsian::where('id_dampak', $id_dampak)->get();
+
+            $firstKejadian->narahubung = $narahubung;
+            $firstKejadian->petugas_posko = $petugas_posko;
+            $firstKejadian->dokumentasi = $dokumentasi;
+            $firstKejadian->pengungsian = $pengungsian;
         }
 
         return view('relawan.assessment.view', compact('assessment', 'firstKejadian'));
