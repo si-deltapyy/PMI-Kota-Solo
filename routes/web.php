@@ -50,6 +50,10 @@ Route::get('reports/{id}/view', [App\Http\Controllers\PDFController::class, 'vie
 Route::get('pdf/view', [App\Http\Controllers\PDFController::class, 'checkViewPDF']);
 Route::get('pdf/check', [App\Http\Controllers\PDFController::class, 'checkExportPDF']);
 
+// flash report
+Route::get('flash-report/response/{id}', [SelectStatusController::class, 'allDataLapsit']);
+Route::get('flash-report/generate/{id}', [AdminController::class, 'generateFlashReport']);
+
 // add pdf assessment
 Route::get('assessment/{id}/pdf', [App\Http\Controllers\PDFController::class, 'exportLaporanAssessment'])->name('assessment.pdf');
 Route::get('assessment/{id}/view', [App\Http\Controllers\PDFController::class, 'viewLaporanAssessment']);
@@ -75,7 +79,7 @@ Route::group(['middleware' => ['auth', 'role:relawan']], function () {
     Route::get('/relawan/laporan-kejadian', [RelawanController::class, 'index_laporankejadian'])->name('relawan-laporankejadian');
     Route::patch('/relawan/laporan-kejadian/{id}', [RelawanController::class, 'verify'])->name('relawan-verify');
     Route::patch('/relawan/laporan-kejadian-unverify/{id}', [RelawanController::class, 'unverify'])->name('relawan-unverify');
-    Route::post('relawan/laporan-kejadian/store', [RelawanController::class, 'store_laporankejadian'])->name('store-laporankejadian');
+    Route::post('/relawan/laporan-kejadian/store', [RelawanController::class, 'store_laporankejadian'])->name('store-laporankejadian');
     // Route::get('/relawan/laporan-kejadian/create', [RelawanController::class, 'create_laporankejadian'])->name('create-laporankejadian');
     Route::get('/relawan/laporan-kejadian/edit/{id}', [RelawanController::class, 'edit_laporankejadian'])->name('edit-laporankejadian');
     Route::get('/relawan/laporan-kejadian/view/{id}', [RelawanController::class, 'view_laporankejadian'])->name('view-laporankejadian'); 

@@ -477,11 +477,92 @@ class PDFController extends Controller
                     'tempat_ibadah' => $kej->dampak->kerusakanFasilitasSosial->tempat_ibadah ?? 0,
                     'rumah_sakit' => $kej->dampak->kerusakanFasilitasSosial->rumah_sakit ?? 0,
                     'pasar' => $kej->dampak->kerusakanFasilitasSosial->pasar ?? 0,
+                    'gedung_pemerintah' => $kej->dampak->kerusakanFasilitasSosial->gedung_pemerintah ?? 0,
+                    'lain_lain' => $kej->dampak->kerusakanFasilitasSosial->lain_lain ?? 0,
+
                 ],
             ];
         }
     }
 
+    $dataMobilisasi = [
+        'lapsit_awal' => [
+            'personil' => ['pengurus'=> 0,'staf_markas_kabkota' => 0,'staf_markas_prov' => 0,'staf_markas_pusat' => 0,'relawan_pmi_kabkota' => 0,
+                           'relawan_pmi_prov' => 0,'relawan_pmi_linprov' => 0,'sukarelawan_sip' => 0], 
+            'tsr' => ['medis'=> 0,'paramedis'=> 0,'relief'=> 0,'logistik'=> 0,'watsan'=> 0,'it_telekom'=> 0,'sheltering'=> 0],
+            'alat_tdb' => ['kend_ops'=> 0,'truk_angkut'=> 0,'truk_tanki'=> 0,'double_cabin'=> 0,'alat_du'=> 0,'ambulans'=> 0,'alat_watsan'=> 0,
+                           'rs_lapangan'=> 0,'alat_pkdd'=> 0,'gudang_lapangan'=> 0,'posko_aju'=> 0,'alat_it_lapangan' => 0],
+        ],
+        'lapsit_1' => [
+            'personil' => ['pengurus'=> 0,'staf_markas_kabkota' => 0,'staf_markas_prov' => 0,'staf_markas_pusat' => 0,'relawan_pmi_kabkota' => 0,
+                           'relawan_pmi_prov' => 0,'relawan_pmi_linprov' => 0,'sukarelawan_sip' => 0], 
+            'tsr' => ['medis'=> 0,'paramedis'=> 0,'relief'=> 0,'logistik'=> 0,'watsan'=> 0,'it_telekom'=> 0,'sheltering'=> 0],
+            'alat_tdb' => ['kend_ops'=> 0,'truk_angkut'=> 0,'truk_tanki'=> 0,'double_cabin'=> 0,'alat_du'=> 0,'ambulans'=> 0,'alat_watsan'=> 0,
+                           'rs_lapangan'=> 0,'alat_pkdd'=> 0,'gudang_lapangan'=> 0,'posko_aju'=> 0,'alat_it_lapangan' => 0],
+        ],
+        'lapsit_2' => [
+            'personil' => ['pengurus'=> 0,'staf_markas_kabkota' => 0,'staf_markas_prov' => 0,'staf_markas_pusat' => 0,'relawan_pmi_kabkota' => 0,
+                           'relawan_pmi_prov' => 0,'relawan_pmi_linprov' => 0,'sukarelawan_sip' => 0], 
+            'tsr' => ['medis'=> 0,'paramedis'=> 0,'relief'=> 0,'logistik'=> 0,'watsan'=> 0,'it_telekom'=> 0,'sheltering'=> 0],
+            'alat_tdb' => ['kend_ops'=> 0,'truk_angkut'=> 0,'truk_tanki'=> 0,'double_cabin'=> 0,'alat_du'=> 0,'ambulans'=> 0,'alat_watsan'=> 0,
+                           'rs_lapangan'=> 0,'alat_pkdd'=> 0,'gudang_lapangan'=> 0,'posko_aju'=> 0,'alat_it_lapangan' => 0],
+        ],
+        'lapsit_3' => [
+            'personil' => ['pengurus'=> 0,'staf_markas_kabkota' => 0,'staf_markas_prov' => 0,'staf_markas_pusat' => 0,'relawan_pmi_kabkota' => 0,
+                           'relawan_pmi_prov' => 0,'relawan_pmi_linprov' => 0,'sukarelawan_sip' => 0], 
+            'tsr' => ['medis'=> 0,'paramedis'=> 0,'relief'=> 0,'logistik'=> 0,'watsan'=> 0,'it_telekom'=> 0,'sheltering'=> 0],
+            'alat_tdb' => ['kend_ops'=> 0,'truk_angkut'=> 0,'truk_tanki'=> 0,'double_cabin'=> 0,'alat_du'=> 0,'ambulans'=> 0,'alat_watsan'=> 0,
+                           'rs_lapangan'=> 0,'alat_pkdd'=> 0,'gudang_lapangan'=> 0,'posko_aju'=> 0,'alat_it_lapangan' => 0],
+        ],
+        'lapsit_4' => [
+            'personil' => ['pengurus'=> 0,'staf_markas_kabkota' => 0,'staf_markas_prov' => 0,'staf_markas_pusat' => 0,'relawan_pmi_kabkota' => 0,
+                           'relawan_pmi_prov' => 0,'relawan_pmi_linprov' => 0,'sukarelawan_sip' => 0], 
+            'tsr' => ['medis'=> 0,'paramedis'=> 0,'relief'=> 0,'logistik'=> 0,'watsan'=> 0,'it_telekom'=> 0,'sheltering'=> 0],
+            'alat_tdb' => ['kend_ops'=> 0,'truk_angkut'=> 0,'truk_tanki'=> 0,'double_cabin'=> 0,'alat_du'=> 0,'ambulans'=> 0,'alat_watsan'=> 0,
+                           'rs_lapangan'=> 0,'alat_pkdd'=> 0,'gudang_lapangan'=> 0,'posko_aju'=> 0,'alat_it_lapangan' => 0],
+        ],
+    ];
+
+foreach ($semuaKejadian as $index => $kej) {
+    $key = $index == 0 ? 'lapsit_awal' : 'lapsit_' . $index;
+    if (isset($dataMobilisasi[$key])) {
+        $dataMobilisasi[$key] = [
+            'personil' => [
+                'pengurus'=> $kej->mobilisasiSd->personil->pengurus ?? 0,
+                'staf_markas_kabkota'=> $kej->mobilisasiSd->personil->staf_markas_kabkota ?? 0,
+                'staf_markas_prov'=> $kej->mobilisasiSd->personil->staf_markas_prov ?? 0,
+                'staf_markas_pusat'=> $kej->mobilisasiSd->personil->staf_markas_pusat ?? 0,
+                'relawan_pmi_kabkota'=> $kej->mobilisasiSd->personil->relawan_pmi_kabkota ?? 0,
+                'relawan_pmi_prov'=> $kej->mobilisasiSd->personil->relawan_pmi_prov ?? 0,
+                'relawan_pmi_linprov'=> $kej->mobilisasiSd->personil->relawan_pmi_linprov ?? 0,
+                'sukarelawan_sip'=> $kej->mobilisasiSd->personil->sukarelawan_sip ?? 0,
+            ],
+            'tsr' => [
+                'medis'=> $kej->mobilisasiSd->tsr->medis ?? 0,
+                'paramedis'=> $kej->mobilisasiSd->tsr->paramedis ?? 0,
+                'relief'=> $kej->mobilisasiSd->tsr->relief ?? 0,
+                'logistik'=> $kej->mobilisasiSd->tsr->logistik ?? 0,
+                'watsan'=> $kej->mobilisasiSd->tsr->watsan ?? 0,
+                'it_telekom'=> $kej->mobilisasiSd->tsr->it_telekom ?? 0,
+                'sheltering'=> $kej->mobilisasiSd->tsr->sheltering ?? 0,
+            ],
+            'alat_tdb' => [
+                'kend_ops'=> $kej->mobilisasiSd->alatTdb->kend_ops ?? 0,
+                'truk_angkut'=> $kej->mobilisasiSd->alatTdb->truk_angkut ?? 0,
+                'truk_tanki'=> $kej->mobilisasiSd->alatTdb->truk_tanki ?? 0,
+                'double_cabin'=> $kej->mobilisasiSd->alatTdb->double_cabin ?? 0,
+                'alat_du'=> $kej->mobilisasiSd->alatTdb->alat_du ?? 0,
+                'ambulans'=> $kej->mobilisasiSd->alatTdb->ambulans ?? 0,
+                'alat_watsan'=> $kej->mobilisasiSd->alatTdb->alat_watsan ?? 0,
+                'rs_lapangan'=> $kej->mobilisasiSd->alatTdb->rs_lapangan ?? 0,
+                'alat_pkdd'=> $kej->mobilisasiSd->alatTdb->alat_pkdd ?? 0,
+                'gudang_lapangan'=> $kej->mobilisasiSd->alatTdb->gudang_lapangan ?? 0,
+                'posko_aju'=> $kej->mobilisasiSd->alatTdb->posko_aju ?? 0,
+                'alat_it_lapangan'=> $kej->mobilisasiSd->alatTdb->alat_it_lapangan ?? 0,
+            ],
+        ];
+    }
+}
     return [
         'kejadian' => $kejadian,
         'jenisKejadian' => $jenisKejadian,
@@ -498,6 +579,7 @@ class PDFController extends Controller
             'giat_pemerintah' => $kejadian->giat_pemerintah,
         ],
         'dampak' => $dataDampak,
+        'mobilisasiSd' => $dataMobilisasi,
         'situasi_keamanan' => $kejadian->situasi_keamanan ?? 'Lokasi aman dan terkendali',
         'tindakan_dilakukan' => $kejadian->giatPmi ? [
             'evakuasi' => $kejadian->giatPmi->layananKorban->evakuasi ?? '-',
