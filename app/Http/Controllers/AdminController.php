@@ -65,6 +65,12 @@ class AdminController extends Controller
         ->join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')
         ->select('jenis_kejadian.nama_kejadian as nmKejadian', 'reports.tanggal_kejadian as dateKejadian', 
         'layanan_korban.distribusi as layDis', 'layanan_korban.layanan_kesehatan as layKes', 'assessment.status as stat')->get();
+
+        $mobilisasi = MobilisasiSd::where('id_personil', 1)->with([
+            'tsr',
+            'alatTdb',
+            'personil',
+        ])->get();
         
         $kkSum = KorbanTerdampak::sum('kk');
         $jiwaSum = KorbanTerdampak::sum('jiwa');
@@ -83,20 +89,29 @@ class AdminController extends Controller
 
         ];
 
-        // $angkaPenduduk = [
-        //     'keluarga' => $penduduk->groupBy('no_kk')->count(),
-        //     'penduduk' => $penduduk->where('nama')->count(),
-        //     'kematian' => $penduduk->where('status', 'Meninggal')->count()
-        // ];
-        // dd($kejadian);
+        $tdb = [
+            'o' => AlatTdb::sum('kend_ops'),
+            'ta' => AlatTdb::sum('truk_angkut'),
+            'tt' => AlatTdb::sum('truk_tanki'),
+            'dd' => AlatTdb::sum('double_cabin'),
+            'ad' => AlatTdb::sum('alat_du'),
+            'rl' => AlatTdb::sum('rs_lapangan'),
+            'aw' => AlatTdb::sum('alat_watsan'),
+            'ap' => AlatTdb::sum('alat_pkdd')
+        ];
+        
         return view('admin.executive_summary',
         [
-            'chart' => $chart->build(), 
+            'chart' => $chart->build(),
+            'bar' => $chart->bar(),
+            'personil' => $chart->personil(),
             'dampak' => $dampak,
             'kejadian' => $kejadian,
             'layanan' => $layanan,
             'jumlah' => $jumlah,
-            'user' => $user
+            'user' => $user,
+            'mobilisasi' => $mobilisasi,
+            'tdb' => $tdb
         ]);
     }
     

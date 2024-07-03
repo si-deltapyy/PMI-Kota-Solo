@@ -56,7 +56,7 @@ class KejadianBencana extends Model
         return $this->hasMany(Assessment::class, 'id_assessment');
     }
 
-    public function mobilisasi()
+    public function mobilisasiSd()
     {
         return $this->belongsTo(MobilisasiSd::class, 'id_mobilisasi_sd');
     }

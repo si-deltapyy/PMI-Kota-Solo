@@ -44,33 +44,7 @@ class PDFController extends Controller
 
     public function cekdata($id)
     {
-        $kejadian = KejadianBencana::where('id_assessment', $id)->with([
-            'giatPmi.evakuasiKorban',
-            'giatPmi.layananKorban',
-            'dampak.korbanTerdampak',
-            'dampak.korbanJlw',
-            'dampak.kerusakanRumah',
-            'dampak.kerusakanFasilitasSosial',
-            'dampak.kerusakanInfrastruktur',
-            'pengungsian',
-            'narahubung',
-            'petugasPosko',
-            'relawan',
-            'jenisKejadian',
-            'mobilisasi',
-            'mobilisasi.tsr',
-            'mobilisasi.alatTdb',
-            'mobilisasi.personil',
-            'assessment',
-            'assessment.report',
-        ])->findOrFail($id);
-       
-
-    if($kejadian){
-        return ["data" => $kejadian, "message" => "berhasil"];
-    }
-    return ["message" => "error"];
-    }
+    
 
     // public function test()
     // {
@@ -207,10 +181,10 @@ class PDFController extends Controller
             'petugasPosko',
             'relawan',
             'jenisKejadian',
-            'mobilisasi',
-            'mobilisasi.tsr',
-            'mobilisasi.alatTdb',
-            'mobilisasi.personil',
+            'mobilisasiSd',
+            'mobilisasiSd.tsr',
+            'mobilisasiSd.alatTdb',
+            'mobilisasiSd.personil',
             'assessment',
             'assessment.report',
         ])->findOrFail($id);

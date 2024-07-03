@@ -6,6 +6,7 @@ use App\Http\Controllers\SelectStatusController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\cekdata;
 use App\Http\Controllers\pdfController;
 use App\Http\Controllers\PengelolaProfilController;
 
@@ -27,7 +28,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/cekdata/{id}', [pdfController::class, 'cekdata']);
+Route::get('/cekdata/{id}', [cekdata::class, 'index']);
 
 Route::get('/relawan/assessment/response/{id}', [RelawanController::class, 'response_assessment'])->name('relawan-view-assessment');
 Route::get('/relawan/lapsit/response/{id}', [RelawanController::class, 'response_lapsit'])->name('relawan-view-assessment');
