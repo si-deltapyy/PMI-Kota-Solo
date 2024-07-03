@@ -28,6 +28,35 @@ class LayananKorbanSeeder extends Seeder
                 'evakuasi' => 'Evakuasi air',
                 'layanan_kesehatan' => 'Posko kesehatan'
             ],
+            [
+                'id_assessment' => 3,
+                'distribusi' => 'Makanan',
+                'dapur_umum' => 'Dapur umum tersedia',
+                'evakuasi' => 'Evakuasi darurat',
+                'layanan_kesehatan' => 'Pelayanan medis',
+            ],
+            [
+                'id_assessment' => 3,
+                'distribusi' => 'Obat-obatan',
+                'dapur_umum' => 'Dapur umum belum beroperasi',
+                'evakuasi' => 'Evakuasi darurat diperlukan',
+                'layanan_kesehatan' => 'Posko kesehatan berjalan',
+            ],
+            [
+                'id_assessment' => 3,
+                'distribusi' => 'Selimut',
+                'dapur_umum' => 'Dapur umum tidak ada',
+                'evakuasi' => 'Evakuasi sudah selesai',
+                'layanan_kesehatan' => 'Pelayanan kesehatan mendesak',
+            ],
+            [
+                'id_assessment' => 3,
+                'distribusi' => 'Air bersih',
+                'dapur_umum' => 'Dapur umum sedang dipersiapkan',
+                'evakuasi' => 'Evakuasi tidak diperlukan',
+                'layanan_kesehatan' => 'Pelayanan kesehatan terbatas',
+            ],
+            
             // Add more entries as needed
         ]);
     }

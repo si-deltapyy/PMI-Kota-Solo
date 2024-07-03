@@ -43,7 +43,7 @@ class PDFController extends Controller
 {
 
     public function cekdata($id)
-    {
+    {}
     
 
     // public function test()

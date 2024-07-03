@@ -38,6 +38,23 @@ class PersonilNarahubungSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+            [
+                'nama_lengkap' => 'Bob Smith',
+                'posisi' => 'Manager',
+                'kontak' => 'bob.smith@example.com',
+                'id_kejadian' => 3,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nama_lengkap' => 'Eve Brown',
+                'posisi' => 'Supervisor',
+                'kontak' => 'eve.brown@example.com',
+                'id_kejadian' => 4,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            
             // Add more entries as needed
         ]);
     }

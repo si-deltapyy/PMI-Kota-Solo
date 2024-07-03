@@ -59,10 +59,10 @@ $(document).ready(function () {
                                     <td>
                                     ${item.status === 'On Process'
                                         ?
-                                        `<a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
-                                        <a href="/${role}/${urlBase}/verif/${item.id}" class="btn btn-success btn-sm"><i class="menu-icon mdi mdi-checkbox-multiple-marked-circle"></i></a>`
+                                        `<a href="/${role}/${urlBase}/view/${item.id_kejadian}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                                        <a href="/${role}/${urlBase}/verif/${item.id_kejadian}" class="btn btn-success btn-sm"><i class="menu-icon mdi mdi-checkbox-multiple-marked-circle"></i></a>`
                                         :
-                                        `<a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>`
+                                        `<a href="/${role}/${urlBase}/view/${item.id_kejadian}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>`
                                     }
                                     </td>
                                 </tr>
@@ -78,14 +78,14 @@ $(document).ready(function () {
                                     <td>${formattedUpdatedAt.date + " - " + formattedUpdatedAt.time}</td>
                                     <td><p class="btn ${statusClass} btn-sm">${item.status}</p></td>
                                     <td>
-                                        <a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                                        <a href="/${role}/${urlBase}/view/${item.id_assessment}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                                         ${item.status == 'On Process'
-                                        ? `<a href="/${role}/${urlBase}/${item.id}/edit" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                                               <button class="btn btn-danger btn-sm delete-item" data-id="${item.id}">
+                                        ? `<a href="/${role}/${urlBase}/${item.id_assessment}/edit" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
+                                               <button class="btn btn-danger btn-sm delete-item" data-id="${item.id_assessment}">
                                                     <i class="menu-icon mdi mdi-delete"></i>
                                                 </button>`
                                         : item.status == 'Aktif' 
-                                        ? `<a href="/relawan/lapsit/create/${item.id}" class="btn btn-success btn-sm ">Create Lapsit</i></a>`
+                                        ? `<a href="/relawan/lapsit/create/${item.id_assessment}" class="btn btn-success btn-sm ">Create Lapsit</i></a>`
                                         : ``
                                     }
                                     </td>
@@ -104,12 +104,12 @@ $(document).ready(function () {
                                     <td>
                                         <a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                                         ${item.status == 'Aktif' | item.status == 'On Process'
-                                        ? `<a href="/${role}/${urlBase}/${item.id}/edit" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                                               <button class="btn btn-danger btn-sm delete-item" data-id="${item.id}">
+                                        ? `<a href="/${role}/${urlBase}/${item.id_kejadian}/edit" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
+                                               <button class="btn btn-danger btn-sm delete-item" data-id="${item.id_kejadian}">
                                                     <i class="menu-icon mdi mdi-delete"></i>
                                                 </button>`
-                                        : `<a href="/${role}/${urlBase}/${item.id}/edit" class="btn btn-info btn-sm disabled"><i class="menu-icon mdi mdi-border-color"></i></a>
-                                               <a href="/${role}/${urlBase}/${item.id}/delete" class="btn btn-danger btn-sm disabled"><i class="menu-icon mdi mdi-delete"></i></a>`
+                                        : `<a href="/${role}/${urlBase}/${item.id_kejadian}/edit" class="btn btn-info btn-sm disabled"><i class="menu-icon mdi mdi-border-color"></i></a>
+                                               <a href="/${role}/${urlBase}/${item.id_kejadian}/delete" class="btn btn-danger btn-sm disabled"><i class="menu-icon mdi mdi-delete"></i></a>`
                                     }
                                     </td>
                                 </tr>
@@ -128,22 +128,22 @@ $(document).ready(function () {
                                     <td>${formattedUpdatedAt.date + " - " + formattedUpdatedAt.time}</td>
                                     <td><p class="btn ${statusClass} btn-sm">${item.status}</p></td>
                                     <td>
-                                        <a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                                        <a href="/${role}/${urlBase}/view/${item.id_report}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
                                         ${item.status === 'On Process'
-                                        ? `<a href="/${role}/${urlBase}/edit/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                                               <button class="btn btn-danger btn-sm delete-item" data-id="${item.id}">
+                                        ? `<a href="/${role}/${urlBase}/edit/${item.id_report}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
+                                               <button class="btn btn-danger btn-sm delete-item" data-id="${item.id_report}">
                                                     <i class="menu-icon mdi mdi-delete"></i>
                                                 </button>`
-                                        : `<a href="/${role}/${urlBase}/edit/${item.id}" class="btn btn-info btn-sm disabled"><i class="menu-icon mdi mdi-border-color"></i></a>
-                                               <a href="/${role}/${urlBase}/delete/${item.id}" class="btn btn-danger btn-sm disabled"><i class="menu-icon mdi mdi-delete"></i></a>`
+                                        : `<a href="/${role}/${urlBase}/edit/${item.id_report}" class="btn btn-info btn-sm disabled"><i class="menu-icon mdi mdi-border-color"></i></a>
+                                               <a href="/${role}/${urlBase}/delete/${item.id_report}" class="btn btn-danger btn-sm disabled"><i class="menu-icon mdi mdi-delete"></i></a>`
                                     }
                                     </td>
                                 </tr>
                             `;
                             }
                             else if (urlBase == "lapsit") {
-                                const adminViewLapsitUrl = window.routes.adminViewLapsit.replace(':id', item.id);
-                                const shareLapsitUrl = window.routes.shareLapsit.replace(':id', item.id);
+                                const adminViewLapsitUrl = window.routes.adminViewLapsit.replace(':id', item.id_kejadian);
+                                const shareLapsitUrl = window.routes.shareLapsit.replace(':id', item.id_kejadian);
                                 tableRow = `
                                 <tr class="${item.status === 'Selesai' ? 'text-muted' : ''}">
                                     <td>${index + 1}</td>
@@ -164,8 +164,8 @@ $(document).ready(function () {
                                                     <i class="mdi mdi-whatsapp"></i>
                                                 </button>
                                             </form>
-                                            <a href="/lapsit/${item.id}/pdf" class="btn btn-warning btn-icon btn-sm me-2">
-                                                <i class="menu-icon mdi mdi-download"></i>
+                                            <a href="/flash-report/generate/${item.id_kejadian}" class="btn btn-warning btn-icon btn-sm me-2">
+                                                <i class="menu-icon mdi mdi-file-chart"></i>
                                             </a>
                                         </div>
                                     </td>
@@ -315,20 +315,20 @@ $(document).ready(function () {
 function getStatusButtons(role, urlBase, item) {
     switch (item.status) {
         case 'On Process':
-            return `<a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
-                    <a href="/${role}/${urlBase}/verif/${item.id}" class="btn btn-success btn-sm"><i class="menu-icon mdi mdi-border-color"></i></a>
-                    <a href="/${role}/${urlBase}/selesai/${item.id}" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-checkbox-multiple-marked-circle"></i></a>`
+            return `<a href="/${role}/${urlBase}/view/${item.id_assessment}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                    <a href="/${role}/${urlBase}/verif/${item.id_assessment}" class="btn btn-success btn-sm"><i class="menu-icon mdi mdi-check-circle"></i></a>
+                    <a href="/${role}/${urlBase}/selesai/${item.id_assessment}" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-checkbox-multiple-marked-circle"></i></a>`
                 ;
         case 'Aktif':
             return `
-                <a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
-                <a href="/${role}/${urlBase}/selesai/${item.id}" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-checkbox-multiple-marked-circle"></i></a>
+                <a href="/${role}/${urlBase}/view/${item.id_assessment}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                <a href="/${role}/${urlBase}/selesai/${item.id_assessment}" class="btn btn-danger btn-sm"><i class="menu-icon mdi mdi-checkbox-multiple-marked-circle"></i></a>
             `;
         case 'Selesai':
             return `
-                <a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
+                <a href="/${role}/${urlBase}/view/${item.id_assessment}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>
             `;
         default:
-            return `<a href="/${role}/${urlBase}/view/${item.id}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>`;
+            return `<a href="/${role}/${urlBase}/view/${item.id_assessment}" class="btn btn-info btn-sm"><i class="menu-icon mdi mdi-information"></i></a>`;
     }
 }

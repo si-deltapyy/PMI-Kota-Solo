@@ -32,6 +32,25 @@ class KorbanTerdampakSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+            [
+                'kk' => 150,
+                'jiwa' => 350,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'kk' => 100,
+                'jiwa' => 250,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'kk' => 130,
+                'jiwa' => 320,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            
             // Add more entries as needed
         ]);
     }

@@ -36,6 +36,27 @@ class EvakuasiKorbanSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now()
             ],
+            [
+                'luka_ringanberat' => '15',
+                'meninggal' => '3',
+                'keterangan' => 'Description of injuries and casualties',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'luka_ringanberat' => '12',
+                'meninggal' => '1',
+                'keterangan' => 'Detailed report of injuries and one casualty',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'luka_ringanberat' => '8',
+                'meninggal' => '0',
+                'keterangan' => 'Minor injuries reported, no casualties',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],            
             // Add more records as needed
         ]);
     }

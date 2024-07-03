@@ -52,7 +52,7 @@ Route::get('pdf/check', [App\Http\Controllers\PDFController::class, 'checkExport
 
 // flash report
 Route::get('flash-report/response/{id}', [SelectStatusController::class, 'allDataLapsit']);
-Route::get('flash-report/generate/{id}', [AdminController::class, 'generateFlashReport']);
+Route::get('flash-report/generate/{id}', [AdminController::class, 'generateFlashReport'])->name("flash-report");
 
 // add pdf assessment
 Route::get('assessment/{id}/pdf', [App\Http\Controllers\PDFController::class, 'exportLaporanAssessment'])->name('assessment.pdf');

@@ -44,6 +44,36 @@ class KerusakanFasilSosialSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+            [
+                'sekolah' => '5',
+                'tempat_ibadah' => '2',
+                'rumah_sakit' => '4',
+                'pasar' => '3',
+                'gedung_pemerintah' => '6',
+                'lain_lain' => '7',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'sekolah' => '3',
+                'tempat_ibadah' => '1',
+                'rumah_sakit' => '2',
+                'pasar' => '1',
+                'gedung_pemerintah' => '4',
+                'lain_lain' => '5',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'sekolah' => '6',
+                'tempat_ibadah' => '3',
+                'rumah_sakit' => '5',
+                'pasar' => '2',
+                'gedung_pemerintah' => '7',
+                'lain_lain' => '8',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],            
             // Add more entries as needed
         ]);
     }

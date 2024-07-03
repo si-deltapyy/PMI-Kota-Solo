@@ -35,6 +35,20 @@ class PetugasPoskoSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+            [
+                'nama_lengkap' => 'Ahmad Fahmi',
+                'kontak' => 'ahmad.fahmi@example.com',
+                'id_kejadian' => 3,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nama_lengkap' => 'Linda Wijaya',
+                'kontak' => 'linda.wijaya@example.com',
+                'id_kejadian' => 4,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],            
             // Add more entries as needed
         ]);
     }
