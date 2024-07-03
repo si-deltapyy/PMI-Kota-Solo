@@ -124,6 +124,7 @@ class SelectStatusController extends Controller
             $assessment = Assessment::where('id_relawan', $id_user) // Nama fungsi relasi dalam model Report
                 ->with([
                     'report.jenisKejadian',
+                    'kejadianBencana',
                     'kejadianBencana.jenisKejadian',
                     'kejadianBencana.admin',
                     'kejadianBencana.relawan',
@@ -145,7 +146,9 @@ class SelectStatusController extends Controller
             $assessment->nama_kejadian = $assessment->report->jenisKejadian->nama_kejadian;
             $assessment->timestamp_report = $assessment->report->timestamp_report;
             // Fetch location details
-            $assessment->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+            // $assessment->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+            $firstKejadianBencana = $assessment->kejadianBencana->first();
+            $assessment->lokasi = $firstKejadianBencana->lokasi;
             $assessment->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
         });
 
@@ -196,7 +199,9 @@ class SelectStatusController extends Controller
             $assessment->nama_kejadian = $assessment->report->jenisKejadian->nama_kejadian;
             $assessment->timestamp_report = $assessment->report->timestamp_report;
             // Fetch location details
-            $assessment->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+            // $assessment->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+            $firstKejadianBencana = $assessment->kejadianBencana->first();
+            $assessment->lokasi = $firstKejadianBencana->lokasi;
             $assessment->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
         });
 
@@ -310,7 +315,7 @@ class SelectStatusController extends Controller
             $lapsit->nama_kejadian = $lapsit->jenisKejadian->nama_kejadian;
             $lapsit->timestamp_report = $lapsit->assessment->report->timestamp_report;
             // Fetch location details
-            $lapsit->locationName = $this->getLocationName($lapsit->assessment->report->lokasi_latitude, $lapsit->assessment->report->lokasi_longitude);
+            // $lapsit->locationName = $this->getLocationName($lapsit->assessment->report->lokasi_latitude, $lapsit->assessment->report->lokasi_longitude);
             $lapsit->googleMapsLink = $this->getGoogleMapsLink($lapsit->assessment->report->lokasi_latitude, $lapsit->assessment->report->lokasi_longitude);
         });
 
@@ -363,7 +368,7 @@ class SelectStatusController extends Controller
             $lapsit->nama_kejadian = $lapsit->jenisKejadian->nama_kejadian;
             $lapsit->timestamp_report = $assessment->report->timestamp_report;
             // Fetch location details
-            $lapsit->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
+            // $lapsit->locationName = $this->getLocationName($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
             $lapsit->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
         });
 
@@ -679,16 +684,40 @@ class SelectStatusController extends Controller
 
     public function getLocationName($latitude, $longitude)
     {
-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-            'latlng' => $latitude . ',' . $longitude,
-            'key' => config('services.google_maps.api_key'),
-        ]);
+        $url = 'https://nominatim.openstreetmap.org/reverse';
+        $params = [
+            'format' => 'json',
+            'lat' => $latitude,
+            'lon' => $longitude,
+            'addressdetails' => 1,
+        ];
 
-        $data = $response->json();
+        $response = Http::get($url, $params);
 
-        if (isset($data['results'][0]['formatted_address'])) {
-            return $data['results'][0]['formatted_address'];
+        // Check HTTP status
+        if ($response->successful()) {
+            // Debug: Print the full URL and response
+            // dd($url . '?' . http_build_query($params), $response->body());
+
+            $data = $response->json();
+
+            // Check if 'address' key exists
+            if (isset($data['address'])) {
+                // Check for city, town, or village
+                if (isset($data['address']['village'])) {
+                    return $data['address']['village'];
+                } elseif (isset($data['address']['city'])) {
+                    return $data['address']['city'];
+                } elseif (isset($data['address']['town'])) {
+                    return $data['address']['town'];
+                } 
+            }
+
+            return 'Location not found';
         } else {
+            // Print out error message for unsuccessful request
+            // dd('Error: ' . $response->status());
+
             return 'Location not found';
         }
     }

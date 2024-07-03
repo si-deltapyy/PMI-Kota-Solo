@@ -32,7 +32,7 @@
                         <div class="form-group">
                             <label for="lokasi">Lokasi</label>
                             <input readonly type="email" class="form-control" id="lokasi" placeholder="Lokasi"
-                                value="{{ $lapsit->locationName }}">
+                                value="{{ $lapsit->lokasi }}">
                             <br>
                             <a href="{{ $lapsit->googleMapsLink }}" class="btn btn-info btn-sm" id="lihat-lokasi">Lihat
                                 Lokasi</a>
@@ -570,7 +570,7 @@
                         <hr>
 
                         <div id="form_area_petugas">
-                            @foreach ($lapsit->petugasPosko as $petugasPosko)
+                            @foreach ($lapsit->petugas_posko as $petugasPosko)
                             <div id="form_petugas" >
                                 <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
                                 <div class="form-group">
@@ -582,6 +582,16 @@
                                     <input readonly type="phone" class="form-control" name="jumlah_orang[]" value="{{ $petugasPosko->kontak }}">
                                 </div>
                             </div>
+                            @endforeach
+                        </div>
+
+                        <h4 class="card-title">Dokumentasi</h4>
+                        <div id="dokumentasi-container">
+                            @foreach($lapsit->dokumentasi as $index => $dokumentasi)
+                                <div class="form-group dokumentasi-item">
+                                    <img src="{{ asset($dokumentasi->file_dokumentasi) }}" alt="", style="width:50%">
+                                </div>
+                                <br>
                             @endforeach
                         </div>
 
