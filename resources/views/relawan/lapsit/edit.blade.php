@@ -27,7 +27,7 @@
                     @else
                     <p>Data Dampak tidak tersedia.</p>
                     @endif --}}
-                    <form class="forms-sample" action="{{ route('edit-lapsit.update', $kejadian->id_assessment) }}"
+                    <form class="forms-sample" action="{{ route('edit-lapsit.update', $kejadian->id_kejadian) }}"
                         method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')

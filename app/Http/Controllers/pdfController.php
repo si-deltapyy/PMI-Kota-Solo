@@ -176,7 +176,7 @@ class PDFController extends Controller
             'dampak.kerusakanRumah',
             'dampak.kerusakanFasilitasSosial',
             'dampak.kerusakanInfrastruktur',
-            'pengungsian',
+            'dampak.pengungsian',
             'narahubung',
             'petugasPosko',
             'relawan',
