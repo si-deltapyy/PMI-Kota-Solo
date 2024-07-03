@@ -1165,7 +1165,7 @@ class RelawanController extends Controller
 
         ]);
 
-        $kejadian = KejadianBencana::where('id_assessment', $id)->firstOrFail();
+        $kejadian = KejadianBencana::where('id_kejadian', $id)->firstOrFail();
 
         // Update kejadian bencana
         $kejadian->update([
@@ -1357,6 +1357,7 @@ class RelawanController extends Controller
                         'nama_lengkap' => $narahubungData['nama_lengkap'],
                         'posisi' => $narahubungData['posisi'],
                         'kontak' => $narahubungData['kontak'],
+                        'id_kejadian' => $id
                     ]);
                 }
             }
@@ -1383,6 +1384,7 @@ class RelawanController extends Controller
                     $kejadian->petugasPosko()->create([
                         'nama_lengkap' => $petugasPoskoData['nama_lengkap'],
                         'kontak' => $petugasPoskoData['kontak'],
+                        'id_kejadian' => $id
                     ]);
                 }
             }
@@ -1437,7 +1439,8 @@ class RelawanController extends Controller
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $file->storeAs('public/dokumentasi', $fileName, 'public');
                 $kejadian->dokumentasi()->create([
-                    'file_dokumentasi' => $fileName
+                    'file_dokumentasi' => $fileName,
+                    'id_kejadian' => $id
                 ]);
             }
         }
