@@ -57,13 +57,16 @@ class AdminController extends Controller
     {
         $user = User::role('relawan')->get();
         $dampak = Dampak::all()->count();
+        $bencana = KejadianBencana::join('jenis_kejadian', 'kejadian_bencana.id_jeniskejadian', '=', 'jenis_kejadian.id_jeniskejadian')->get();
         $kejadian = Report::join('jenis_kejadian', 'reports.id_jeniskejadian', '=', 'jenis_kejadian.id_jeniskejadian')
             ->select('reports.status', 'jenis_kejadian.nama_kejadian')->get();
 
         $layanan = LayananKorban::join('assessment', 'layanan_korban.id_assessment', '=', 'assessment.id_assessment')
             ->join('reports', 'assessment.id_report', '=', 'reports.id_report')
             ->join('jenis_kejadian', 'reports.id_jeniskejadian', '=', 'jenis_kejadian.id_jeniskejadian')
+            ->join('kejadian_bencana', 'kejadian_bencana.id_kejadian' , '=', 'assessment.id_assessment')
             ->select(
+                'id_kejadian',
                 'jenis_kejadian.nama_kejadian as nmKejadian',
                 'reports.tanggal_kejadian as dateKejadian',
                 'layanan_korban.distribusi as layDis',
@@ -117,7 +120,7 @@ class AdminController extends Controller
                 'jumlah' => $jumlah,
                 'user' => $user,
                 'mobilisasi' => $mobilisasi,
-                'tdb' => $tdb
+                'bencana' => $bencana
             ]
         );
     }
@@ -911,18 +914,22 @@ class AdminController extends Controller
         return view('admin.lapsit.index', compact('user', 'kejadian'));
     }
 
-    public function Sharelapsit($id)
+    /**
+     * @param Request $request, $id
+     * @return array
+     */
+    public function Sharelapsit($id, Request $request)
     {
+        $no_hp = $request->no_hp;
         $kejadian = KejadianBencana::join('jenis_kejadian', 'kejadian_bencana.id_jeniskejadian', '=', 'jenis_kejadian.id_jeniskejadian')
             ->where('id_kejadian', $id)
             ->select('*', 'kejadian_bencana.updated_at as terbaru', 'jenis_kejadian.nama_kejadian as nmKejadian')
             ->first();
 
-        $datenow = Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-M-d H:i');
+        $datenow = Carbon::now()->setTimezone('Asia/Jakarta')->format('d M Y H:i');
 
-        $as = 2;
         // dd($kejadian);
-        return view('admin.lapsit.share', compact('kejadian', 'as', 'datenow'));
+        return view('admin.lapsit.share', compact('kejadian', 'no_hp', 'datenow'));
     }
 
     public function generateFlashReport($id)

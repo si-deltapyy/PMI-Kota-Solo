@@ -116,198 +116,66 @@
                       <div class="col-lg-8 d-flex flex-column">
                         <div class="row flex-grow">
                           <div class="col-12 grid-margin stretch-card">
-                            <div class="card card-rounded">
-                              <div class="card-body">
-                                <div class="d-sm-flex justify-content-between align-items-start">
-                                  <div>
-                                    <h4 class="card-title card-title-dash">Layanan korban</h4>
-                                   <p class="card-subtitle card-subtitle-dash">You have 50+ new requests</p>
+                              <div class="card card-rounded">
+                                  <div class="card-body">
+                                      <div class="d-sm-flex justify-content-between align-items-start">
+                                          <div>
+                                              <h4 class="card-title card-title-dash">Layanan korban</h4>
+                                              <p class="card-subtitle card-subtitle-dash">You have 50+ new requests</p>
+                                          </div>
+                                      </div>
+                                      <div class="table-responsive mt-1">
+                                          <table class="table select-table">
+                                              <thead>
+                                                  <tr>
+                                                      <th>No</th>
+                                                      <th>Kejadian</th>
+                                                      <th>Tanggal</th>
+                                                      <th>Distribusi</th>
+                                                      <th>Layanan Kesehatan</th>
+                                                      <th>Status</th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody>
+                                                  @php
+                                                  $no=1;
+                                                  @endphp
+                                                  @foreach($layanan as $x)
+                                                  <tr>
+                                                      <td>{{$no}}</td>
+                                                      <td>
+                                                          <div class="d-flex ">
+                                                              <div>
+                                                                  <h6>{{$x->nmKejadian}}</h6>
+                                                              </div>
+                                                          </div>
+                                                      </td>
+                                                      <td>
+                                                          <h6>{{$x->dateKejadian}}</h6>
+                                                      </td>
+                                                      <td>
+                                                          <h6>{{$x->layDis}}</h6>
+                                                      </td>
+                                                      <td>
+                                                          <h6>{{$x->layKes}}</h6>
+                                                      </td>
+                                                      <td>
+                                                          @if($x->stat == 'On Process')
+                                                          <div class="badge badge-opacity-warning">In progress</div>
+                                                          @else
+                                                          <div class="badge badge-opacity-success">Aktif</div>
+                                                          @endif
+                                                      </td>
+                                                  </tr>
+                                                  @php
+                                                  $no++
+                                                  @endphp
+                                                  @endforeach
+                                              </tbody>
+                                          </table>
+                                      </div>
                                   </div>
-                                </div>
-                                <div class="table-responsive  mt-1">
-                                  <table class="table select-table">
-                                    <thead>
-                                      <tr>
-                                        <th>No</th>
-                                        <th>Kejadian</th>
-                                        <th>Tanggal</th>
-                                        <th>Distribusi</th>
-                                        <th>Layanan Kesehatan</th>
-                                        <th>Status</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      @php
-                                      $no=1;
-                                      @endphp
-                                      @foreach($layanan as $x)
-                                      <tr>
-                                        <td>{{$no}}</td>
-                                        <td>
-                                          <div class="d-flex ">
-                                            <div>
-                                              <h6>{{$x->nmKejadian}}</h6>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <h6>{{$x->dateKejadian}}</h6>
-                                        </td>
-                                        <td>
-                                          <h6>{{$x->layDis}}</h6>
-                                        </td>
-                                        <td>
-                                          <h6>{{$x->layKes}}</h6>
-                                        </td>
-                                        <td>
-                                          @if($x->stat == 'On Process')
-                                          <div class="badge badge-opacity-warning">In progress</div>
-                                          @else
-                                          <div class="badge badge-opacity-success">Aktif</div>
-                                          @endif
-                                        </td>
-                                      </tr>
-                                      @php
-                                      $no++
-                                      @endphp
-                                      @endforeach
-                                      <!-- <tr>
-                                        <td>
-                                          <div class="form-check form-check-flat mt-0">
-                                            <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" aria-checked="false"><i class="input-helper"></i></label>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <div class="d-flex">
-                                            <img src="images/faces/face2.jpg" alt="">
-                                            <div>
-                                              <h6>Laura Brooks</h6>
-                                              <p>Head admin</p>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <h6>Company name 1</h6>
-                                          <p>company type</p>
-                                        </td>
-                                        <td>
-                                          <div>
-                                            <div class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                              <p class="text-success">65%</p>
-                                              <p>85/162</p>
-                                            </div>
-                                            <div class="progress progress-md">
-                                              <div class="progress-bar bg-success" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td><div class="badge badge-opacity-warning">In progress</div></td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="form-check form-check-flat mt-0">
-                                            <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" aria-checked="false"><i class="input-helper"></i></label>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <div class="d-flex">
-                                            <img src="images/faces/face3.jpg" alt="">
-                                            <div>
-                                              <h6>Wayne Murphy</h6>
-                                              <p>Head admin</p>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <h6>Company name 1</h6>
-                                          <p>company type</p>
-                                        </td>
-                                        <td>
-                                          <div>
-                                            <div class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                              <p class="text-success">65%</p>
-                                              <p>85/162</p>
-                                            </div>
-                                            <div class="progress progress-md">
-                                              <div class="progress-bar bg-warning" role="progressbar" style="width: 38%" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td><div class="badge badge-opacity-warning">In progress</div></td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="form-check form-check-flat mt-0">
-                                            <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" aria-checked="false"><i class="input-helper"></i></label>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <div class="d-flex">
-                                            <img src="images/faces/face4.jpg" alt="">
-                                            <div>
-                                              <h6>Matthew Bailey</h6>
-                                              <p>Head admin</p>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <h6>Company name 1</h6>
-                                          <p>company type</p>
-                                        </td>
-                                        <td>
-                                          <div>
-                                            <div class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                              <p class="text-success">65%</p>
-                                              <p>85/162</p>
-                                            </div>
-                                            <div class="progress progress-md">
-                                              <div class="progress-bar bg-danger" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td><div class="badge badge-opacity-danger">Pending</div></td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="form-check form-check-flat mt-0">
-                                            <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" aria-checked="false"><i class="input-helper"></i></label>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <div class="d-flex">
-                                            <img src="images/faces/face5.jpg" alt="">
-                                            <div>
-                                              <h6>Katherine Butler</h6>
-                                              <p>Head admin</p>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <h6>Company name 1</h6>
-                                          <p>company type</p>
-                                        </td>
-                                        <td>
-                                          <div>
-                                            <div class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                              <p class="text-success">65%</p>
-                                              <p>85/162</p>
-                                            </div>
-                                            <div class="progress progress-md">
-                                              <div class="progress-bar bg-success" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td><div class="badge badge-opacity-success">Completed</div></td>
-                                      </tr> -->
-                                    </tbody>
-                                  </table>
-                                </div>
                               </div>
-                            </div>
                           </div>
                         </div>
                         <!-- <div class="row flex-grow">
@@ -480,51 +348,43 @@
                                     <div class="card-body">
                                       <div class="d-sm-flex justify-content-between align-items-start">
                                         <div>
-                                          <h4 class="card-title card-title-dash">Layanan korban</h4>
-                                        <p class="card-subtitle card-subtitle-dash">You have 50+ new requests</p>
+                                          <h4 class="card-title card-title-dash">Detail Kejadian Bencana</h4>
+                                        <p class="card-subtitle card-subtitle-dash">PMI Kota Surakarta</p>
                                         </div>
                                       </div>
                                       <div class="table-responsive  mt-1">
                                         <table class="table select-table">
                                           <thead>
                                             <tr>
-                                              <th><span class="italic-right">Kend. Ops</span></th>
-                                              <th><span class="italic-right">Truk Angkutan</span></th>
-                                              <th><span class="italic-right">Truk Tangki</span></th>
-                                              <th><span class="italic-right">Double Cabin</span></th>
-                                              <th><span class="italic-right">Alat DU</span></th>
-                                              <th><span class="italic-right">Alat Watsan</span></th>
-                                              <th><span class="italic-right">RS Lapangan</span></th>
-                                              <th><span class="italic-right">Alat PK</span></th>
+                                              <th><span class="italic-right">No</span></th>
+                                              <th><span class="italic-right">Nama Bencana</span></th>
                                             </tr>
                                           </thead>
                                           <tbody>
+                                          @php
+                                          $no=1;
+                                          @endphp
+                                          @foreach($bencana as $x)
                                             <tr>
                                               <td>
-                                                <h6>{{$tdb['o']}}</h6>
+                                                <h6>{{$no}}</h6>
                                               </td>
                                               <td>
-                                                <h6>{{$tdb['ta']}}</h6>
-                                              </td>
-                                              <td>
-                                                <h6>{{$tdb['tt']}}</h6>
-                                              </td>
-                                              <td>
-                                                <h6>{{$tdb['dd']}}</h6>
-                                              </td>
-                                              <td>
-                                                <h6>{{$tdb['ad']}}</h6>
-                                              </td>
-                                              <td>
-                                                <h6>{{$tdb['aw']}}</h6>
-                                              </td>
-                                              <td>
-                                                <h6>{{$tdb['rl']}}</h6>
-                                              </td>
-                                              <td>
-                                                <h6>{{$tdb['ap']}}</h6>
+                                                <h6><a href="../flash-report/generate/{{$x->id_kejadian}}" target="_blank">{{$x->nama_kejadian}}</a></h6>
                                               </td>
                                             </tr>
+                                            <tr>
+                                              <td>
+                                                <h6>{{$no}}</h6>
+                                              </td>
+                                              <td>
+                                                <h6><a href="../flash-report/generate/{{$x->id_kejadian}}" target="_blank">{{$x->nama_kejadian}}</a></h6>
+                                              </td>
+                                            </tr>
+                                            @php
+                                            $no++
+                                            @endphp
+                                            @endforeach
                                           </tbody>
                                         </table>
                                       </div>
@@ -544,5 +404,19 @@
             </div>
           </div>
         <!-- content-wrapper ends -->
+
+        <script>
+        $(document).ready(function() {
+            $('table').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true
+            });
+        });
+        </script>
 
 @endsection
