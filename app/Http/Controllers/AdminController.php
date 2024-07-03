@@ -168,7 +168,6 @@ class AdminController extends Controller
             'keterangan' => 'required|string',
             'lokasi_longitude' => 'nullable|numeric',
             'lokasi_latitude' => 'nullable|numeric',
-            'status' => 'required|in:On Process,Valid,Invalid',
         ]);
 
         $tanggalKejadian = \Carbon\Carbon::parse($request->tanggal_kejadian)->format('Y-m-d H:i:s');
@@ -184,7 +183,7 @@ class AdminController extends Controller
         $laporanKejadian->keterangan = $request->keterangan;
         $laporanKejadian->lokasi_longitude = $request->lokasi_longitude;
         $laporanKejadian->lokasi_latitude = $request->lokasi_latitude;
-        $laporanKejadian->status = $request->status;
+        $laporanKejadian->status = "On Process";
         $laporanKejadian->save();
 
         return redirect()->route('admin-laporankejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
@@ -231,7 +230,7 @@ class AdminController extends Controller
         $laporanKejadian->keterangan = $request->keterangan;
         $laporanKejadian->lokasi_longitude = $request->lokasi_longitude;
         $laporanKejadian->lokasi_latitude = $request->lokasi_latitude;
-        $laporanKejadian->status = $request->status;
+        // $laporanKejadian->status = $request->status;
         $laporanKejadian->save();
 
         return redirect()->route('admin-laporankejadian')->with('success', 'Laporan kejadian berhasil diupdate.');
@@ -361,15 +360,11 @@ class AdminController extends Controller
                 'kejadianBencana.mobilisasiSd.alatTdb',
                 'kejadianBencana.giatPmi.evakuasiKorban',
                 'kejadianBencana.giatPmi.layananKorban',
-                'kejadianBencana.dokumentasi',
-                'kejadianBencana.narahubung',
-                'kejadianBencana.petugasPosko',
                 'kejadianBencana.dampak.korbanTerdampak',
                 'kejadianBencana.dampak.korbanJlw',
                 'kejadianBencana.dampak.kerusakanRumah',
                 'kejadianBencana.dampak.kerusakanFasilitasSosial',
                 'kejadianBencana.dampak.kerusakanInfrastruktur',
-                'kejadianBencana.dampak.pengungsian'
             ])
             ->first();
 
@@ -394,6 +389,17 @@ class AdminController extends Controller
             $firstKejadian->personil = $firstKejadian->mobilisasiSd->personil;
             $firstKejadian->tsr = $firstKejadian->mobilisasiSd->tsr;
             $firstKejadian->alatTdb = $firstKejadian->mobilisasiSd->alatTdb;
+
+            $narahubung = PersonilNarahubung::where('id_kejadian', $firstKejadian->id_kejadian)->get();
+            $petugas_posko = PetugasPosko::where('id_kejadian', $firstKejadian->id_kejadian)->get();
+            $dokumentasi = LampiranDokumentasi::where('id_kejadian', $firstKejadian->id_kejadian)->get();
+            $id_dampak = $firstKejadian->dampak->id_dampak;
+            $pengungsian = Pengungsian::where('id_dampak', $id_dampak)->get();
+
+            $firstKejadian->narahubung = $narahubung;
+            $firstKejadian->petugas_posko = $petugas_posko;
+            $firstKejadian->dokumentasi = $dokumentasi;
+            $firstKejadian->pengungsian = $pengungsian;
         }
 
         return view('admin.assessment.view', compact('assessment', 'firstKejadian'));

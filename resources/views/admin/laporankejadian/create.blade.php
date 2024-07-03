@@ -51,14 +51,14 @@
                                     rows="4" required></textarea>
                             </div>
                             <!-- Status -->
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="status">Status</label>
                                 <select class="form-control form-control-sm" id="status" name="status" required>
                                     <option value="On Process">Dalam Proses</option>
                                     <option value="Valid">Valid</option>
                                     <option value="Invalid">Invalid</option>
                                 </select>
-                            </div>
+                            </div> -->
 
                             <input hidden type="number" step="any" class="form-control form-control-sm"
                                 id="lokasi_longitude" name="lokasi_longitude" placeholder="Longitude" required>
