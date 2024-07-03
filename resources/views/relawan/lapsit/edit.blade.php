@@ -192,7 +192,8 @@
                         <h6><b>Pengungsian</b></h6>
 
                         <div id="form_area">
-                            <button type="button" id="add-pengungsian" class="btn btn-primary me-2">Input
+                            {{--  <button type="button" id="add-pengungsian" class="btn btn-primary me-2">Input  --}}
+                            <button type="button" class="btn btn-primary me-2">Input
                                 Pengungsian</button>
                             <br>
                             <p class="card-description" id="subtitle">Tambah, Edit, dan Hapus Data Pengungsian</p>
@@ -256,8 +257,8 @@
                                                     name="pengungsian[{{ $index }}][jumlah]" id="jumlah_{{ $index }}"
                                                     value="{{ $pengungsian->jumlah }}">
                                             </div>
-                                            <button type="button"
-                                                class="btn btn-danger btn-sm remove-pengungsian">Hapus</button>
+                                            {{--  <button type="button"
+                                                class="btn btn-danger btn-sm remove-pengungsian">Hapus</button>  --}}
                                         </div>
                                     @endforeach
                                 @endif
@@ -701,10 +702,11 @@
                         <h4 class="card-title">Data Personil Narahubung</h4>
 
                         <div id="form_area_cp">
-                            <button type="button" class="btn btn-primary" id="add-narahubung">Input Personil
+                            {{--  <button type="button" class="btn btn-primary" id="add-narahubung">Input Personil  --}}
+                            <button type="button" class="btn btn-primary">Input Personil
                                 Narahubung</button>
                             <br>
-                            <p class="card-description" id="subtitle">Tambah, Edit, dan Hapus Data Personil yang dapat
+                            <p class="card-description" id="subtitle">Edit Data Personil yang dapat
                                 dihubungi</p>
 
                             <div id="narahubung-container">
@@ -730,7 +732,7 @@
                                                 <input type="phone" class="form-control" name="narahubung[{{ $index }}][kontak]"
                                                     id="kontak_{{ $index }}" value="{{ $narahubung->kontak }}">
                                             </div>
-                                            <button type="button" class="btn btn-danger btn-sm remove-narahubung">Hapus</button>
+                                            {{--  <button type="button" class="btn btn-danger btn-sm remove-narahubung">Hapus</button>  --}}
                                         </div>
                                     @endforeach
                                 @endif
@@ -776,7 +778,8 @@
                         </script>
 
                         <div id="form_area_cp">
-                            <button type="button" class="btn btn-primary" id="add-petugas-posko">Input Petugas
+                            {{--  <button type="button" class="btn btn-primary" id="add-petugas-posko">Input Petugas  --}}
+                            <button type="button" class="btn btn-primary">Input Petugas
                                 Posko</button>
                             <br>
                             <p class="card-description" id="subtitle">Tambah, Edit, dan Hapus Data Petugas Posko</p>
@@ -800,8 +803,8 @@
                                                     name="petugasPosko[{{ $index }}][kontak]" id="kontak_{{ $index }}"
                                                     value="{{ $petugasPosko->kontak }}">
                                             </div>
-                                            <button type="button"
-                                                class="btn btn-danger btn-sm remove-petugas-posko">Hapus</button>
+                                            {{--  <button type="button"
+                                                class="btn btn-danger btn-sm remove-petugas-posko">Hapus</button>  --}}
                                         </div>
                                     @endforeach
                                 @endif
@@ -858,15 +861,16 @@
                                             value="{{ $dokumentasi->file_dokumentasi }}">
                                         <span class="input-group-append">
                                             <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                                            <button class="btn btn-danger remove-dokumentasi" type="button">Hapus</button>
+                                            {{--  <button class="btn btn-danger remove-dokumentasi" type="button">Hapus</button>  --}}
                                         </span>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
-                        <button type="button" id="add-dokumentasi" class="btn btn-success mb-3">Tambah
-                            Dokumentasi</button>
-
+                        {{--  <button type="button" id="add-dokumentasi" class="btn btn-success mb-3">Tambah
+                            Dokumentasi</button>  --}}
+                        {{--  <button type="button" id="add-dokumentasi" class="btn btn-success mb-3">Tambah
+                            Dokumentasi</button>  --}}
                         <script>
                             $(document).ready(function () {
                                 let dokumentasiIndex = {{ $kejadian->dokumentasi->count() }};
