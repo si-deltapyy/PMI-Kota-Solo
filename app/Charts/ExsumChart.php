@@ -62,7 +62,7 @@ class ExsumChart
         return $this->chart->barChart()
         ->setTitle('Rekap Kejadian Bencana')
         ->setSubtitle('Tahun ' .$currentYear)
-        ->addData('San Francisco', [$jenis1, $jenis2, $jenis3, $jenis4, $jenis5 , $jenis6 ])
+        ->addData('Total Kejadian', [$jenis1, $jenis2, $jenis3, $jenis4, $jenis5 , $jenis6 ])
         ->setXAxis(['Banjir', 'Gempa Bumi', 'Kebakaran', 'Longsor', 'Tsunami', 'Bangunan Runtuh']);
     }
 
