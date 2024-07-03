@@ -447,5 +447,20 @@
                     }
                 });
             });
-           
-        </script>
+            // Sisipkan tombol "Cancel" setelah tombol "Tambah Pengungsian"
+            document.getElementById('form_area_petugas').appendChild(cancelBtn);
+        });
+        document.getElementById('tambah_petugas_narahubung').addEventListener('click', function() {
+            // Ambil elemen form pengungsian
+            var formPengungsian = document.getElementById('form_cp');
+            // Klon elemen form pengungsian
+            var clone = formPengungsian.cloneNode(true);
+            // Tampilkan form klon
+            clone.style.display = 'block';
+            // Hapus atribut id agar tidak duplikat
+            clone.removeAttribute('id');
+            // Tambahkan form klon ke dalam form area
+            document.getElementById('form_area_cp').appendChild(clone);
+        });
+    });
+</script>
