@@ -72,7 +72,7 @@ $(document).ready(function () {
                                 <tr class="${item.status === 'Selesai' ? 'text-muted' : ''}">
                                     <td>${index + 1}</td>
                                     <td>${item.nama_kejadian}</td>
-                                    <td>${item.locationName}</td>
+                                    <td>${item.lokasi}</td>
                                     <td>${formattedTanggal}</td>
                                     <td>${formattedWaktu}</td>
                                     <td>${formattedUpdatedAt.date + " - " + formattedUpdatedAt.time}</td>
@@ -96,7 +96,7 @@ $(document).ready(function () {
                                 <tr class="${item.status === 'Selesai' ? 'text-muted' : ''}">
                                     <td>${index + 1}</td>
                                     <td>${item.nama_kejadian}</td>
-                                    <td>${item.locationName}</td>
+                                    <td>${item.lokasi}</td>
                                     <td>${formattedTanggal}</td>
                                     <td>${formattedWaktu}</td>
                                     <td>${formattedUpdatedAt.date + " - " + formattedUpdatedAt.time}</td>
@@ -148,7 +148,7 @@ $(document).ready(function () {
                                 <tr class="${item.status === 'Selesai' ? 'text-muted' : ''}">
                                     <td>${index + 1}</td>
                                     <td>${item.nama_kejadian}</td>
-                                    <td>${item.locationName}</td>
+                                    <td>${item.lokasi}</td>
                                     <td>${formattedTanggal}</td>
                                     <td>${formattedWaktu}</td>
                                     <td>${formattedUpdatedAt.date} - ${formattedUpdatedAt.time}</td>
@@ -177,7 +177,7 @@ $(document).ready(function () {
                                 <tr class="${item.status === 'Selesai' ? 'text-muted' : ''}">
                                     <td>${index + 1}</td>
                                     <td>${item.nama_kejadian}</td>
-                                    <td>${item.locationName}</td>
+                                    <td>${item.lokasi}</td>
                                     <td>${formattedTanggal}</td>
                                     <td>${formattedWaktu}</td>
                                     <td>${formattedUpdatedAt.date + " - " + formattedUpdatedAt.time}</td>

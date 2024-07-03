@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="update">Update</label>
-                                    <input type="date" class="form-control" id="update" name="update">
+                                    <input type="date" class="form-control" id="update" name="update" value="<?php echo date('Y-m-d'); ?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="keterangan">Keterangan</label>

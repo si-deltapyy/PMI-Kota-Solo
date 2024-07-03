@@ -864,15 +864,11 @@ class AdminController extends Controller
                 'mobilisasiSd.alatTdb',
                 'giatPmi.evakuasiKorban',
                 'giatPmi.layananKorban',
-                'dokumentasi',
-                'narahubung',
-                'petugasPosko',
                 'dampak.korbanTerdampak',
                 'dampak.korbanJlw',
                 'dampak.kerusakanRumah',
                 'dampak.kerusakanFasilitasSosial',
                 'dampak.kerusakanInfrastruktur',
-                'dampak.pengungsian'
             ])
             ->first();
         ;
@@ -895,6 +891,17 @@ class AdminController extends Controller
         $lapsit->alatTdb = $lapsit->mobilisasiSd->alatTdb;
 
         $assessment = $lapsit->assessment;
+
+        $narahubung = PersonilNarahubung::where('id_kejadian', $id)->get();
+        $petugas_posko = PetugasPosko::where('id_kejadian', $id)->get();
+        $dokumentasi = LampiranDokumentasi::where('id_kejadian', $id)->get();
+        $id_dampak = $lapsit->dampak->id_dampak;
+        $pengungsian = Pengungsian::where('id_dampak', $id_dampak)->get();
+
+        $lapsit->narahubung = $narahubung;
+        $lapsit->petugas_posko = $petugas_posko;
+        $lapsit->dokumentasi = $dokumentasi;
+        $lapsit->pengungsian = $pengungsian;
 
         return view('admin.lapsit.view', compact('lapsit', 'assessment'));
 
@@ -998,22 +1005,77 @@ class AdminController extends Controller
         return ['date' => $formattedDate, 'time' => $formattedTime];
     }
 
-
     public function getLocationName($latitude, $longitude)
     {
-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-            'latlng' => $latitude . ',' . $longitude,
-            'key' => config('services.google_maps.api_key'),
-        ]);
+        $url = 'https://nominatim.openstreetmap.org/reverse';
+        $params = [
+            'format' => 'json',
+            'lat' => $latitude,
+            'lon' => $longitude,
+            'addressdetails' => 1,
+        ];
 
-        $data = $response->json();
+        $response = Http::get($url, $params);
 
-        if (isset($data['results'][0]['formatted_address'])) {
-            return $data['results'][0]['formatted_address'];
+        // Check HTTP status
+        if ($response->successful()) {
+            // Debug: Print the full URL and response
+            // dd($url . '?' . http_build_query($params), $response->body());
+
+            $data = $response->json();
+
+            // Check if 'address' key exists
+            if (isset($data['address'])) {
+                // Check for city, town, or village
+                if (isset($data['address']['village'])) {
+                    return $data['address']['village'];
+                } elseif (isset($data['address']['city'])) {
+                    return $data['address']['city'];
+                } elseif (isset($data['address']['town'])) {
+                    return $data['address']['town'];
+                } 
+            }
+
+            return 'Location not found';
         } else {
+            // Print out error message for unsuccessful request
+            // dd('Error: ' . $response->status());
+
             return 'Location not found';
         }
     }
+
+    // public function getLocationName($latitude, $longitude)
+    // {
+    //     $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
+    //         'latlng' => $latitude . ',' . $longitude,
+    //         'key' => config('services.google_maps.api_key'),
+    //     ]);
+
+    //     $data = $response->json();
+
+    //     dd($data);
+
+    //     if (!empty($data['results'])) {
+    //         foreach ($data['results'][0]['address_components'] as $component) {
+    //             if (in_array('locality', $component['types'])) {
+    //                 return $component['long_name']; // City name
+    //             } elseif (in_array('administrative_area_level_1', $component['types'])) {
+    //                 $administrative_area_level_1 = $component['long_name'];
+    //             } elseif (in_array('administrative_area_level_2', $component['types'])) {
+    //                 $administrative_area_level_2 = $component['long_name'];
+    //             }
+    //         }
+    //         // If locality is not found, return the next best thing
+    //         if (isset($administrative_area_level_2)) {
+    //             return $administrative_area_level_2;
+    //         } elseif (isset($administrative_area_level_1)) {
+    //             return $administrative_area_level_1;
+    //         }
+    //     }
+
+    //     return 'City not found';
+    // }
 
     public function getGoogleMapsLink($latitude, $longitude)
     {

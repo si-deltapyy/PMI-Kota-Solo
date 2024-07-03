@@ -58,11 +58,11 @@
 
                         <div class="form-group">
                             <label for="lokasi">Lokasi</label>
-                            <input type="text" class="form-control" id="lokasi" name="lokasi">
+                            <input readonly type="text" class="form-control" id="lokasi" name="lokasi" value="{{ $lokasi }}">
                         </div>
                         <div class="form-group">
                             <label for="update">Update</label>
-                            <input type="date" class="form-control" id="update" name="update">
+                            <input type="date" class="form-control" id="update" name="update" value="<?php echo date('Y-m-d'); ?>">
                         </div>
 
                         <div class="form-group">
