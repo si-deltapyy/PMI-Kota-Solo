@@ -898,6 +898,11 @@ class AdminController extends Controller
         return view('admin.lapsit.share', compact('kejadian', 'as', 'datenow'));
     }
 
+    public function generateFlashReport($id){
+
+        return view('pdf.flash-report', compact('id'));
+    }
+
     public function create()
     {
         //
