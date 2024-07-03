@@ -57,21 +57,26 @@ class AdminController extends Controller
     {
         $user = User::role('relawan')->get();
         $dampak = Dampak::all()->count();
-        $kejadian = Report::join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')
-        ->select('reports.status', 'jenis_kejadian.nama_kejadian')->get();
+        $kejadian = Report::join('jenis_kejadian', 'reports.id_jeniskejadian', '=', 'jenis_kejadian.id_jeniskejadian')
+            ->select('reports.status', 'jenis_kejadian.nama_kejadian')->get();
 
-        $layanan = LayananKorban::join('assessment', 'layanan_korban.id_assessment', '=', 'assessment.id_assessment' )
-        ->join('reports', 'assessment.id_report', '=', 'reports.id_report')
-        ->join('jenis_kejadian', 'reports.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')
-        ->select('jenis_kejadian.nama_kejadian as nmKejadian', 'reports.tanggal_kejadian as dateKejadian', 
-        'layanan_korban.distribusi as layDis', 'layanan_korban.layanan_kesehatan as layKes', 'assessment.status as stat')->get();
+        $layanan = LayananKorban::join('assessment', 'layanan_korban.id_assessment', '=', 'assessment.id_assessment')
+            ->join('reports', 'assessment.id_report', '=', 'reports.id_report')
+            ->join('jenis_kejadian', 'reports.id_jeniskejadian', '=', 'jenis_kejadian.id_jeniskejadian')
+            ->select(
+                'jenis_kejadian.nama_kejadian as nmKejadian',
+                'reports.tanggal_kejadian as dateKejadian',
+                'layanan_korban.distribusi as layDis',
+                'layanan_korban.layanan_kesehatan as layKes',
+                'assessment.status as stat'
+            )->get();
 
         $mobilisasi = MobilisasiSd::where('id_personil', 1)->with([
             'tsr',
             'alatTdb',
             'personil',
         ])->get();
-        
+
         $kkSum = KorbanTerdampak::sum('kk');
         $jiwaSum = KorbanTerdampak::sum('jiwa');
         $lRingan = KorbanJlw::sum('luka_ringan');
@@ -99,22 +104,24 @@ class AdminController extends Controller
             'aw' => AlatTdb::sum('alat_watsan'),
             'ap' => AlatTdb::sum('alat_pkdd')
         ];
-        
-        return view('admin.executive_summary',
-        [
-            'chart' => $chart->build(),
-            'bar' => $chart->bar(),
-            'personil' => $chart->personil(),
-            'dampak' => $dampak,
-            'kejadian' => $kejadian,
-            'layanan' => $layanan,
-            'jumlah' => $jumlah,
-            'user' => $user,
-            'mobilisasi' => $mobilisasi,
-            'tdb' => $tdb
-        ]);
+
+        return view(
+            'admin.executive_summary',
+            [
+                'chart' => $chart->build(),
+                'bar' => $chart->bar(),
+                'personil' => $chart->personil(),
+                'dampak' => $dampak,
+                'kejadian' => $kejadian,
+                'layanan' => $layanan,
+                'jumlah' => $jumlah,
+                'user' => $user,
+                'mobilisasi' => $mobilisasi,
+                'tdb' => $tdb
+            ]
+        );
     }
-    
+
     public function assessment_unverif()
     {
         return view('admin.assessment.unverified.index');
@@ -125,7 +132,7 @@ class AdminController extends Controller
     }
     public function index_laporankejadian()
     {
-        $reports = Report::all(); 
+        $reports = Report::all();
         return view('admin.laporan-kejadian.index', compact('reports'));
     }
 
@@ -137,9 +144,9 @@ class AdminController extends Controller
 
     public function index_lapsit()
     {
-        $kejadian = KejadianBencana::join('jenis_kejadian', 'kejadian_bencana.id_jeniskejadian', '=','jenis_kejadian.id_jeniskejadian')
-        ->select('*', 'kejadian_bencana.updated_at as terbaru','jenis_kejadian.nama_kejadian as nmKejadian')
-        ->get();
+        $kejadian = KejadianBencana::join('jenis_kejadian', 'kejadian_bencana.id_jeniskejadian', '=', 'jenis_kejadian.id_jeniskejadian')
+            ->select('*', 'kejadian_bencana.updated_at as terbaru', 'jenis_kejadian.nama_kejadian as nmKejadian')
+            ->get();
         return view('admin.lapsit.index', compact('kejadian'));
     }
 
@@ -153,36 +160,36 @@ class AdminController extends Controller
         return view('admin.laporankejadian.create', compact('jeniskejadian'));
     }
     public function store_laporankejadian(Request $request)
-{
-    $validatedData = $request->validate([
-        'id_jeniskejadian' => 'required',
-        'tanggal_kejadian' => 'required|date',
-        'timestamp_report' => 'required|date',
-        'keterangan' => 'required|string',
-        'lokasi_longitude' => 'nullable|numeric',
-        'lokasi_latitude' => 'nullable|numeric',
-        'status' => 'required|in:On Process,Valid,Invalid',
-    ]);
+    {
+        $validatedData = $request->validate([
+            'id_jeniskejadian' => 'required',
+            'tanggal_kejadian' => 'required|date',
+            'timestamp_report' => 'required|date',
+            'keterangan' => 'required|string',
+            'lokasi_longitude' => 'nullable|numeric',
+            'lokasi_latitude' => 'nullable|numeric',
+            'status' => 'required|in:On Process,Valid,Invalid',
+        ]);
 
-    $tanggalKejadian = \Carbon\Carbon::parse($request->tanggal_kejadian)->format('Y-m-d H:i:s');
-    $timestampReport = \Carbon\Carbon::parse($request->timestamp_report)->format('Y-m-d H:i:s');
+        $tanggalKejadian = \Carbon\Carbon::parse($request->tanggal_kejadian)->format('Y-m-d H:i:s');
+        $timestampReport = \Carbon\Carbon::parse($request->timestamp_report)->format('Y-m-d H:i:s');
 
-    $randomRelawanUser = User::role('relawan')->inRandomOrder()->first();
+        $randomRelawanUser = User::role('relawan')->inRandomOrder()->first();
 
-    $laporanKejadian = new Report();
-    $laporanKejadian->id_relawan = $randomRelawanUser->id;
-    $laporanKejadian->id_jeniskejadian = $request->id_jeniskejadian;
-    $laporanKejadian->tanggal_kejadian = $tanggalKejadian;
-    $laporanKejadian->timestamp_report = $timestampReport;
-    $laporanKejadian->keterangan = $request->keterangan;
-    $laporanKejadian->lokasi_longitude = $request->lokasi_longitude;
-    $laporanKejadian->lokasi_latitude = $request->lokasi_latitude;
-    $laporanKejadian->status = $request->status;
-    $laporanKejadian->save();
+        $laporanKejadian = new Report();
+        $laporanKejadian->id_relawan = $randomRelawanUser->id;
+        $laporanKejadian->id_jeniskejadian = $request->id_jeniskejadian;
+        $laporanKejadian->tanggal_kejadian = $tanggalKejadian;
+        $laporanKejadian->timestamp_report = $timestampReport;
+        $laporanKejadian->keterangan = $request->keterangan;
+        $laporanKejadian->lokasi_longitude = $request->lokasi_longitude;
+        $laporanKejadian->lokasi_latitude = $request->lokasi_latitude;
+        $laporanKejadian->status = $request->status;
+        $laporanKejadian->save();
 
-    return redirect()->route('admin-laporankejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
-}
-    
+        return redirect()->route('admin-laporankejadian')->with('success', 'Laporan kejadian berhasil ditambahkan.');
+    }
+
     public function view_laporankejadian($id)
     {
         // Mengambil data report berdasarkan ID
@@ -211,12 +218,12 @@ class AdminController extends Controller
 
     public function update_laporankejadian(Request $request, $id)
     {
-        
-        
+
+
 
         $tanggalKejadian = \Carbon\Carbon::parse($request->tanggal_kejadian)->format('Y-m-d H:i:s');
         $timestampReport = \Carbon\Carbon::parse($request->timestamp_report)->format('Y-m-d H:i:s');
-    
+
         $laporanKejadian = Report::where('id_report', $id)->firstOrFail();
 
         $laporanKejadian->tanggal_kejadian = $tanggalKejadian;
@@ -226,8 +233,9 @@ class AdminController extends Controller
         $laporanKejadian->lokasi_latitude = $request->lokasi_latitude;
         $laporanKejadian->status = $request->status;
         $laporanKejadian->save();
-    
-        return redirect()->route('admin-laporankejadian')->with('success', 'Laporan kejadian berhasil diupdate.');;
+
+        return redirect()->route('admin-laporankejadian')->with('success', 'Laporan kejadian berhasil diupdate.');
+        ;
     }
 
     /**
@@ -499,25 +507,29 @@ class AdminController extends Controller
         // return response()->json($assessment);
     }
 
-    public function verify_assessment(Request $request,$id){
+    public function verify_assessment(Request $request, $id)
+    {
 
-        $assessment = Assessment::find($id)->firstOrFail();
+        $assessment = Assessment::where('id_assessment', $id)->firstOrFail();
 
         $assessment->status = "Aktif";
         $assessment->save();
 
-        return redirect()->route('admin-assessment')->with('success', 'Laporan assessment berhasil diverifikasi.');;
+        return redirect()->route('admin-assessment')->with('success', 'Laporan assessment berhasil diverifikasi.');
+        ;
 
     }
 
-    public function done_assessment(Request $request,$id){
+    public function done_assessment(Request $request, $id)
+    {
 
-        $assessment = Assessment::find($id)->firstOrFail();
+        $assessment = Assessment::where('id_assessment', $id)->firstOrFail();
 
         $assessment->status = "Selesai";
         $assessment->save();
 
-        return redirect()->route('admin-assessment')->with('success', 'Laporan assessment berhasil diselesaikan.');;
+        return redirect()->route('admin-assessment')->with('success', 'Laporan assessment berhasil diselesaikan.');
+        ;
 
     }
 
@@ -533,7 +545,7 @@ class AdminController extends Controller
         dd($request->all());
         // Validasi data yang diterima dari permintaan
         // (Rest of the code remains unchanged)
-        
+
         return view('admin.assessment.edit', compact('kejadian'));
     }
 
@@ -582,13 +594,13 @@ class AdminController extends Controller
             'lain_lain' => 'nullable|string',
             'desc_kerusakan' => 'nullable|string',
             // Validasi untuk data giat pmi
-            'luka_ringanberat'=> 'nullable|string',
-            'meninggalevakuasi'=> 'nullable|string',
-            'keterangan'=> 'nullable|string',
-            'distribusi'=> 'nullable|string',
-            'dapur_umum'=> 'nullable|string',
-            'evakuasi'=> 'nullable|string',
-            'layanan_kesehatan'=> 'nullable|string',
+            'luka_ringanberat' => 'nullable|string',
+            'meninggalevakuasi' => 'nullable|string',
+            'keterangan' => 'nullable|string',
+            'distribusi' => 'nullable|string',
+            'dapur_umum' => 'nullable|string',
+            'evakuasi' => 'nullable|string',
+            'layanan_kesehatan' => 'nullable|string',
             // Validasi untuk data narahubung
             'narahubung' => 'sometimes|array',
             'narahubung.*.id_narahubung' => 'sometimes|exists:personil_narahubung,id_narahubung',
@@ -894,7 +906,7 @@ class AdminController extends Controller
     {
         $user = User::all();
         $kejadian = KejadianBencana::join('jenis_kejadian', 'kejadian_bencana.id_jeniskejadian', '=', 'jenis_kejadian.id_jeniskejadian')
-        ->select('*', 'kejadian_bencana.updated_at as up')->get();
+            ->select('*', 'kejadian_bencana.updated_at as up')->get();
         notify()->preset('success', ['message' => 'Berhasil Mengirim Pesan Whatsapp']);
         return view('admin.lapsit.index', compact('user', 'kejadian'));
     }
@@ -902,18 +914,19 @@ class AdminController extends Controller
     public function Sharelapsit($id)
     {
         $kejadian = KejadianBencana::join('jenis_kejadian', 'kejadian_bencana.id_jeniskejadian', '=', 'jenis_kejadian.id_jeniskejadian')
-        ->where('id_kejadian', $id)
-        ->select('*', 'kejadian_bencana.updated_at as terbaru', 'jenis_kejadian.nama_kejadian as nmKejadian')
-        ->first();
+            ->where('id_kejadian', $id)
+            ->select('*', 'kejadian_bencana.updated_at as terbaru', 'jenis_kejadian.nama_kejadian as nmKejadian')
+            ->first();
 
         $datenow = Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-M-d H:i');
 
-        $as=2;
+        $as = 2;
         // dd($kejadian);
         return view('admin.lapsit.share', compact('kejadian', 'as', 'datenow'));
     }
 
-    public function generateFlashReport($id){
+    public function generateFlashReport($id)
+    {
 
         return view('pdf.flash-report', compact('id'));
     }

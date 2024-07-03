@@ -31,6 +31,33 @@ class KorbanJlwSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'luka_berat' => 2,
+                'luka_ringan' => 5,
+                'meninggal' => 2,
+                'hilang' => 1,
+                'mengungsi' => 25,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'luka_berat' => 4,
+                'luka_ringan' => 10,
+                'meninggal' => 3,
+                'hilang' => 0,
+                'mengungsi' => 40,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'luka_berat' => 1,
+                'luka_ringan' => 7,
+                'meninggal' => 1,
+                'hilang' => 2,
+                'mengungsi' => 15,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],            
             // Add more records as needed
         ]);
     }

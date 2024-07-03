@@ -384,7 +384,7 @@ class RelawanController extends Controller
             return redirect()->back()->with('error', 'Data yang diinputkan tidak valid');
         }
         $data = $validatedData->validated();
-        $data['status'] = 'Aktif';
+        $data['status'] = 'On Process';
         $assessment = Assessment::create($data);
         $data['id_assessment'] = $assessment->id_assessment;
 
@@ -662,13 +662,13 @@ class RelawanController extends Controller
         return redirect()->route('relawan-assessment', $kejadian->id_kejadian)->with('success', 'Laporan Assessment berhasil diperbarui');
     }
 
-    public function delete_assessment(string $id)
+    public function delete_assessment(Request $request, string $id)
     {
         // Ambil data assessment berdasarkan id
-        $assessment = Assessment::findOrFail($id);
+        $assessment = Assessment::where('id_assessment', $id)->firstOrFail();
 
         // Cek status verifikasi dari assessment
-        if ($assessment->hasil_verifikasi == 'Belum Diverifikasi') {
+        if ($assessment->status == 'On Process') {
             // Hapus data kejadian_bencana yang terkait dengan assessment
             $kejadianBencana = KejadianBencana::where('id_kejadian', $assessment->id_kejadian)->first();
             if ($kejadianBencana) {
@@ -678,9 +678,26 @@ class RelawanController extends Controller
             // Hapus data assessment
             $assessment->delete();
 
-            return redirect('relawan/assesment')->with('success', 'Data berhasil dihapus');
+            
+            // Check if the request is AJAX
+            if ($request->ajax() || $request->wantsJson()) {
+                // Return JSON response indicating success
+                return new JsonResponse(['message' => 'Data laporan assessment berhasil dihapus'], 200);
+            } else {
+                // Redirect for non-AJAX requests
+                return redirect('relawan/laporan-kejadian')->with('success', 'Data laporan kejadian assessment dihapus');
+            }
+            // return redirect('relawan/assessment')->with('success', 'Data berhasil dihapus');
         } else {
-            return redirect('relawan/assesment')->with('error', 'Hanya data yang belum diverifikasi yang dapat dihapus');
+            // Check if the request is AJAX
+            if ($request->ajax() || $request->wantsJson()) {
+                // Return JSON response indicating error
+                return new JsonResponse(['message' => 'Hanya laporan assessment dengan status "On Process" yang dapat dihapus'], 400);
+            } else {
+                // Redirect for non-AJAX requests
+                return redirect('relawan/laporan-kejadian')->with('error', 'Hanya laporan assessment dengan status "On Process" yang dapat dihapus');
+            }
+            // return redirect('relawan/assessment')->with('error', 'Hanya data yang belum diverifikasi yang dapat dihapus');
         }
     }
 
@@ -935,8 +952,8 @@ class RelawanController extends Controller
 
         $data = $validatedData->validated();
         $data['status'] = 'Aktif';
-        $assessment = Assessment::create($data);
-        $data['id_assessment'] = $assessment->id_assessment;
+        // $assessment = Assessment::create($data);
+        $data['id_assessment'] = $id;
 
         $korbanTerdampak = KorbanTerdampak::create($data);
         $data['id_korban_terdampak'] = $korbanTerdampak->id_korban_terdampak;
@@ -1429,10 +1446,10 @@ class RelawanController extends Controller
 
     }
 
-    public function delete_lapsit(string $id)
+    public function delete_lapsit(Request $request, string $id)
     {
         // Mengambil data kejadian bencana berdasarkan id
-        $kejadianBencana = KejadianBencana::findOrFail($id);
+        $kejadianBencana = KejadianBencana::where('id_kejadian', $id)->firstOrFail();
 
         // Menghapus data yang terkait di tabel lain
         $kejadianBencana->narahubung()->delete();
@@ -1443,7 +1460,15 @@ class RelawanController extends Controller
         $kejadianBencana->delete();
 
         // Redirect atau kembalikan response
-        return redirect('relawan/lapsit')->with('success', 'Data Laporan Situasi berhasil dihapus.');
+        // Check if the request is AJAX
+        if ($request->ajax() || $request->wantsJson()) {
+            // Return JSON response indicating success
+            return new JsonResponse(['message' => 'Data laporan situasi berhasil dihapus'], 200);
+        } else {
+            // Redirect for non-AJAX requests
+            return redirect('relawan/laporan-kejadian')->with('success', 'Data laporan situasi berhasil dihapus');
+        }
+        // return redirect('relawan/lapsit')->with('success', 'Data Laporan Situasi berhasil dihapus.');
     }
 
     public function detail_lapsit()
