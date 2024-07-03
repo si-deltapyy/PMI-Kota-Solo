@@ -67,6 +67,11 @@
                                 <option value="Not Accessible" {{ $kejadian->akses_ke_lokasi == "Not Accessible" ? 'selected' : '' }}>Tidak Aman</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="keterangan">Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan" name="keterangan"
+                                value="{{ $kejadian->keterangan }}">
+                        </div>
                         {{-- Input Dampak --}}
                         {{-- <div class="form-group">
                             <button type="button" id="dampak" class="btn btn-primary me-2">Input Dampak</button>
@@ -356,6 +361,11 @@
                             <label for="kebutuhan">Kebutuhan</label>
                             <input type="text" class="form-control" name="kebutuhan" id="kebutuhan"
                                 value="{{ $kejadian->kebutuhan }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="hambatan">Hambatan</label>
+                            <input type="text" class="form-control" name="hambatan" id="hambatan"
+                                value="{{ $kejadian->hambatan }}">
                         </div>
 
                         <h4 class="card-title">Data Personil Narahubung</h4>

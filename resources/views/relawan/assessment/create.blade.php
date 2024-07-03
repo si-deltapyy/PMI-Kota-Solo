@@ -184,7 +184,80 @@
                                 <label for="desc_kerusakan">Deskripsi Kerusakan</label>
                                 <input type="text" class="form-control" name="desc_kerusakan" id="desc_kerusakan">
                             </div>
+
+                            {{-- Tambah Pengungsian --}}
+                                <h6><b>Pengungsian</b></h6>
+
+                                <div id="form_area">
+                                <button type="button" id="add-pengungsian" class="btn btn-primary me-2">Input Pengungsian</button>
+                                <br>
+                                <!--p class="card-description" id="subtitle">Tambah, Edit, dan Hapus Data Pengungsian</p-->
+                                <div id="pengungsian-container">
+                                    
+                                </div>
                         </div>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                let pengungsianCount = 0;
+                                const addPengungsianBtn = document.getElementById('add-pengungsian');
+                                const pengungsianContainer = document.getElementById('pengungsian-container');
+
+                                addPengungsianBtn.addEventListener('click', function() {
+                                    const newPengungsian = document.createElement('div');
+                                    newPengungsian.className = 'pengungsian-item mb-3';
+                                    newPengungsian.innerHTML = `
+                                        <h5>Pengungsian Baru #${pengungsianCount + 1}</h5>
+                                        <div class="form-group">
+                                            <label for="nama_lokasi_${pengungsianCount}">Nama Lokasi</label>
+                                            <input type="text" class="form-control" name="pengungsian[${pengungsianCount}][nama_lokasi]" id="nama_lokasi_${pengungsianCount}" placeholder="Masukan nama lokasi">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kk_${pengungsianCount}">KK</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][kk]" id="kk_${pengungsianCount}" placeholder="Masukan jumlah">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="jiwa_${pengungsianCount}">Jiwa</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][jiwa]" id="jiwa_${pengungsianCount}" placeholder="Masukan jumlah">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="laki_laki_${pengungsianCount}">Laki-laki</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][laki_laki]" id="laki_laki_${pengungsianCount}" placeholder="Masukan jumlah">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="perempuan_${pengungsianCount}">Perempuan</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][perempuan]" id="perempuan_${pengungsianCount}" placeholder="Masukan jumlah">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kurang_dari_5_${pengungsianCount}">Kurang dari 5 Tahun</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][kurang_dari_5]" id="kurang_dari_5_${pengungsianCount}" placeholder="Masukan jumlah">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="atr_5_sampai_18_${pengungsianCount}">Antara 5-18 Tahun</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][atr_5_sampai_18]" id="atr_5_sampai_18_${pengungsianCount}" placeholder="Masukan jumlah">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lebih_dari_18_${pengungsianCount}">Lebih dari 18 Tahun</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][lebih_dari_18]" id="lebih_dari_18_${pengungsianCount}" placeholder="Masukan jumlah">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="jumlah_${pengungsianCount}">Jumlah</label>
+                                            <input type="number" class="form-control" name="pengungsian[${pengungsianCount}][jumlah]" id="jumlah_${pengungsianCount}" placeholder="Masukan jumlah">
+                                        </div>
+                                        <button type="button" class="btn btn-danger btn-sm remove-pengungsian">Hapus</button>
+                                    `;
+                                    
+                                    pengungsianContainer.appendChild(newPengungsian);
+                                    pengungsianCount++;
+                                });
+
+                                pengungsianContainer.addEventListener('click', function(e) {
+                                    if (e.target && e.target.classList.contains('remove-pengungsian')) {
+                                        e.target.closest('.pengungsian-item').remove();
+                                    }
+                                });
+                            });
+                            </script>
                         {{-- Input Giat PMI --}}
                         <div class="form-group">
 
@@ -299,7 +372,7 @@
                             </div> --}}
                         </div>
 
-                        <script>
+                        {{--  <script>
                             document.addEventListener('DOMContentLoaded', function () {
                                 let pengungsianCount = {{ $kejadian->dampak && $kejadian->dampak->pengungsian ? $kejadian->dampak->pengungsian->count() : 0 }};
                                 const addPengungsianBtn = document.getElementById('add-pengungsian');
@@ -359,7 +432,7 @@
                                     }
                                 });
                             });
-                        </script>
+                        </script>  --}}
 
                         {{-- giat pmi - evakuasi korban layanan korban --}}
 
@@ -403,7 +476,7 @@
                             </div>
                         </div> --}}
 
-                        <script>
+                        {{--  <script>
                             document.addEventListener('DOMContentLoaded', function () {
                                 let narahubungCount = {{ $narahubung->count() }};
                                 const addNarahubungBtn = document.getElementById('add-narahubung');
@@ -439,7 +512,59 @@
                                     }
                                 });
                             });
-                        </script>
+                        </script>  --}}
+
+                        <h4 class="card-title">Data Personil Narahubung</h4>
+
+                                <div id="form_area_cp">
+                                    <button type="button" class="btn btn-primary" id="add-narahubung">Input Personil Narahubung</button>
+                                    <br>
+                                    <!--p class="card-description" id="subtitle">Tambah, Edit, dan Hapus Data Personil yang dapat dihubungi</p-->
+                                    
+                                    <div id="narahubung-container">
+                                        
+                                            
+                                        
+                                    </div>
+                                </div>
+
+                                <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    let narahubungCount = 0;
+                                    const addNarahubungBtn = document.getElementById('add-narahubung');
+                                    const narahubungContainer = document.getElementById('narahubung-container');
+
+                                    addNarahubungBtn.addEventListener('click', function() {
+                                        const newNarahubung = document.createElement('div');
+                                        newNarahubung.className = 'narahubung-item mb-3';
+                                        newNarahubung.innerHTML = `
+                                            <h5>Narahubung Baru #${narahubungCount + 1}</h5>
+                                            <div class="form-group">
+                                                <label for="nama_lengkap_${narahubungCount}">Nama Lengkap</label>
+                                                <input type="text" class="form-control" name="narahubung[${narahubungCount}][nama_lengkap]" id="nama_lengkap_${narahubungCount}" placeholder="Masukan nama lengkap narahubung">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="posisi_${narahubungCount}">Posisi</label>
+                                                <input type="text" class="form-control" name="narahubung[${narahubungCount}][posisi]" id="posisi_${narahubungCount}" placeholder="Masukan posisi narahubung">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="kontak_${narahubungCount}">Kontak</label>
+                                                <input type="phone" class="form-control" name="narahubung[${narahubungCount}][kontak]" id="kontak_${narahubungCount}" placeholder="Masukan kontak narahubung">
+                                            </div>
+                                            <button type="button" class="btn btn-danger btn-sm remove-narahubung">Hapus</button>
+                                        `;
+                                        
+                                        narahubungContainer.appendChild(newNarahubung);
+                                        narahubungCount++;
+                                    });
+
+                                    narahubungContainer.addEventListener('click', function(e) {
+                                        if (e.target && e.target.classList.contains('remove-narahubung')) {
+                                            e.target.closest('.narahubung-item').remove();
+                                        }
+                                    });
+                                });
+                                </script>
                         <div class="form-group d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary mr-2 ml-3">Submit</button>
                             <a href="{{ route('relawan-assessment', $kejadian->id_kejadian) }}"

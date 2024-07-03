@@ -6,13 +6,13 @@
               <span class="menu-title">Dashboard</span>
             </a>
           </li> -->
-          <li class="nav-item nav-category">Users</li>
+          {{--  <li class="nav-item nav-category">Users</li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url('/pengelolaProfil/user_management') }}">
               <i class="menu-icon mdi mdi-file-document"></i>
               <span class="menu-title">Users</span>
             </a>
-          </li>
+          </li>  --}}
           <li class="nav-item">
             <a class="nav-link" href="{{ url('/pengelolaProfil/relawan_management') }}">
               <i class="menu-icon mdi mdi-file-document"></i>

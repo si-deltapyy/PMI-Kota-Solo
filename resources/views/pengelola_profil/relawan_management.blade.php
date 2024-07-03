@@ -166,7 +166,7 @@
                                         <div class="modal-footer">
                                             <form action="{{ route('approve.user', $list->id) }}" method="POST">
                                                 @csrf
-                                                <button type="submit" class="btn btn-success">Approve</button>
+                                                <button type="submit" class="btn btn-success" style="background-color: #28a745; border-color: #28a745; transition: none;">Approve</button>
                                             </form>
                                             <button class="btn btn-secondary" type="button" data-bs-dismiss="modal" onclick="window.history.back()">Cancel</button>
                                         </div>
@@ -192,7 +192,7 @@
                                             <form action="{{ route('pengelola-user-hapusRelawan', $list->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">REJECT</button>
+                                                <button type="submit" class="btn btn-danger" style="background-color: #dc3545; border-color: #dc3545; transition: none;">REJECT</button>
                                             </form>
                                             <button class="btn btn-secondary" type="button" data-bs-dismiss="modal" onclick="window.history.back()">CANCEL</button>
                                         </div>
@@ -218,7 +218,7 @@
                                             <form action="{{ route('pengelola-user-hapusRelawan', $list->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">DELETE</button>
+                                                <button type="submit" class="btn btn-danger" style="background-color: #dc3545; border-color: #dc3545; transition: none;">DELETE</button>
                                             </form>
                                             <button class="btn btn-secondary" type="button" data-bs-dismiss="modal" onclick="window.history.back()">CANCEL</button>
                                         </div>

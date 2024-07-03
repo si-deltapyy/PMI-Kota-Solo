@@ -377,6 +377,24 @@ class RelawanController extends Controller
             // TSR
             'id_tsr' => 'required|exists:tsr,id_tsr',
             'id_alat_tdb' => 'required|exists:alat_tdb,id_alat_tdb',
+            // Validasi untuk data narahubung
+            'narahubung' => 'sometimes|array',
+            'narahubung.*.id_narahubung' => 'sometimes|exists:personil_narahubung,id_narahubung',
+            'narahubung.*.nama_lengkap' => 'required|string',
+            'narahubung.*.posisi' => 'required|string',
+            'narahubung.*.kontak' => 'required|string',
+            // Validasi untuk data pengungsian
+            'pengungsian' => 'sometimes|array',
+            'pengungsian.*.id_pengungsian' => 'sometimes|exists:pengungsian,id_pengungsian',
+            'pengungsian.*.nama_lokasi' => 'required|string',
+            'pengungsian.*.laki_laki' => 'required|integer',
+            'pengungsian.*.perempuan' => 'required|integer',
+            'pengungsian.*.kurang_dari_5' => 'required|integer',
+            'pengungsian.*.atr_5_sampai_18' => 'required|integer',
+            'pengungsian.*.lebih_dari_18' => 'required|integer',
+            'pengungsian.*.jumlah' => 'required|integer',
+            'pengungsian.*.kk' => 'required|integer',
+            'pengungsian.*.jiwa' => 'required|integer',
         ]);
         // check validatedata have error or not
         if ($validatedData->fails()) {
@@ -414,6 +432,35 @@ class RelawanController extends Controller
         $kejadianBencana = KejadianBencana::create($data);
 
         $kejadianBencana->save();
+        // Simpan data narahubung
+        if (isset($data['narahubung'])) {
+            foreach ($data['narahubung'] as $narahubungData) {
+                $narahubung = new PersonilNarahubung();
+                $narahubung->id_kejadian = $kejadianBencana->id_kejadian;
+                $narahubung->nama_lengkap = $narahubungData['nama_lengkap'];
+                $narahubung->posisi = $narahubungData['posisi'];
+                $narahubung->kontak = $narahubungData['kontak'];
+                $narahubung->save();
+            }
+        }
+    
+        // Simpan data pengungsian baru
+        if (isset($data['pengungsian'])) {
+            foreach ($data['pengungsian'] as $pengungsianData) {
+                $pengungsian = new Pengungsian();
+                $pengungsian->id_dampak = $data['id_dampak'];
+                $pengungsian->nama_lokasi = $pengungsianData['nama_lokasi'];
+                $pengungsian->laki_laki = $pengungsianData['laki_laki'];
+                $pengungsian->perempuan = $pengungsianData['perempuan'];
+                $pengungsian->kurang_dari_5 = $pengungsianData['kurang_dari_5'];
+                $pengungsian->atr_5_sampai_18 = $pengungsianData['atr_5_sampai_18'];
+                $pengungsian->lebih_dari_18 = $pengungsianData['lebih_dari_18'];
+                $pengungsian->jumlah = $pengungsianData['jumlah'];
+                $pengungsian->kk = $pengungsianData['kk'];
+                $pengungsian->jiwa = $pengungsianData['jiwa'];
+                $pengungsian->save();
+            }
+        }
 
         return redirect()->route('relawan-view-assessment', $assessment->id_assessment)->with('success', 'Data assessment berhasil disimpan');
     }
@@ -445,6 +492,8 @@ class RelawanController extends Controller
             'update' => 'required|date',
             'akses_ke_lokasi' => 'required|in:Accessible,Not Accessible',
             'kebutuhan' => 'required|string',
+            'keterangan' => 'required|string',
+            'hambatan' => 'required|string',
             // Validasi untuk data dampak
             'kk' => 'nullable|integer',
             'jiwa' => 'nullable|integer',
@@ -498,6 +547,8 @@ class RelawanController extends Controller
             'update' => $validatedData['update'],
             'akses_ke_lokasi' => $validatedData['akses_ke_lokasi'],
             'kebutuhan' => $validatedData['kebutuhan'],
+            'keterangan' => $validatedData['keterangan'],
+            'hambatan' => $validatedData['hambatan'],
         ]);
 
         // Update atau create dampak
@@ -633,6 +684,7 @@ class RelawanController extends Controller
                         'nama_lengkap' => $narahubungData['nama_lengkap'],
                         'posisi' => $narahubungData['posisi'],
                         'kontak' => $narahubungData['kontak'],
+                        'id_kejadian' => $id
                     ]);
                 }
             }
