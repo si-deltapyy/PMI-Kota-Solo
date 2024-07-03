@@ -1039,11 +1039,23 @@ class RelawanController extends Controller
         $kejadianBencana = KejadianBencana::create($data);
         $kejadianBencana->save();
         // Proses upload file dokumentasi
-        if ($request->hasFile('dokumentasi')) {
+        /*if ($request->hasFile('dokumentasi')) {
             foreach ($request->file('dokumentasi') as $file) {
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $filePath = $file->storeAs('public/dokumentasi', $fileName, 'public');
 
+                // Simpan informasi file ke database
+                $dokumentasi = new LampiranDokumentasi();
+                $dokumentasi->id_kejadian = $kejadianBencana->id_kejadian;
+                $dokumentasi->file_dokumentasi = $filePath;
+                $dokumentasi->save();
+            }
+        }*/
+        if (isset($data['dokumentasi'])) {
+            foreach ($request->file('dokumentasi') as $file) {
+                $fileName = time() . '_' . $file['file_dokumentasi']->getClientOriginalName();
+                $filePath = 'storage/dokumentasi/' . $fileName;
+                $file['file_dokumentasi']->storeAs('public/dokumentasi/', $fileName);
                 // Simpan informasi file ke database
                 $dokumentasi = new LampiranDokumentasi();
                 $dokumentasi->id_kejadian = $kejadianBencana->id_kejadian;
