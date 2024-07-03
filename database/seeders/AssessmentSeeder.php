@@ -24,6 +24,11 @@ class AssessmentSeeder extends Seeder
                 'id_report' => 2,
                 'status' => 'Aktif'
             ],
+            [
+                'id_relawan' => 4,
+                'id_report' => 3,
+                'status' => 'Aktif'
+            ],
             // Add more entries as needed
         ]);
     }

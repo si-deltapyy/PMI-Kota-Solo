@@ -1032,7 +1032,7 @@
                 heightLeft -= pageHeight;
             }
 
-            pdf.save('charts.pdf');
+            pdf.save('flash-report.pdf');
         }
 
         async function exportPNG() {
@@ -1042,7 +1042,7 @@
 
             const link = document.createElement('a');
             link.href = imgData;
-            link.download = 'charts.png';
+            link.download = 'flash-report.png';
             link.click();
         }
 

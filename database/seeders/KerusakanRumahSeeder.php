@@ -35,6 +35,28 @@ class KerusakanRumahSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
+            [
+                'rusak_berat' => 10,
+                'rusak_sedang' => 15,
+                'rusak_ringan' => 25,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'rusak_berat' => 7,
+                'rusak_sedang' => 10,
+                'rusak_ringan' => 20,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'rusak_berat' => 9,
+                'rusak_sedang' => 14,
+                'rusak_ringan' => 18,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            
             // Add more records as needed
         ]);
     }

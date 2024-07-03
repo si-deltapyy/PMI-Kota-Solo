@@ -44,6 +44,18 @@ class ReportsSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+            [
+                'id_relawan' => 4,
+                'id_jeniskejadian' => 5,
+                'tanggal_kejadian' => '2024-05-23',
+                'keterangan' => 'Kerusakan signifikan terjadi di lokasi ini, memerlukan perhatian segera dari tim penyelamat.',
+                'timestamp_report' => Carbon::now(),
+                'status' => 'Valid',
+                'lokasi_longitude' => 110.8236931,
+                'lokasi_latitude' => -7.5731812,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
             // Add more records as needed
         ]);
     }

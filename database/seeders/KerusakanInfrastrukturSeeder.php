@@ -31,6 +31,21 @@ class KerusakanInfrastrukturSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
+            [
+                'desc_kerusakan' => 'Bangunan roboh',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'desc_kerusakan' => 'Tanah longsor',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'desc_kerusakan' => 'Pohon tumbang',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],            
             // Add more records as needed
         ]);
     }
