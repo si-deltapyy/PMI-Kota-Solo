@@ -31,7 +31,7 @@
             </form>
           </div>
           @if(session('failure'))
-          <br>
+        <br>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
         {{ session('failure') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -41,7 +41,7 @@
       @endif
 
           @if(session('success'))
-          <br>
+        <br>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -56,8 +56,7 @@
                 <tr>
                   <th>No</th>
                   <th>Kategori Kejadian</th>
-                  <th>Lokasi Longitude</th>
-                  <th>Lokasi Latitude</th>
+                  <th>Lokasi</th>
                   <th>Tanggal Kejadian</th>
                   <th>Status</th>
                   <th>Aksi</th>
@@ -68,8 +67,7 @@
           <tr>
             <td>{{ $loop->iteration }}</td>
             <td>{{ $report->jeniskejadian ? $report->jeniskejadian->nama_kejadian : 'Nama tidak ditemukan' }}</td>
-            <td>{{ $report->lokasi_longitude }}</td>
-            <td>{{ $report->lokasi_latitude }}</td>
+            <td>{{ $report->location_name }}</td>
             <td>{{ \Carbon\Carbon::parse($report->tanggal_kejadian)->format('d-m-Y') }}</td>
             <td>
             @if($report->status == 'On Process')
@@ -81,6 +79,8 @@
 @endif
             </td>
             <td>
+            <a href="/relawan/laporan-kejadian/view/{{ $report->id_report }}" class="btn btn-info btn-sm"><i
+              class="menu-icon mdi mdi-information"></i></a>
             <button class="btn btn-primary btn-sm btn-detail" data-bs-toggle="modal"
               data-bs-target="#approveModal{{ $report->id_report }}"
               data-document-id="{{ $report->id_report }}">

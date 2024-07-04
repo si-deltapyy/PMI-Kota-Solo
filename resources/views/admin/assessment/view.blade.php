@@ -588,7 +588,7 @@
                         <hr>
                         <br>
 
-                        @foreach ($firstKejadian->petugasPosko as $petugasPosko)
+                        @foreach ($firstKejadian->petugas_posko as $petugasPosko)
                         <div id="form_area_petugas">
                             <div id="form_petugas" >
                                 <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>

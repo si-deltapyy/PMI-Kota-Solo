@@ -55,7 +55,7 @@
                              
                         <br>
                         <div class="d-sm-flex justify-content-between align-items-start">
-                        <a href="{{ url('/pengelolaProfil/add-admin') }}" class="btn btn-primary btn-sm me-2" type="button">
+                        <a href="{{ url('/pengelolaProfil/add-admin') }}" class="btn btn-primary btn-sm">
                                     <i class="mdi mdi-account-plus"></i> Tambah Akun
                              </a>
                             <div class="d-flex ms-auto align-items-center">
@@ -151,7 +151,7 @@
                                         <form action="{{ route('pengelola-user-hapusAdmin', $list->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">DELETE</button>
+                                            <button type="submit" class="btn btn-danger" style="background-color: #dc3545; border-color: #dc3545; transition: none;">DELETE</button>
                                         </form>
                                         <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">CANCEL</button>
                                     </div>

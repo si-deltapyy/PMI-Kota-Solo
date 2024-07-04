@@ -62,8 +62,8 @@
                         <input type="password" class="form-control" id="password_confirmation" placeholder="Password Confirm" name="password_confirmation" required>
                       </div>
                       
-                      <button type="submit" class="btn btn-primary me-2">Update</button>
-                      <button class="btn btn-light" onclick="window.history.back()">Cancel</button>
+                      <button type="submit" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff; transition: none;">Update</button>
+                      <button class="btn btn-light" style="background-color: #f8f9fa; border-color: #f8f9fa; transition: none; color: black;" onclick="window.history.back()">Cancel</button>
                     </form>
                   </div>
                 </div>

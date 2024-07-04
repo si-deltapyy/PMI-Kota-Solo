@@ -67,6 +67,11 @@
                                 <option value="Not Accessible" {{ $kejadian->akses_ke_lokasi == "Not Accessible" ? 'selected' : '' }}>Tidak Aman</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="keterangan">Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan" name="keterangan"
+                                value="{{ $kejadian->keterangan }}">
+                        </div>
                         {{-- Input Dampak --}}
                         {{-- <div class="form-group">
                             <button type="button" id="dampak" class="btn btn-primary me-2">Input Dampak</button>
@@ -176,10 +181,11 @@
                         <h6><b>Pengungsian</b></h6>
 
                         <div id="form_area">
-                            <button type="button" id="add-pengungsian" class="btn btn-primary me-2">Input
+                            {{--  <button type="button" id="add-pengungsian" class="btn btn-primary me-2">Input  --}}
+                            <button type="button" class="btn btn-primary me-2">Input
                                 Pengungsian</button>
                             <br>
-                            <p class="card-description" id="subtitle">Tambah, Edit, dan Hapus Data Pengungsian</p>
+                            <p class="card-description" id="subtitle">Edit Data Pengungsian</p>
                             <div id="pengungsian-container">
                                 @if($kejadian->dampak && $kejadian->dampak->pengungsian)
                                     @foreach($kejadian->dampak->pengungsian as $index => $pengungsian)
@@ -240,8 +246,8 @@
                                                     name="pengungsian[{{ $index }}][jumlah]" id="jumlah_{{ $index }}"
                                                     value="{{ $pengungsian->jumlah }}">
                                             </div>
-                                            <button type="button"
-                                                class="btn btn-danger btn-sm remove-pengungsian">Hapus</button>
+                                            {{--  <button type="button"
+                                                class="btn btn-danger btn-sm remove-pengungsian">Hapus</button>  --}}
                                         </div>
                                     @endforeach
                                 @endif
@@ -357,14 +363,20 @@
                             <input type="text" class="form-control" name="kebutuhan" id="kebutuhan"
                                 value="{{ $kejadian->kebutuhan }}">
                         </div>
+                        <div class="form-group">
+                            <label for="hambatan">Hambatan</label>
+                            <input type="text" class="form-control" name="hambatan" id="hambatan"
+                                value="{{ $kejadian->hambatan }}">
+                        </div>
 
                         <h4 class="card-title">Data Personil Narahubung</h4>
 
                         <div id="form_area_cp">
-                            <button type="button" class="btn btn-primary" id="add-narahubung">Input Personil
+                            {{--  <button type="button" class="btn btn-primary" id="add-narahubung">Input Personil  --}}
+                            <button type="button" class="btn btn-primary">Input Personil                            
                                 Narahubung</button>
                             <br>
-                            <p class="card-description" id="subtitle">Tambah, Edit, dan Hapus Data Personil yang dapat
+                            <p class="card-description" id="subtitle">Edit Data Personil yang dapat
                                 dihubungi</p>
 
                             <div id="narahubung-container">
@@ -390,7 +402,7 @@
                                                 <input type="phone" class="form-control" name="narahubung[{{ $index }}][kontak]"
                                                     id="kontak_{{ $index }}" value="{{ $narahubung->kontak }}">
                                             </div>
-                                            <button type="button" class="btn btn-danger btn-sm remove-narahubung">Hapus</button>
+                                            {{--  <button type="button" class="btn btn-danger btn-sm remove-narahubung">Hapus</button>  --}}
                                         </div>
                                     @endforeach
                                 @endif

@@ -28,7 +28,7 @@ use App\Models\Tsr;
 use App\Models\GiatPMI;
 use App\Models\MobilisasiSd;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -47,24 +47,24 @@ class RelawanController extends Controller
     }
     public function index_laporankejadian(Request $request)
     {
-        $reports = Report::all(); 
+        $user_id = Auth::id();
 
         // Fetch query parameters
         $search = $request->input('search');
         $filterStatus = $request->input('status');
 
-        // Initialize the query
-        $query = Report::query();
+        // Initialize the base query with id_relawan filter
+        $query = Report::where('id_relawan', $user_id);
 
         // Apply search filter
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('lokasi_longitude', 'like', '%' . $search . '%')
-                  ->orWhere('lokasi_latitude', 'like', '%' . $search . '%')
-                  ->orWhereHas('jeniskejadian', function ($q) use ($search) {
-                    $q->where('nama_kejadian', 'like', '%' . $search . '%');
+                    ->orWhere('lokasi_latitude', 'like', '%' . $search . '%')
+                    ->orWhereHas('jeniskejadian', function ($q) use ($search) {
+                        $q->where('nama_kejadian', 'like', '%' . $search . '%');
                     })
-                  ->orWhere('tanggal_kejadian', 'like', '%' . $search . '%');
+                    ->orWhere('tanggal_kejadian', 'like', '%' . $search . '%');
             });
         }
 
@@ -75,8 +75,16 @@ class RelawanController extends Controller
 
         // Fetch reports based on the filtered query
         $reports = $query->get();
+
+        // Iterate through reports to fetch location name for each
+        foreach ($reports as $report) {
+            $locationName = $this->getLocationName($report->lokasi_latitude, $report->lokasi_longitude);
+            $report->location_name = $locationName;
+        }
+
         return view('relawan.laporankejadian.index', compact('reports'));
     }
+
     //index lapsit asli
     public function index_lapsit()
     {
@@ -228,15 +236,11 @@ class RelawanController extends Controller
                 'kejadianBencana.mobilisasiSd.alatTdb',
                 'kejadianBencana.giatPmi.evakuasiKorban',
                 'kejadianBencana.giatPmi.layananKorban',
-                'kejadianBencana.dokumentasi',
-                'kejadianBencana.narahubung',
-                'kejadianBencana.petugasPosko',
                 'kejadianBencana.dampak.korbanTerdampak',
                 'kejadianBencana.dampak.korbanJlw',
                 'kejadianBencana.dampak.kerusakanRumah',
                 'kejadianBencana.dampak.kerusakanFasilitasSosial',
                 'kejadianBencana.dampak.kerusakanInfrastruktur',
-                'kejadianBencana.dampak.pengungsian'
             ])
             ->first();
         ;
@@ -245,6 +249,20 @@ class RelawanController extends Controller
         $assessment->googleMapsLink = $this->getGoogleMapsLink($assessment->report->lokasi_latitude, $assessment->report->lokasi_longitude);
         $assessment->waktuKejadian = $this->formatDateTime($assessment->report->timestamp_report);
         $assessment->updateAt = $this->formatDateTime($assessment->report->updated_at);
+
+        // Handle only the first kejadianBencana
+        $firstKejadian = $assessment->kejadianBencana->first();
+
+        $narahubung = PersonilNarahubung::where('id_kejadian', $firstKejadian->id)->get();
+        $petugas_posko = PetugasPosko::where('id_kejadian', $firstKejadian->id)->get();
+        $dokumentasi = LampiranDokumentasi::where('id_kejadian', $firstKejadian->id)->get();
+        $id_dampak = $firstKejadian->dampak->id_dampak;
+        $pengungsian = Pengungsian::where('id_dampak', $id_dampak)->get();
+
+        $firstKejadian->narahubung = $narahubung;
+        $firstKejadian->petugas_posko = $petugas_posko;
+        $firstKejadian->dokumentasi = $dokumentasi;
+        $firstKejadian->pengungsian = $pengungsian;
 
         return response()->json($assessment);
         // return view('relawan.assessment.view', compact('assessment'));
@@ -263,15 +281,11 @@ class RelawanController extends Controller
                 'kejadianBencana.mobilisasiSd.alatTdb',
                 'kejadianBencana.giatPmi.evakuasiKorban',
                 'kejadianBencana.giatPmi.layananKorban',
-                'kejadianBencana.dokumentasi',
-                'kejadianBencana.narahubung',
-                'kejadianBencana.petugasPosko',
                 'kejadianBencana.dampak.korbanTerdampak',
                 'kejadianBencana.dampak.korbanJlw',
                 'kejadianBencana.dampak.kerusakanRumah',
                 'kejadianBencana.dampak.kerusakanFasilitasSosial',
                 'kejadianBencana.dampak.kerusakanInfrastruktur',
-                'kejadianBencana.dampak.pengungsian'
             ])
             ->first();
         ;
@@ -297,6 +311,17 @@ class RelawanController extends Controller
             $firstKejadian->personil = $firstKejadian->mobilisasiSd->personil;
             $firstKejadian->tsr = $firstKejadian->mobilisasiSd->tsr;
             $firstKejadian->alatTdb = $firstKejadian->mobilisasiSd->alatTdb;
+
+            $narahubung = PersonilNarahubung::where('id_kejadian', $firstKejadian->id_kejadian)->get();
+            $petugas_posko = PetugasPosko::where('id_kejadian', $firstKejadian->id_kejadian)->get();
+            $dokumentasi = LampiranDokumentasi::where('id_kejadian', $firstKejadian->id_kejadian)->get();
+            $id_dampak = $firstKejadian->dampak->id_dampak;
+            $pengungsian = Pengungsian::where('id_dampak', $id_dampak)->get();
+
+            $firstKejadian->narahubung = $narahubung;
+            $firstKejadian->petugas_posko = $petugas_posko;
+            $firstKejadian->dokumentasi = $dokumentasi;
+            $firstKejadian->pengungsian = $pengungsian;
         }
 
         return view('relawan.assessment.view', compact('assessment', 'firstKejadian'));
@@ -306,10 +331,10 @@ class RelawanController extends Controller
     }
     public function create_assessment($id)
     {
-        $assessment = Assessment::whereHas('report', function($query) use ($id) {
+        $assessment = Assessment::whereHas('report', function ($query) use ($id) {
             $query->where('id_report', $id);
         })->first();
-        if($assessment){
+        if ($assessment) {
             return redirect()->route('relawan-laporankejadian')->with('failure', 'Laporan Assessment sudah ada');
         }
         $kejadian = Report::findOrFail($id);
@@ -318,7 +343,8 @@ class RelawanController extends Controller
         $personil = Personil::all()->random()->first();
         $tsr = Tsr::all()->random()->first();
         $alat_tdb = AlatTdb::all()->random()->first();
-        return view('relawan.assessment.create', compact('kejadian', 'jeniskejadian', 'assessment', 'narahubung', 'personil', 'tsr', 'alat_tdb'));
+        $lokasi = $this->getLocationName($kejadian->lokasi_latitude, $kejadian->lokasi_longitude);
+        return view('relawan.assessment.create', compact('kejadian', 'jeniskejadian', 'assessment', 'narahubung', 'personil', 'tsr', 'alat_tdb', 'lokasi'));
     }
     public function store_assessment(Request $request)
     {
@@ -377,6 +403,24 @@ class RelawanController extends Controller
             // TSR
             'id_tsr' => 'required|exists:tsr,id_tsr',
             'id_alat_tdb' => 'required|exists:alat_tdb,id_alat_tdb',
+            // Validasi untuk data narahubung
+            'narahubung' => 'sometimes|array',
+            'narahubung.*.id_narahubung' => 'sometimes|exists:personil_narahubung,id_narahubung',
+            'narahubung.*.nama_lengkap' => 'required|string',
+            'narahubung.*.posisi' => 'required|string',
+            'narahubung.*.kontak' => 'required|string',
+            // Validasi untuk data pengungsian
+            'pengungsian' => 'sometimes|array',
+            'pengungsian.*.id_pengungsian' => 'sometimes|exists:pengungsian,id_pengungsian',
+            'pengungsian.*.nama_lokasi' => 'required|string',
+            'pengungsian.*.laki_laki' => 'required|integer',
+            'pengungsian.*.perempuan' => 'required|integer',
+            'pengungsian.*.kurang_dari_5' => 'required|integer',
+            'pengungsian.*.atr_5_sampai_18' => 'required|integer',
+            'pengungsian.*.lebih_dari_18' => 'required|integer',
+            'pengungsian.*.jumlah' => 'required|integer',
+            'pengungsian.*.kk' => 'required|integer',
+            'pengungsian.*.jiwa' => 'required|integer',
         ]);
         // check validatedata have error or not
         if ($validatedData->fails()) {
@@ -414,6 +458,35 @@ class RelawanController extends Controller
         $kejadianBencana = KejadianBencana::create($data);
 
         $kejadianBencana->save();
+        // Simpan data narahubung
+        if (isset($data['narahubung'])) {
+            foreach ($data['narahubung'] as $narahubungData) {
+                $narahubung = new PersonilNarahubung();
+                $narahubung->id_kejadian = $kejadianBencana->id_kejadian;
+                $narahubung->nama_lengkap = $narahubungData['nama_lengkap'];
+                $narahubung->posisi = $narahubungData['posisi'];
+                $narahubung->kontak = $narahubungData['kontak'];
+                $narahubung->save();
+            }
+        }
+
+        // Simpan data pengungsian baru
+        if (isset($data['pengungsian'])) {
+            foreach ($data['pengungsian'] as $pengungsianData) {
+                $pengungsian = new Pengungsian();
+                $pengungsian->id_dampak = $data['id_dampak'];
+                $pengungsian->nama_lokasi = $pengungsianData['nama_lokasi'];
+                $pengungsian->laki_laki = $pengungsianData['laki_laki'];
+                $pengungsian->perempuan = $pengungsianData['perempuan'];
+                $pengungsian->kurang_dari_5 = $pengungsianData['kurang_dari_5'];
+                $pengungsian->atr_5_sampai_18 = $pengungsianData['atr_5_sampai_18'];
+                $pengungsian->lebih_dari_18 = $pengungsianData['lebih_dari_18'];
+                $pengungsian->jumlah = $pengungsianData['jumlah'];
+                $pengungsian->kk = $pengungsianData['kk'];
+                $pengungsian->jiwa = $pengungsianData['jiwa'];
+                $pengungsian->save();
+            }
+        }
 
         return redirect()->route('relawan-view-assessment', $assessment->id_assessment)->with('success', 'Data assessment berhasil disimpan');
     }
@@ -435,7 +508,7 @@ class RelawanController extends Controller
         $jenisKejadian = JenisKejadian::all();
 
 
-        return view('relawan.assessment.edit', compact('kejadian','jenisKejadian'));
+        return view('relawan.assessment.edit', compact('kejadian', 'jenisKejadian'));
 
     }
 
@@ -445,6 +518,8 @@ class RelawanController extends Controller
             'update' => 'required|date',
             'akses_ke_lokasi' => 'required|in:Accessible,Not Accessible',
             'kebutuhan' => 'required|string',
+            'keterangan' => 'required|string',
+            'hambatan' => 'required|string',
             // Validasi untuk data dampak
             'kk' => 'nullable|integer',
             'jiwa' => 'nullable|integer',
@@ -464,13 +539,13 @@ class RelawanController extends Controller
             'lain_lain' => 'nullable|string',
             'desc_kerusakan' => 'nullable|string',
             // Validasi untuk data giat pmi
-            'luka_ringanberat'=> 'nullable|string',
-            'meninggalevakuasi'=> 'nullable|string',
-            'keterangan'=> 'nullable|string',
-            'distribusi'=> 'nullable|string',
-            'dapur_umum'=> 'nullable|string',
-            'evakuasi'=> 'nullable|string',
-            'layanan_kesehatan'=> 'nullable|string',
+            'luka_ringanberat' => 'nullable|string',
+            'meninggalevakuasi' => 'nullable|string',
+            'keterangan' => 'nullable|string',
+            'distribusi' => 'nullable|string',
+            'dapur_umum' => 'nullable|string',
+            'evakuasi' => 'nullable|string',
+            'layanan_kesehatan' => 'nullable|string',
             // Validasi untuk data narahubung
             'narahubung' => 'sometimes|array',
             'narahubung.*.id_narahubung' => 'sometimes|exists:personil_narahubung,id_narahubung',
@@ -498,6 +573,8 @@ class RelawanController extends Controller
             'update' => $validatedData['update'],
             'akses_ke_lokasi' => $validatedData['akses_ke_lokasi'],
             'kebutuhan' => $validatedData['kebutuhan'],
+            'keterangan' => $validatedData['keterangan'],
+            'hambatan' => $validatedData['hambatan'],
         ]);
 
         // Update atau create dampak
@@ -633,6 +710,7 @@ class RelawanController extends Controller
                         'nama_lengkap' => $narahubungData['nama_lengkap'],
                         'posisi' => $narahubungData['posisi'],
                         'kontak' => $narahubungData['kontak'],
+                        'id_kejadian' => $id
                     ]);
                 }
             }
@@ -678,7 +756,7 @@ class RelawanController extends Controller
             // Hapus data assessment
             $assessment->delete();
 
-            
+
             // Check if the request is AJAX
             if ($request->ajax() || $request->wantsJson()) {
                 // Return JSON response indicating success
@@ -715,15 +793,11 @@ class RelawanController extends Controller
                 'mobilisasiSd.alatTdb',
                 'giatPmi.evakuasiKorban',
                 'giatPmi.layananKorban',
-                'dokumentasi',
-                'narahubung',
-                'petugasPosko',
                 'dampak.korbanTerdampak',
                 'dampak.korbanJlw',
                 'dampak.kerusakanRumah',
                 'dampak.kerusakanFasilitasSosial',
                 'dampak.kerusakanInfrastruktur',
-                'dampak.pengungsian'
             ])
             ->first();
         ;
@@ -732,6 +806,17 @@ class RelawanController extends Controller
         $lapsit->googleMapsLink = $this->getGoogleMapsLink($lapsit->assessment->report->lokasi_latitude, $lapsit->assessment->report->lokasi_longitude);
         $lapsit->waktuKejadian = $this->formatDateTime($lapsit->assessment->report->timestamp_report);
         $lapsit->updateAt = $this->formatDateTime($lapsit->assessment->report->updated_at);
+
+        $narahubung = PersonilNarahubung::where('id_kejadian', $id)->get();
+        $petugas_posko = PetugasPosko::where('id_kejadian', $id)->get();
+        $dokumentasi = LampiranDokumentasi::where('id_kejadian', $id)->get();
+        $id_dampak = $lapsit->dampak->id_dampak;
+        $pengungsian = Pengungsian::where('id_dampak', $id_dampak)->get();
+
+        $lapsit->narahubung = $narahubung;
+        $lapsit->petugas_posko = $petugas_posko;
+        $lapsit->dokumentasi = $dokumentasi;
+        $lapsit->pengungsian = $pengungsian;
 
         return response()->json($lapsit);
         // return view('relawan.assessment.view', compact('assessment'));
@@ -750,15 +835,11 @@ class RelawanController extends Controller
                 'mobilisasiSd.alatTdb',
                 'giatPmi.evakuasiKorban',
                 'giatPmi.layananKorban',
-                'dokumentasi',
-                'narahubung',
-                'petugasPosko',
                 'dampak.korbanTerdampak',
                 'dampak.korbanJlw',
                 'dampak.kerusakanRumah',
                 'dampak.kerusakanFasilitasSosial',
                 'dampak.kerusakanInfrastruktur',
-                'dampak.pengungsian'
             ])
             ->first();
         ;
@@ -782,6 +863,17 @@ class RelawanController extends Controller
 
         $assessment = $lapsit->assessment;
 
+        $narahubung = PersonilNarahubung::where('id_kejadian', $id)->get();
+        $petugas_posko = PetugasPosko::where('id_kejadian', $id)->get();
+        $dokumentasi = LampiranDokumentasi::where('id_kejadian', $id)->get();
+        $id_dampak = $lapsit->dampak->id_dampak;
+        $pengungsian = Pengungsian::where('id_dampak', $id_dampak)->get();
+
+        $lapsit->narahubung = $narahubung;
+        $lapsit->petugas_posko = $petugas_posko;
+        $lapsit->dokumentasi = $dokumentasi;
+        $lapsit->pengungsian = $pengungsian;
+
         return view('relawan.lapsit.view', compact('lapsit', 'assessment'));
 
         // return response()->json($assessment);
@@ -792,24 +884,24 @@ class RelawanController extends Controller
     {
         //
         //$jenisKejadian = DB::table('jenis_kejadian')->get();
-        
-        $kejadian = KejadianBencana::where('id_assessment',$id)
-        ->with([
-            'giatPmi.evakuasiKorban',
-            'giatPmi.layananKorban',
-            'dampak.korbanTerdampak',
-            'dampak.korbanJlw',
-            'dampak.kerusakanRumah',
-            'dampak.kerusakanFasilitasSosial',
-            'dampak.kerusakanInfrastruktur',
-            'mobilisasiSd.personil',
-            'mobilisasiSd.tsr',
-            'mobilisasiSd.alatTdb',
-            'dampak.pengungsian', // Menambahkan relasi pengungsian
-            'narahubung',
-            'dokumentasi',
-            'petugasPosko'
-        ])->firstOrFail();
+
+        $kejadian = KejadianBencana::where('id_assessment', $id)
+            ->with([
+                'giatPmi.evakuasiKorban',
+                'giatPmi.layananKorban',
+                'dampak.korbanTerdampak',
+                'dampak.korbanJlw',
+                'dampak.kerusakanRumah',
+                'dampak.kerusakanFasilitasSosial',
+                'dampak.kerusakanInfrastruktur',
+                'mobilisasiSd.personil',
+                'mobilisasiSd.tsr',
+                'mobilisasiSd.alatTdb',
+                'dampak.pengungsian', // Menambahkan relasi pengungsian
+                'narahubung',
+                'dokumentasi',
+                'petugasPosko'
+            ])->firstOrFail();
         //$kejadian = KejadianBencana::where('id_assessment', $id)->findOrFail($id);
         $jeniskejadian = JenisKejadian::where('id_jeniskejadian', $kejadian->id_jeniskejadian)->first();
         $assesment = Assessment::where('id_assessment', $id)->first();
@@ -915,7 +1007,7 @@ class RelawanController extends Controller
             'gudang_lapangan' => 'required|integer',
             'posko_aju' => 'required|integer',
             'alat_it_lapangan' => 'required|integer',
-            
+
             // Validasi untuk data narahubung
             'narahubung' => 'sometimes|array',
             'narahubung.*.id_narahubung' => 'sometimes|exists:personil_narahubung,id_narahubung',
@@ -987,11 +1079,23 @@ class RelawanController extends Controller
         $kejadianBencana = KejadianBencana::create($data);
         $kejadianBencana->save();
         // Proses upload file dokumentasi
-        if ($request->hasFile('dokumentasi')) {
+        /*if ($request->hasFile('dokumentasi')) {
             foreach ($request->file('dokumentasi') as $file) {
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $filePath = $file->storeAs('public/dokumentasi', $fileName, 'public');
 
+                // Simpan informasi file ke database
+                $dokumentasi = new LampiranDokumentasi();
+                $dokumentasi->id_kejadian = $kejadianBencana->id_kejadian;
+                $dokumentasi->file_dokumentasi = $filePath;
+                $dokumentasi->save();
+            }
+        }*/
+        if (isset($data['dokumentasi'])) {
+            foreach ($request->file('dokumentasi') as $file) {
+                $fileName = time() . '_' . $file['file_dokumentasi']->getClientOriginalName();
+                $filePath = 'storage/dokumentasi/' . $fileName;
+                $file['file_dokumentasi']->storeAs('public/dokumentasi/', $fileName);
                 // Simpan informasi file ke database
                 $dokumentasi = new LampiranDokumentasi();
                 $dokumentasi->id_kejadian = $kejadianBencana->id_kejadian;
@@ -1022,7 +1126,7 @@ class RelawanController extends Controller
                 $petugasPosko->save();
             }
         }
-    
+
         // Simpan data pengungsian baru
         if (isset($data['pengungsian'])) {
             foreach ($data['pengungsian'] as $pengungsianData) {
@@ -1040,7 +1144,7 @@ class RelawanController extends Controller
                 $pengungsian->save();
             }
         }
-        
+
         return redirect()->route('relawan-lapsit', $kejadianBencana->id_kejadian)->with('success', 'Data berhasil ditambahkan');
     }
 
@@ -1097,41 +1201,41 @@ class RelawanController extends Controller
             'lain_lain' => 'nullable|string',
             'desc_kerusakan' => 'nullable|string',
             // Validasi untuk data giat pmi
-            'luka_ringanberat'=> 'nullable|string',
-            'meninggalevakuasi'=> 'nullable|string',
-            'evakuasi_keterangan'=> 'nullable|string',
-            'distribusi'=> 'nullable|string',
-            'dapur_umum'=> 'nullable|string',
-            'evakuasi'=> 'nullable|string',
-            'layanan_kesehatan'=> 'nullable|string',
+            'luka_ringanberat' => 'nullable|string',
+            'meninggalevakuasi' => 'nullable|string',
+            'evakuasi_keterangan' => 'nullable|string',
+            'distribusi' => 'nullable|string',
+            'dapur_umum' => 'nullable|string',
+            'evakuasi' => 'nullable|string',
+            'layanan_kesehatan' => 'nullable|string',
             // Validasi untuk data mobilisasi sd
-            'kend_ops'=> 'nullable|string',
-            'truk_angkut'=> 'nullable|string',
-            'truk_tanki'=> 'nullable|string',
-            'double_cabin'=> 'nullable|string',
-            'alat_du'=> 'nullable|string',
-            'ambulans'=> 'nullable|string',
-            'alat_watsan'=> 'nullable|string',
-            'rs_lapangan'=> 'nullable|string',
-            'alat_pkdd'=> 'nullable|string',
-            'gudang_lapangan'=> 'nullable|string',
-            'posko_aju'=> 'nullable|string',
-            'alat_it_lapangan'=> 'nullable|string',
-            'medis'=> 'nullable|string',
-            'paramedis'=> 'nullable|string',
-            'relief'=> 'nullable|string',
-            'logistik'=> 'nullable|string',
-            'watsan'=> 'nullable|string',
-            'it_telekom'=> 'nullable|string',
-            'sheltering'=> 'nullable|string',
-            'pengurus'=> 'nullable|string',
-            'staf_markas_kabkota'=> 'nullable|integer',
-            'staf_markas_prov'=> 'nullable|integer',
-            'staf_markas_pusat'=> 'nullable|integer',
-            'relawan_pmi_kabkota'=> 'nullable|integer',
-            'relawan_pmi_prov'=> 'nullable|integer',
-            'relawan_pmi_linprov'=> 'nullable|integer',
-            'sukarelawan_sip'=> 'nullable|integer',
+            'kend_ops' => 'nullable|string',
+            'truk_angkut' => 'nullable|string',
+            'truk_tanki' => 'nullable|string',
+            'double_cabin' => 'nullable|string',
+            'alat_du' => 'nullable|string',
+            'ambulans' => 'nullable|string',
+            'alat_watsan' => 'nullable|string',
+            'rs_lapangan' => 'nullable|string',
+            'alat_pkdd' => 'nullable|string',
+            'gudang_lapangan' => 'nullable|string',
+            'posko_aju' => 'nullable|string',
+            'alat_it_lapangan' => 'nullable|string',
+            'medis' => 'nullable|string',
+            'paramedis' => 'nullable|string',
+            'relief' => 'nullable|string',
+            'logistik' => 'nullable|string',
+            'watsan' => 'nullable|string',
+            'it_telekom' => 'nullable|string',
+            'sheltering' => 'nullable|string',
+            'pengurus' => 'nullable|string',
+            'staf_markas_kabkota' => 'nullable|integer',
+            'staf_markas_prov' => 'nullable|integer',
+            'staf_markas_pusat' => 'nullable|integer',
+            'relawan_pmi_kabkota' => 'nullable|integer',
+            'relawan_pmi_prov' => 'nullable|integer',
+            'relawan_pmi_linprov' => 'nullable|integer',
+            'sukarelawan_sip' => 'nullable|integer',
             // Validasi untuk data narahubung
             'narahubung' => 'sometimes|array',
             'narahubung.*.id_narahubung' => 'sometimes|exists:personil_narahubung,id_narahubung',
@@ -1411,40 +1515,40 @@ class RelawanController extends Controller
         }
 
         // Proses data dokumentasi
-    if ($request->has('dokumentasi')) {
-        foreach ($request->dokumentasi as $index => $dokumentasiData) {
-            if (isset($dokumentasiData['id_dokumentasi'])) {
-                $dokumentasi = $kejadian->dokumentasi()->find($dokumentasiData['id_dokumentasi']);
-                if ($dokumentasi) {
-                    if (isset($dokumentasiData['delete']) && $dokumentasiData['delete'] == '1') {
-                        // Hapus file
-                        if ($dokumentasi->file_dokumentasi) {
-                            Storage::delete('public/dokumentasi/' . $dokumentasi->file_dokumentasi);
+        if ($request->has('dokumentasi')) {
+            foreach ($request->dokumentasi as $index => $dokumentasiData) {
+                if (isset($dokumentasiData['id_dokumentasi'])) {
+                    $dokumentasi = $kejadian->dokumentasi()->find($dokumentasiData['id_dokumentasi']);
+                    if ($dokumentasi) {
+                        if (isset($dokumentasiData['delete']) && $dokumentasiData['delete'] == '1') {
+                            // Hapus file
+                            if ($dokumentasi->file_dokumentasi) {
+                                Storage::delete('public/dokumentasi/' . $dokumentasi->file_dokumentasi);
+                            }
+                            $dokumentasi->delete();
+                        } elseif (isset($dokumentasiData['file_dokumentasi'])) {
+                            // Update file
+                            if ($dokumentasi->file_dokumentasi) {
+                                Storage::delete('public/dokumentasi/' . $dokumentasi->file_dokumentasi);
+                            }
+                            $file = $dokumentasiData['file_dokumentasi'];
+                            $fileName = time() . '_' . $file->getClientOriginalName();
+                            $file->storeAs('public/dokumentasi', $fileName, 'public');
+                            $dokumentasi->update(['file_dokumentasi' => $fileName]);
                         }
-                        $dokumentasi->delete();
-                    } elseif (isset($dokumentasiData['file_dokumentasi'])) {
-                        // Update file
-                        if ($dokumentasi->file_dokumentasi) {
-                            Storage::delete('public/dokumentasi/' . $dokumentasi->file_dokumentasi);
-                        }
-                        $file = $dokumentasiData['file_dokumentasi'];
-                        $fileName = time() . '_' . $file->getClientOriginalName();
-                        $file->storeAs('public/dokumentasi', $fileName, 'public');
-                        $dokumentasi->update(['file_dokumentasi' => $fileName]);
                     }
+                } elseif (isset($dokumentasiData['file_dokumentasi'])) {
+                    // Tambah dokumentasi baru
+                    $file = $dokumentasiData['file_dokumentasi'];
+                    $fileName = time() . '_' . $file->getClientOriginalName();
+                    $file->storeAs('public/dokumentasi', $fileName, 'public');
+                    $kejadian->dokumentasi()->create([
+                        'file_dokumentasi' => $fileName,
+                        'id_kejadian' => $id
+                    ]);
                 }
-            } elseif (isset($dokumentasiData['file_dokumentasi'])) {
-                // Tambah dokumentasi baru
-                $file = $dokumentasiData['file_dokumentasi'];
-                $fileName = time() . '_' . $file->getClientOriginalName();
-                $file->storeAs('public/dokumentasi', $fileName, 'public');
-                $kejadian->dokumentasi()->create([
-                    'file_dokumentasi' => $fileName,
-                    'id_kejadian' => $id
-                ]);
             }
         }
-    }
         return redirect()->route('relawan-lapsit', $kejadian->id_kejadian)->with('success', 'Laporan Situasi berhasil diperbarui');
 
     }
@@ -1545,16 +1649,39 @@ class RelawanController extends Controller
 
     public function getLocationName($latitude, $longitude)
     {
-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-            'latlng' => $latitude . ',' . $longitude,
-            'key' => config('services.google_maps.api_key'),
-        ]);
+        $url = 'https://nominatim.openstreetmap.org/reverse';
+        $params = [
+            'format' => 'json',
+            'lat' => $latitude,
+            'lon' => $longitude,
+            'addressdetails' => 1,
+        ];
 
-        $data = $response->json();
+        $response = Http::get($url, $params);
 
-        if (isset($data['results'][0]['formatted_address'])) {
-            return $data['results'][0]['formatted_address'];
+        // Check HTTP status
+        if ($response->successful()) {
+            // Debug: Print the full URL and response
+            // dd($url . '?' . http_build_query($params), $response->body());
+
+            $data = $response->json();
+
+            // Check if 'address' key exists
+            if (isset($data['address'])) {
+                // Check for city, town, or village
+                if (isset($data['address']['village'])) {
+                    return $data['address']['village'];
+                } elseif (isset($data['address']['city'])) {
+                    return $data['address']['city'];
+                } elseif (isset($data['address']['town'])) {
+                    return $data['address']['town'];
+                }
+            }
+
+            return 'Location not found';
         } else {
+            // Print out error message for unsuccessful request
+            // dd('Error: ' . $response->status());
             return 'Location not found';
         }
     }

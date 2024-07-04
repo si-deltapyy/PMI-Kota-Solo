@@ -589,11 +589,12 @@
         const id = <?php echo json_encode($id); ?>;
 
 
-        function getFormattedDate(tanggal) {
+        function getFormattedDate(dateString) {
             const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
             const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
-            const d = new Date(tanggal);
+            const [day, month, year] = dateString.split('/');
+            const d = new Date(`${year}-${month}-${day}`); // Create a new Date object with the correct format
             const namaHari = hari[d.getDay()];
             const tanggalHari = d.getDate();
             const namaBulan = bulan[d.getMonth()];
@@ -601,6 +602,7 @@
 
             return `${namaHari}, ${tanggalHari} ${namaBulan} ${tahun}`;
         }
+
 
 
         function formatDateTime(isoTimestamp) {

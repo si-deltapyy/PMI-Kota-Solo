@@ -187,7 +187,7 @@ class PDFController extends Controller
             'mobilisasiSd.personil',
             'assessment',
             'assessment.report',
-        ])->findOrFail($id);
+        ])->first();
 
         $tanggal = Carbon::parse($kejadian->tanggal_kejadian)->locale('id')->isoFormat('D MMMM YYYY');
         // Load the PDF view with the data
@@ -201,7 +201,7 @@ class PDFController extends Controller
             ))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->download($datenow . ' || assessment-file.pdf');
+        return $pdf->stream($datenow . ' || assessment-file.pdf');
     }
 
     /*public function previewAssessmentPdf($id)
@@ -250,17 +250,39 @@ class PDFController extends Controller
 
     public function getLocationName($latitude, $longitude)
     {
-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-            'latlng' => $latitude . ',' . $longitude,
-            'key' => config('services.google_maps.api_key'),
-        ]);
+        $url = 'https://nominatim.openstreetmap.org/reverse';
+        $params = [
+            'format' => 'json',
+            'lat' => $latitude,
+            'lon' => $longitude,
+            'addressdetails' => 1,
+        ];
 
-        $data = $response->json();
+        $response = Http::get($url, $params);
 
-        if (isset($data['results'][0]['formatted_address'])) {
-            return $data['results'][0]['formatted_address'];
+        // Check HTTP status
+        if ($response->successful()) {
+            // Debug: Print the full URL and response
+            // dd($url . '?' . http_build_query($params), $response->body());
+
+            $data = $response->json();
+
+            // Check if 'address' key exists
+            if (isset($data['address'])) {
+                // Check for city, town, or village
+                if (isset($data['address']['village'])) {
+                    return $data['address']['village'];
+                } elseif (isset($data['address']['city'])) {
+                    return $data['address']['city'];
+                } elseif (isset($data['address']['town'])) {
+                    return $data['address']['town'];
+                } 
+            }
+
+            return 'City not found';
         } else {
-            return 'Location not found';
+            // Print out error message for unsuccessful request
+            dd('Error: ' . $response->status());
         }
     }
 

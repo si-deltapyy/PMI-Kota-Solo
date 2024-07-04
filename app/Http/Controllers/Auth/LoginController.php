@@ -30,12 +30,12 @@ class LoginController extends Controller
 
         if ($user->hasRole('admin')) {
             notify()->preset('success', ['message' => 'Hi '.$user->name.' Selamat Datang']);
-            return '/admin/dashboard';
+            return '/admin/laporan-kejadian';
         } elseif ($user->hasRole('relawan')) {
             notify()->preset('success', ['message' => 'Hi '.$user->name.' Selamat Datang']);
-            return '/relawan/dashboard';
+            return '/relawan/laporan-kejadian';
         } elseif ($user->hasRole('pengelola_profil')) {
-            return '/pengelolaProfil/user_management';
+            return '/pengelolaProfil/relawan_management';
         }
 
         return '/home';

@@ -34,7 +34,7 @@
                         <div class="form-group">
                             <label for="lokasi">Lokasi</label>
                             <input readonly type="email" class="form-control" id="lokasi" placeholder="Lokasi"
-                                value="{{ $assessment->locationName }}">
+                                value="{{ $firstKejadian->lokasi }}">
                             <br>
                             <a href="{{ $assessment->googleMapsLink }}" class="btn btn-info btn-sm" id="lihat-lokasi">Lihat
                                 Lokasi</a>
@@ -585,7 +585,7 @@
                         <hr>
                         <br>
 
-                        @foreach ($firstKejadian->petugasPosko as $petugasPosko)
+                        @foreach ($firstKejadian->petugas_posko as $petugasPosko)
                         <div id="form_area_petugas">
                             <div id="form_petugas" >
                                 <p class="card-description" id="subtitle">Personel yang dapat dihubungi</p>
